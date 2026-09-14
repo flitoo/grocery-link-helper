@@ -1,5 +1,5 @@
-# Grocery-link-helper
-Grocery Link Helper is a web-based e-commerce and logistics platform connecting customers with local fulfillment helpers for store-specific grocery orders, upfront payment verification, and order tracking.
+# Grocery Link Helper
+Grocery Link Helper is a web-based platform that connects customers with local fulfillment helpers. Customers submit store-specific grocery orders, confirm payment upfront, and track delivery status until the order arrives.
 
 ## Directory Structure
 - `/frontend`: React web application
@@ -14,4 +14,4 @@ Grocery Link Helper is a web-based e-commerce and logistics platform connecting 
 - `bugfix/issue-description`: Bug resolution branches
 
 ## Quick Start
-Instructions for environment setup, `.env` configuration, and local server startup.
+This section will include setup instructions, `.env` configuration steps, and how to start the local server.
