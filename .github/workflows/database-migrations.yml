@@ -1,0 +1,46 @@
+name: Apply Neon database migrations
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "database/migrations/**"
+      - "backend/package.json"
+      - "backend/package-lock.json"
+      - ".github/workflows/database-migrations.yml"
+
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: neon-production-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    name: Run pending migrations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Apply migrations to Neon
+        working-directory: backend
+        env:
+          DATABASE_URL: ${{ secrets.NEON_DATABASE_URL }}
+        run: npm run migrate:up
