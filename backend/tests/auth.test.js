@@ -1,21 +1,26 @@
-// auth.test.js
+// Mock the user model with an in-memory store so these tests never touch a real database.
+jest.mock('../src/models/user.model', () => {
+  const users = [];
+  return {
+    findUserByEmail: jest.fn(async (email) => users.find((u) => u.email === email) || null),
+    createUser: jest.fn(async ({ name, email, passwordHash }) => {
+      const user = { id: users.length + 1, name, email, password_hash: passwordHash };
+      users.push(user);
+      return { id: user.id, name, email };
+    }),
+  };
+});
+
+process.env.JWT_SECRET = 'test-secret';
+
 const request = require('supertest');
-const app = require('../app'); // adjust path if app.js exports differently
-const pool = require('../config/db');
-
-
+const app = require('../src/app');
 
 const testUser = {
   name: 'Test User',
-  email: `testuser_$john467@gmail.com, // unique each run
+  email: 'testuser@example.com',
   password: 'password123',
 };
-
-afterAll(async () => {
-  // Clean up the test user so re-running tests doesn't hit "already exists"
-  await pool.query('DELETE FROM users WHERE email = $1', [testUser.email]);
-  await pool.end();
-});
 
 describe('POST /api/auth/register', () => {
   it('should create a new user and return a token', async () => {
