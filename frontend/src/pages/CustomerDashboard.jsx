@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import "./CustomerDashboard.css";
 
 function CustomerDashboard() {
@@ -13,12 +14,12 @@ function CustomerDashboard() {
           Grocery Link Helper
         </div>
 
-        <nav className="dashboard-nav">
-          <a href="#">Dashboard</a>
-          <a href="#">Grocery List</a>
-          <a href="#">Orders</a>
-          <button className="logout-button">Logout</button>
-        </nav>
+<nav className="dashboard-nav">
+  <Link to="/dashboard">Dashboard</Link>
+  <Link to="/grocery-list">Grocery List</Link>
+  <a href="#">Orders</a>
+  <button className="logout-button">Logout</button>
+</nav>
       </header>
 
       <main className="dashboard-content">
@@ -48,9 +49,9 @@ function CustomerDashboard() {
               <span>Items in your list</span>
             </div>
 
-            <button className="card-button">
-              View Grocery List
-            </button>
+ <Link to="/grocery-list" className="card-button">
+  View Grocery List
+</Link>
           </div>
 
           <div className="dashboard-card">
