@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "./GroceryList.css";
 
 function GroceryList() {
@@ -9,24 +10,63 @@ function GroceryList() {
   ]);
 
   const [newItem, setNewItem] = useState("");
+  const [error, setError] = useState("");
 
   const handleAddItem = () => {
-    if (!newItem.trim()) {
+    const trimmedItem = newItem.trim();
+
+    // Validation 1: Empty item
+    if (!trimmedItem) {
+      setError("Please enter a grocery item.");
+      return;
+    }
+
+    // Validation 2: Minimum length
+    if (trimmedItem.length < 2) {
+      setError("Item name must be at least 2 characters.");
+      return;
+    }
+
+    // Validation 3: Maximum length
+    if (trimmedItem.length > 50) {
+      setError("Item name cannot be more than 50 characters.");
+      return;
+    }
+
+    // Validation 4: Duplicate item
+    const duplicateItem = items.some(
+      (item) =>
+        item.name.toLowerCase() === trimmedItem.toLowerCase()
+    );
+
+    if (duplicateItem) {
+      setError("This item is already in your grocery list.");
       return;
     }
 
     const item = {
       id: Date.now(),
-      name: newItem,
+      name: trimmedItem,
       quantity: 1,
     };
 
     setItems([...items, item]);
+
+    // Clear input and error after successful add
     setNewItem("");
+    setError("");
   };
 
   const handleRemoveItem = (id) => {
     setItems(items.filter((item) => item.id !== id));
+    setError("");
+  };
+
+  // Allow user to press Enter to add item
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleAddItem();
+    }
   };
 
   return (
@@ -35,9 +75,9 @@ function GroceryList() {
         <h1>Grocery Link Helper</h1>
 
         <nav>
-          <a href="/dashboard">Dashboard</a>
-          <a href="/grocery-list">Grocery List</a>
-          <a href="/orders">Orders</a>
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/grocery-list">Grocery List</Link>
+          <Link to="/orders">Orders</Link>
         </nav>
       </header>
 
@@ -52,13 +92,27 @@ function GroceryList() {
             type="text"
             placeholder="Enter grocery item"
             value={newItem}
-            onChange={(e) => setNewItem(e.target.value)}
+            maxLength={50}
+            onChange={(e) => {
+              setNewItem(e.target.value);
+
+              if (error) {
+                setError("");
+              }
+            }}
+            onKeyDown={handleKeyDown}
           />
 
           <button onClick={handleAddItem}>
             Add Item
           </button>
         </div>
+
+        {error && (
+          <p className="grocery-error">
+            {error}
+          </p>
+        )}
 
         <div className="grocery-list">
           {items.length === 0 ? (

@@ -4,7 +4,10 @@
   color: #222;
 }
 
-/* Header */
+/* =========================
+   Header
+========================= */
+
 .grocery-header {
   height: 70px;
   padding: 0 50px;
@@ -37,14 +40,20 @@
   color: #2e7d32;
 }
 
-/* Main */
+/* =========================
+   Main Content
+========================= */
+
 .grocery-content {
   max-width: 900px;
   margin: 0 auto;
   padding: 45px 30px;
 }
 
-/* Title */
+/* =========================
+   Title
+========================= */
+
 .grocery-title {
   margin-bottom: 30px;
 }
@@ -62,7 +71,10 @@
   color: #222;
 }
 
-/* Add item */
+/* =========================
+   Add Item
+========================= */
+
 .add-item {
   display: flex;
   gap: 12px;
@@ -74,13 +86,25 @@
   padding: 13px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
+
   background: white;
+
+  /* Make typed text visible */
+  color: #222;
+
   font-size: 15px;
   outline: none;
+  box-sizing: border-box;
+}
+
+.add-item input::placeholder {
+  color: #999;
+  opacity: 1;
 }
 
 .add-item input:focus {
   border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
 }
 
 .add-item button {
@@ -98,7 +122,24 @@
   background: #2e7d32;
 }
 
-/* Grocery list */
+/* =========================
+   Validation Error
+========================= */
+
+.grocery-error {
+  margin: -10px 0 20px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff1f1;
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* =========================
+   Grocery List
+========================= */
+
 .grocery-list {
   display: flex;
   flex-direction: column;
@@ -142,7 +183,10 @@
   background: #fff1f1;
 }
 
-/* Empty list */
+/* =========================
+   Empty List
+========================= */
+
 .empty-list {
   padding: 45px 20px;
   text-align: center;
@@ -161,7 +205,10 @@
   color: #888;
 }
 
-/* Responsive */
+/* =========================
+   Responsive
+========================= */
+
 @media (max-width: 768px) {
   .grocery-header {
     padding: 0 20px;
@@ -181,5 +228,9 @@
 
   .add-item button {
     width: 100%;
+  }
+
+  .grocery-item {
+    gap: 15px;
   }
 }

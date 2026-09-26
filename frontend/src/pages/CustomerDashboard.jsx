@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import "./CustomerDashboard.css";
 
 function CustomerDashboard() {
@@ -7,22 +7,37 @@ function CustomerDashboard() {
   const groceryItemCount = 0;
   const recentOrderCount = 0;
 
+  const navigate = useNavigate();
+
+  // Logout
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <div className="dashboard-page">
+      {/* Header */}
       <header className="dashboard-header">
-        <div className="dashboard-logo">
-          Grocery Link Helper
-        </div>
+        <div className="dashboard-logo">Grocery Link Helper</div>
 
-<nav className="dashboard-nav">
-  <Link to="/dashboard">Dashboard</Link>
-  <Link to="/grocery-list">Grocery List</Link>
-  <a href="#">Orders</a>
-  <button className="logout-button">Logout</button>
-</nav>
+        <nav className="dashboard-nav">
+          <Link to="/dashboard">Dashboard</Link>
+          <Link to="/grocery-list">Grocery List</Link>
+          <Link to="/orders">Orders</Link>
+
+          <button
+            className="logout-button"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        </nav>
       </header>
 
+      {/* Main Content */}
       <main className="dashboard-content">
+        {/* Welcome Section */}
         <section className="welcome-section">
           <div>
             <p className="welcome-label">Welcome back!</p>
@@ -34,12 +49,14 @@ function CustomerDashboard() {
             </p>
           </div>
 
-          <button className="primary-button">
+          <Link to="/grocery-list" className="primary-button">
             + Add Grocery Item
-          </button>
+          </Link>
         </section>
 
+        {/* Dashboard Cards */}
         <section className="dashboard-cards">
+          {/* Grocery List Card */}
           <div className="dashboard-card">
             <div className="card-icon">🛒</div>
 
@@ -49,11 +66,12 @@ function CustomerDashboard() {
               <span>Items in your list</span>
             </div>
 
- <Link to="/grocery-list" className="card-button">
-  View Grocery List
-</Link>
+            <Link to="/grocery-list" className="card-button">
+              View Grocery List
+            </Link>
           </div>
 
+          {/* Recent Orders Card */}
           <div className="dashboard-card">
             <div className="card-icon">📦</div>
 
@@ -63,12 +81,13 @@ function CustomerDashboard() {
               <span>Orders placed</span>
             </div>
 
-            <button className="card-button">
+            <Link to="/orders" className="card-button">
               View Orders
-            </button>
+            </Link>
           </div>
         </section>
 
+        {/* Quick Actions */}
         <section className="quick-actions">
           <div className="section-heading">
             <p>Quick Actions</p>
@@ -76,26 +95,33 @@ function CustomerDashboard() {
           </div>
 
           <div className="action-grid">
-            <button className="action-card">
+            <Link
+              to="/grocery-list"
+              className="action-card"
+            >
               <span className="action-icon">🛒</span>
 
               <div>
                 <h3>Manage Grocery List</h3>
                 <p>Add or remove grocery items.</p>
               </div>
-            </button>
+            </Link>
 
-            <button className="action-card">
+            <Link
+              to="/orders"
+              className="action-card"
+            >
               <span className="action-icon">📋</span>
 
               <div>
                 <h3>View Orders</h3>
                 <p>Check your previous orders.</p>
               </div>
-            </button>
+            </Link>
           </div>
         </section>
 
+        {/* Order History */}
         <section className="orders-section">
           <div className="section-heading">
             <p>Order History</p>
