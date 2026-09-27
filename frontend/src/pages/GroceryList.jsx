@@ -71,22 +71,24 @@ function GroceryList() {
 
   return (
     <div className="grocery-page">
+      {/* Header */}
       <header className="grocery-header">
         <h1>Grocery Link Helper</h1>
 
         <nav>
           <Link to="/dashboard">Dashboard</Link>
           <Link to="/grocery-list">Grocery List</Link>
-          <Link to="/orders">Orders</Link>
         </nav>
       </header>
 
+      {/* Main Content */}
       <main className="grocery-content">
         <div className="grocery-title">
           <p>My Grocery List</p>
           <h2>Grocery List</h2>
         </div>
 
+        {/* Add Item */}
         <div className="add-item">
           <input
             type="text"
@@ -103,33 +105,50 @@ function GroceryList() {
             onKeyDown={handleKeyDown}
           />
 
-          <button onClick={handleAddItem}>
+          <button
+            type="button"
+            onClick={handleAddItem}
+          >
             Add Item
           </button>
         </div>
 
+        {/* Validation Error */}
         {error && (
           <p className="grocery-error">
             {error}
           </p>
         )}
 
+        {/* Grocery List */}
         <div className="grocery-list">
           {items.length === 0 ? (
             <div className="empty-list">
               <h3>Your grocery list is empty</h3>
-              <p>Add an item to get started.</p>
+
+              <p>
+                Add an item to get started.
+              </p>
             </div>
           ) : (
             items.map((item) => (
-              <div className="grocery-item" key={item.id}>
+              <div
+                className="grocery-item"
+                key={item.id}
+              >
                 <div>
                   <h3>{item.name}</h3>
-                  <p>Quantity: {item.quantity}</p>
+
+                  <p>
+                    Quantity: {item.quantity}
+                  </p>
                 </div>
 
                 <button
-                  onClick={() => handleRemoveItem(item.id)}
+                  type="button"
+                  onClick={() =>
+                    handleRemoveItem(item.id)
+                  }
                 >
                   Remove
                 </button>
@@ -137,6 +156,18 @@ function GroceryList() {
             ))
           )}
         </div>
+
+        {/* Continue to Store Selection */}
+        {items.length > 0 && (
+          <div className="grocery-next">
+            <Link
+              to="/store-selection"
+              className="continue-button"
+            >
+              Continue to Store Selection
+            </Link>
+          </div>
+        )}
       </main>
     </div>
   );

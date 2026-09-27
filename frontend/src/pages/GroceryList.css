@@ -209,6 +209,31 @@
    Responsive
 ========================= */
 
+/* Continue to Store Selection */
+
+.grocery-next {
+  margin-top: 30px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.grocery-next .continue-button {
+  display: inline-block;
+  padding: 13px 22px;
+  border-radius: 8px;
+  background: #43a047;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.grocery-next .continue-button:hover {
+  background: #2e7d32;
+  transform: translateY(-1px);
+}
+
 @media (max-width: 768px) {
   .grocery-header {
     padding: 0 20px;

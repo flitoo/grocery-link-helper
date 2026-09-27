@@ -5,11 +5,15 @@ import ForgotPassword from "./pages/ForgotPassword";
 import CustomerDashboard from "./pages/CustomerDashboard";
 import Register from "./pages/Register";
 import GroceryList from "./pages/GroceryList";
+import StoreSelection from "./pages/StoreSelection";
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route
+        path="/"
+        element={<Login />}
+      />
 
       <Route
         path="/forgot-password"
@@ -29,6 +33,11 @@ function App() {
       <Route
         path="/grocery-list"
         element={<GroceryList />}
+      />
+
+      <Route
+        path="/store-selection"
+        element={<StoreSelection />}
       />
     </Routes>
   );
