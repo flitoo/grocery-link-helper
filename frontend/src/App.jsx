@@ -6,6 +6,8 @@ import CustomerDashboard from "./pages/CustomerDashboard";
 import Register from "./pages/Register";
 import GroceryList from "./pages/GroceryList";
 import StoreSelection from "./pages/StoreSelection";
+import DeliveryTimeSlot from "./pages/DeliveryTimeSlot";
+import OrderSummary from "./pages/OrderSummary";
 
 function App() {
   return (
@@ -38,6 +40,16 @@ function App() {
       <Route
         path="/store-selection"
         element={<StoreSelection />}
+      />
+
+      <Route
+        path="/delivery-time"
+        element={<DeliveryTimeSlot />}
+      />
+
+      <Route
+        path="/order-summary"
+        element={<OrderSummary />}
       />
     </Routes>
   );

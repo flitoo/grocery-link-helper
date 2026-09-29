@@ -1,13 +1,35 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GroceryList.css";
 
 function GroceryList() {
-  const [items, setItems] = useState([]);
+  // Load saved grocery items from localStorage
+  const [items, setItems] = useState(() => {
+    const savedItems = localStorage.getItem("groceryItems");
+
+    if (savedItems) {
+      try {
+        return JSON.parse(savedItems);
+      } catch (error) {
+        console.error("Could not load grocery items:", error);
+        return [];
+      }
+    }
+
+    return [];
+  });
 
   const [newItem, setNewItem] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
+
+  // Save grocery items whenever the list changes
+  useEffect(() => {
+    localStorage.setItem(
+      "groceryItems",
+      JSON.stringify(items)
+    );
+  }, [items]);
 
   const handleAddItem = () => {
     const trimmedItem = newItem.trim();
@@ -32,7 +54,10 @@ function GroceryList() {
     }
 
     // Validation 4: Quantity
-    if (!Number.isInteger(parsedQuantity) || parsedQuantity < 1) {
+    if (
+      !Number.isInteger(parsedQuantity) ||
+      parsedQuantity < 1
+    ) {
       setError("Quantity must be at least 1.");
       return;
     }
@@ -40,11 +65,14 @@ function GroceryList() {
     // Validation 5: Duplicate item
     const duplicateItem = items.some(
       (item) =>
-        item.name.toLowerCase() === trimmedItem.toLowerCase()
+        item.name.toLowerCase() ===
+        trimmedItem.toLowerCase()
     );
 
     if (duplicateItem) {
-      setError("This item is already in your grocery list.");
+      setError(
+        "This item is already in your grocery list."
+      );
       return;
     }
 
@@ -54,7 +82,10 @@ function GroceryList() {
       quantity: parsedQuantity,
     };
 
-    setItems([...items, item]);
+    setItems((currentItems) => [
+      ...currentItems,
+      item,
+    ]);
 
     // Clear inputs after successful add
     setNewItem("");
@@ -63,7 +94,10 @@ function GroceryList() {
   };
 
   const handleRemoveItem = (id) => {
-    setItems(items.filter((item) => item.id !== id));
+    setItems((currentItems) =>
+      currentItems.filter((item) => item.id !== id)
+    );
+
     setError("");
   };
 
@@ -81,8 +115,13 @@ function GroceryList() {
         <h1>Grocery Link Helper</h1>
 
         <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
+          <Link to="/dashboard">
+            Dashboard
+          </Link>
+
+          <Link to="/grocery-list">
+            Grocery List
+          </Link>
         </nav>
       </header>
 
@@ -146,7 +185,9 @@ function GroceryList() {
         <div className="grocery-list">
           {items.length === 0 ? (
             <div className="empty-list">
-              <h3>Your grocery list is empty</h3>
+              <h3>
+                Your grocery list is empty
+              </h3>
 
               <p>
                 Add an item to get started.

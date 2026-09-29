@@ -9,7 +9,7 @@ function StoreSelection() {
   const [error, setError] = useState("");
 
   // Temporary mock data.
-  // Replace this with backend store data when GET /api/stores is available.
+  
   const stores = [
     {
       id: 1,
@@ -46,7 +46,7 @@ function StoreSelection() {
     );
 
     // Orders screen can be connected later.
-    navigate("/dashboard");
+    navigate("/delivery-time");
   };
 
   return (
