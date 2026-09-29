@@ -86,12 +86,8 @@
   padding: 13px 15px;
   border: 1px solid #ddd;
   border-radius: 8px;
-
   background: white;
-
-  /* Make typed text visible */
   color: #222;
-
   font-size: 15px;
   outline: none;
   box-sizing: border-box;
@@ -107,6 +103,15 @@
   box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
 }
 
+/* Quantity Input */
+
+.add-item .quantity-input {
+  flex: 0 0 110px;
+  width: 110px;
+  min-width: 110px;
+  text-align: center;
+}
+
 .add-item button {
   padding: 13px 22px;
   border: none;
@@ -116,6 +121,7 @@
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .add-item button:hover {
@@ -206,10 +212,8 @@
 }
 
 /* =========================
-   Responsive
+   Continue to Store Selection
 ========================= */
-
-/* Continue to Store Selection */
 
 .grocery-next {
   margin-top: 30px;
@@ -234,6 +238,10 @@
   transform: translateY(-1px);
 }
 
+/* =========================
+   Responsive
+========================= */
+
 @media (max-width: 768px) {
   .grocery-header {
     padding: 0 20px;
@@ -251,11 +259,27 @@
     flex-direction: column;
   }
 
+  .add-item .quantity-input {
+    width: 100%;
+    min-width: 100%;
+    flex: none;
+  }
+
   .add-item button {
     width: 100%;
   }
 
   .grocery-item {
     gap: 15px;
+  }
+
+  .grocery-next {
+    justify-content: stretch;
+  }
+
+  .grocery-next .continue-button {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 }

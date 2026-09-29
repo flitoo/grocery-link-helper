@@ -3,17 +3,15 @@ import { Link } from "react-router-dom";
 import "./GroceryList.css";
 
 function GroceryList() {
-  const [items, setItems] = useState([
-    { id: 1, name: "Milk", quantity: 1 },
-    { id: 2, name: "Bread", quantity: 1 },
-    { id: 3, name: "Eggs", quantity: 12 },
-  ]);
+  const [items, setItems] = useState([]);
 
   const [newItem, setNewItem] = useState("");
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
 
   const handleAddItem = () => {
     const trimmedItem = newItem.trim();
+    const parsedQuantity = Number(quantity);
 
     // Validation 1: Empty item
     if (!trimmedItem) {
@@ -33,7 +31,13 @@ function GroceryList() {
       return;
     }
 
-    // Validation 4: Duplicate item
+    // Validation 4: Quantity
+    if (!Number.isInteger(parsedQuantity) || parsedQuantity < 1) {
+      setError("Quantity must be at least 1.");
+      return;
+    }
+
+    // Validation 5: Duplicate item
     const duplicateItem = items.some(
       (item) =>
         item.name.toLowerCase() === trimmedItem.toLowerCase()
@@ -47,13 +51,14 @@ function GroceryList() {
     const item = {
       id: Date.now(),
       name: trimmedItem,
-      quantity: 1,
+      quantity: parsedQuantity,
     };
 
     setItems([...items, item]);
 
-    // Clear input and error after successful add
+    // Clear inputs after successful add
     setNewItem("");
+    setQuantity(1);
     setError("");
   };
 
@@ -97,6 +102,23 @@ function GroceryList() {
             maxLength={50}
             onChange={(e) => {
               setNewItem(e.target.value);
+
+              if (error) {
+                setError("");
+              }
+            }}
+            onKeyDown={handleKeyDown}
+          />
+
+          {/* Quantity */}
+          <input
+            className="quantity-input"
+            type="number"
+            min="1"
+            step="1"
+            value={quantity}
+            onChange={(e) => {
+              setQuantity(e.target.value);
 
               if (error) {
                 setError("");
