@@ -8,6 +8,7 @@ import GroceryList from "./pages/GroceryList";
 import StoreSelection from "./pages/StoreSelection";
 import DeliveryTimeSlot from "./pages/DeliveryTimeSlot";
 import OrderSummary from "./pages/OrderSummary";
+import Payment from "./pages/Payment";
 
 function App() {
   return (
@@ -51,7 +52,12 @@ function App() {
         path="/order-summary"
         element={<OrderSummary />}
       />
+      <Route
+        path="/payment"
+       element={<Payment />}
+      />
     </Routes>
+    
   );
 }
 
