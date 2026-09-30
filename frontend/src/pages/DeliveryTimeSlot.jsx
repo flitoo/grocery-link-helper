@@ -9,13 +9,62 @@ function DeliveryTimeSlot() {
   const [deliveryTime, setDeliveryTime] = useState("");
   const [error, setError] = useState("");
 
+  // Get today's date in YYYY-MM-DD format
   const getToday = () => {
     const today = new Date();
+
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
+  };
+
+  // Format selected date
+  // Example: December 12, 2026
+  const formatDate = (date) => {
+    if (!date) {
+      return "";
+    }
+
+    const [year, month, day] = date.split("-");
+
+    const selectedDate = new Date(
+      Number(year),
+      Number(month) - 1,
+      Number(day)
+    );
+
+    return selectedDate.toLocaleDateString("en-CA", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  // Format selected time
+  // Example: 16:00 -> 4:00 PM
+  const formatTime = (time) => {
+    if (!time) {
+      return "";
+    }
+
+    const [hour, minute] = time.split(":");
+
+    const selectedTime = new Date();
+
+    selectedTime.setHours(
+      Number(hour),
+      Number(minute),
+      0,
+      0
+    );
+
+    return selectedTime.toLocaleTimeString("en-CA", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
   };
 
   const handleContinue = () => {
@@ -34,13 +83,21 @@ function DeliveryTimeSlot() {
     );
 
     if (selectedDateTime <= new Date()) {
-      setError("Please select a future delivery date and time.");
+      setError(
+        "Please select a future delivery date and time."
+      );
       return;
     }
 
-    const deliverySlot = `${deliveryDate}T${deliveryTime}`;
+    // Keep ISO-like format for storage
+    // Example: 2026-12-12T16:00
+    const deliverySlot =
+      `${deliveryDate}T${deliveryTime}`;
 
-    localStorage.setItem("deliverySlot", deliverySlot);
+    localStorage.setItem(
+      "deliverySlot",
+      deliverySlot
+    );
 
     setError("");
 
@@ -53,21 +110,30 @@ function DeliveryTimeSlot() {
         <h1>Grocery Link Helper</h1>
 
         <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
+          <Link to="/dashboard">
+            Dashboard
+          </Link>
+
+          <Link to="/grocery-list">
+            Grocery List
+          </Link>
         </nav>
       </header>
 
       <main className="delivery-content">
         <div className="delivery-title">
           <p>Schedule Delivery</p>
+
           <h2>Choose Delivery Time</h2>
+
           <span>
             Select your preferred delivery date and time.
           </span>
         </div>
 
         <div className="delivery-card">
+
+          {/* Delivery Date */}
           <div className="delivery-form-group">
             <label htmlFor="delivery-date">
               Delivery Date
@@ -85,6 +151,7 @@ function DeliveryTimeSlot() {
             />
           </div>
 
+          {/* Delivery Time */}
           <div className="delivery-form-group">
             <label htmlFor="delivery-time">
               Delivery Time
@@ -101,16 +168,22 @@ function DeliveryTimeSlot() {
             />
           </div>
 
+          {/* Selected Delivery */}
           {deliveryDate && deliveryTime && (
             <div className="selected-delivery">
-              <span>Selected delivery</span>
+              <span>
+                Selected delivery
+              </span>
 
               <strong>
-                {deliveryDate} at {deliveryTime}
+                {formatDate(deliveryDate)}
+                {" at "}
+                {formatTime(deliveryTime)}
               </strong>
             </div>
           )}
 
+          {/* Validation Error */}
           {error && (
             <p className="delivery-error">
               {error}
