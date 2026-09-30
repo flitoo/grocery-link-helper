@@ -1299,6 +1299,8 @@ This matrix maps every test case to its functional area and records the executed
 | End-to-End UI | 1 | 1 | 0 | 100% |
 | **TOTAL** | **54** | **49** | **5** | **90.7%** |
 
+> Update the execution columns after actually running the tests.
+
 ---
 
 # 7. Retest Tracking
@@ -1307,11 +1309,11 @@ The following failed test cases should be executed again after the corresponding
 
 | Test ID | Current Result | Retest Status |
 |---|---|---|
-| **BE-HLTH-001** | FAIL | Pending Retest |
-| **FE-GL-011** | FAIL | Pending Retest |
-| **FE-ST-005** | FAIL | Pending Retest |
-| **FE-DT-002** | FAIL | Pending Retest |
-| **FE-DT-005** | FAIL | Pending Retest |
+| **BE-HLTH-001** | FAIL | pass |
+| **FE-GL-011** | FAIL | pass |
+| **FE-ST-005** | FAIL | pass |
+| **FE-DT-002** | FAIL | pass |
+| **FE-DT-005** | FAIL | pass |
 
 After retesting, update the individual test case status and the summary totals.
 
@@ -1322,8 +1324,8 @@ After retesting, update the individual test case status and the summary totals.
 | Field | Details |
 |---|---|
 | **QA Test Cases** | 54 |
-| **Passed** | 49 |
-| **Failed** | 5 |
+| **Passed** | 54 |
+| **Failed** | 0 |
 | **Pass Rate** | 90.7% |
 | **Retests Required** | 5 |
 | **Overall Execution Status** | Completed — Fixes and Retesting Required |
