@@ -8,7 +8,7 @@
 | Document Type | QA Test Case Specification |
 | QA Owner | Maisha Maliha Nava |
 | Scope | Frontend UI + Backend API |
-| Status | Test cases prepared; execution pending |
+| Status | Test cases prepared; execution pending of test cases |
 
 ---
 
