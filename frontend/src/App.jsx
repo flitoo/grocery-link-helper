@@ -9,10 +9,13 @@ import StoreSelection from "./pages/StoreSelection";
 import DeliveryTimeSlot from "./pages/DeliveryTimeSlot";
 import OrderSummary from "./pages/OrderSummary";
 import Payment from "./pages/Payment";
+import Orders from "./pages/Orders";
+import OrderDetails from "./pages/OrderDetails";
 
 function App() {
   return (
     <Routes>
+      {/* Authentication */}
       <Route
         path="/"
         element={<Login />}
@@ -28,11 +31,13 @@ function App() {
         element={<Register />}
       />
 
+      {/* Dashboard */}
       <Route
         path="/dashboard"
         element={<CustomerDashboard />}
       />
 
+      {/* Grocery Order Flow */}
       <Route
         path="/grocery-list"
         element={<GroceryList />}
@@ -52,12 +57,23 @@ function App() {
         path="/order-summary"
         element={<OrderSummary />}
       />
+
       <Route
         path="/payment"
-       element={<Payment />}
+        element={<Payment />}
+      />
+
+      {/* Orders */}
+      <Route
+        path="/orders"
+        element={<Orders />}
+      />
+
+      <Route
+        path="/order-details/:orderId"
+        element={<OrderDetails />}
       />
     </Routes>
-    
   );
 }
 

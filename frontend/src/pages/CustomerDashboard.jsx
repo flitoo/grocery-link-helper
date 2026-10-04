@@ -3,13 +3,37 @@ import "./CustomerDashboard.css";
 
 function CustomerDashboard() {
   const customerName = "Customer";
-
-  const groceryItemCount = 0;
-  const recentOrderCount = 0;
-
   const navigate = useNavigate();
 
-  // Logout
+  const getSavedData = (key, fallback) => {
+    try {
+      const savedData = localStorage.getItem(key);
+
+      if (!savedData) {
+        return fallback;
+      }
+
+      return JSON.parse(savedData);
+    } catch (error) {
+      console.error(`Could not load ${key}:`, error);
+      return fallback;
+    }
+  };
+
+  // Get grocery items from localStorage
+  const groceryItems = getSavedData("groceryItems", []);
+
+  // Get completed orders from localStorage
+  const orders = getSavedData("orders", []);
+
+  const groceryItemCount = groceryItems.length;
+  const recentOrderCount = orders.length;
+
+  // Show newest orders first
+  const recentOrders = [...orders]
+    .reverse()
+    .slice(0, 3);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -19,12 +43,22 @@ function CustomerDashboard() {
     <div className="dashboard-page">
       {/* Header */}
       <header className="dashboard-header">
-        <div className="dashboard-logo">Grocery Link Helper</div>
+        <div className="dashboard-logo">
+          Grocery Link Helper
+        </div>
 
         <nav className="dashboard-nav">
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
-          <Link to="/orders">Orders</Link>
+          <Link to="/dashboard">
+            Dashboard
+          </Link>
+
+          <Link to="/grocery-list">
+            Grocery List
+          </Link>
+
+          <Link to="/orders">
+            Orders
+          </Link>
 
           <button
             className="logout-button"
@@ -37,51 +71,77 @@ function CustomerDashboard() {
 
       {/* Main Content */}
       <main className="dashboard-content">
-        {/* Welcome Section */}
+        {/* Welcome */}
         <section className="welcome-section">
           <div>
-            <p className="welcome-label">Welcome back!</p>
+            <p className="welcome-label">
+              Welcome back!
+            </p>
 
-            <h1>Hello, {customerName} 👋</h1>
+            <h1>
+              Hello, {customerName} 👋
+            </h1>
 
             <p className="welcome-text">
-              Manage your grocery list and keep track of your orders.
+              Manage your grocery list and keep
+              track of your orders.
             </p>
           </div>
 
-          <Link to="/grocery-list" className="primary-button">
+          <Link
+            to="/grocery-list"
+            className="primary-button"
+          >
             + Add Grocery Item
           </Link>
         </section>
 
         {/* Dashboard Cards */}
         <section className="dashboard-cards">
-          {/* Grocery List Card */}
+          {/* Grocery List */}
           <div className="dashboard-card">
-            <div className="card-icon">🛒</div>
+            <div className="card-icon">
+              🛒
+            </div>
 
             <div className="card-content">
               <p>Grocery List</p>
+
               <h2>{groceryItemCount}</h2>
-              <span>Items in your list</span>
+
+              <span>
+                Items in your list
+              </span>
             </div>
 
-            <Link to="/grocery-list" className="card-button">
+            <Link
+              to="/grocery-list"
+              className="card-button"
+            >
               View Grocery List
             </Link>
           </div>
 
-          {/* Recent Orders Card */}
+          {/* Recent Orders */}
           <div className="dashboard-card">
-            <div className="card-icon">📦</div>
+            <div className="card-icon">
+              📦
+            </div>
 
             <div className="card-content">
               <p>Recent Orders</p>
+
               <h2>{recentOrderCount}</h2>
-              <span>Orders placed</span>
+
+              <span>
+                Orders placed
+              </span>
             </div>
 
-            <Link to="/orders" className="card-button">
+            <Link
+              to="/orders"
+              className="card-button"
+            >
               View Orders
             </Link>
           </div>
@@ -91,7 +151,10 @@ function CustomerDashboard() {
         <section className="quick-actions">
           <div className="section-heading">
             <p>Quick Actions</p>
-            <h2>What would you like to do?</h2>
+
+            <h2>
+              What would you like to do?
+            </h2>
           </div>
 
           <div className="action-grid">
@@ -99,11 +162,18 @@ function CustomerDashboard() {
               to="/grocery-list"
               className="action-card"
             >
-              <span className="action-icon">🛒</span>
+              <span className="action-icon">
+                🛒
+              </span>
 
               <div>
-                <h3>Manage Grocery List</h3>
-                <p>Add or remove grocery items.</p>
+                <h3>
+                  Manage Grocery List
+                </h3>
+
+                <p>
+                  Add or remove grocery items.
+                </p>
               </div>
             </Link>
 
@@ -111,11 +181,16 @@ function CustomerDashboard() {
               to="/orders"
               className="action-card"
             >
-              <span className="action-icon">📋</span>
+              <span className="action-icon">
+                📋
+              </span>
 
               <div>
                 <h3>View Orders</h3>
-                <p>Check your previous orders.</p>
+
+                <p>
+                  Check your previous orders.
+                </p>
               </div>
             </Link>
           </div>
@@ -125,18 +200,67 @@ function CustomerDashboard() {
         <section className="orders-section">
           <div className="section-heading">
             <p>Order History</p>
+
             <h2>Recent Orders</h2>
           </div>
 
-          <div className="empty-orders">
-            <div className="empty-icon">📦</div>
+          {recentOrders.length === 0 ? (
+            <div className="empty-orders">
+              <div className="empty-icon">
+                📦
+              </div>
 
-            <h3>No recent orders</h3>
+              <h3>No recent orders</h3>
 
-            <p>
-              Your recent grocery orders will appear here.
-            </p>
-          </div>
+              <p>
+                Your recent grocery orders will
+                appear here.
+              </p>
+            </div>
+          ) : (
+            <div className="dashboard-order-list">
+              {recentOrders.map((order) => (
+                <div
+                  className="dashboard-order-item"
+                  key={order.id}
+                >
+                  <div>
+                    <h3>
+                      Order #{order.id}
+                    </h3>
+
+                    <p>
+                      {order.store?.name ||
+                        order.store?.store_name ||
+                        "Store"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <strong>
+                      {order.status}
+                    </strong>
+
+                    <p>
+                      {order.deliverySlot
+                        ? order.deliverySlot.replace(
+                            "T",
+                            " "
+                          )
+                        : ""}
+                    </p>
+                  </div>
+
+                  <Link
+                    to={`/order-details/${order.id}`}
+                    className="card-button"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
     </div>
