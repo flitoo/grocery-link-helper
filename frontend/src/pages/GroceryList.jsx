@@ -11,7 +11,10 @@ function GroceryList() {
       try {
         return JSON.parse(savedItems);
       } catch (error) {
-        console.error("Could not load grocery items:", error);
+        console.error(
+          "Could not load grocery items:",
+          error
+        );
         return [];
       }
     }
@@ -21,6 +24,8 @@ function GroceryList() {
 
   const [newItem, setNewItem] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [estimatedPrice, setEstimatedPrice] =
+    useState("");
   const [error, setError] = useState("");
 
   // Save grocery items whenever the list changes
@@ -34,6 +39,7 @@ function GroceryList() {
   const handleAddItem = () => {
     const trimmedItem = newItem.trim();
     const parsedQuantity = Number(quantity);
+    const parsedPrice = Number(estimatedPrice);
 
     // Validation 1: Empty item
     if (!trimmedItem) {
@@ -43,13 +49,17 @@ function GroceryList() {
 
     // Validation 2: Minimum length
     if (trimmedItem.length < 2) {
-      setError("Item name must be at least 2 characters.");
+      setError(
+        "Item name must be at least 2 characters."
+      );
       return;
     }
 
     // Validation 3: Maximum length
     if (trimmedItem.length > 50) {
-      setError("Item name cannot be more than 50 characters.");
+      setError(
+        "Item name cannot be more than 50 characters."
+      );
       return;
     }
 
@@ -62,7 +72,19 @@ function GroceryList() {
       return;
     }
 
-    // Validation 5: Duplicate item
+    // Validation 5: Estimated price
+    if (
+      !estimatedPrice ||
+      Number.isNaN(parsedPrice) ||
+      parsedPrice <= 0
+    ) {
+      setError(
+        "Estimated price must be greater than $0."
+      );
+      return;
+    }
+
+    // Validation 6: Duplicate item
     const duplicateItem = items.some(
       (item) =>
         item.name.toLowerCase() ===
@@ -80,6 +102,12 @@ function GroceryList() {
       id: Date.now(),
       name: trimmedItem,
       quantity: parsedQuantity,
+
+      // Needed by backend create-order API
+      estimatedPrice: parsedPrice,
+
+      // Default for backend order item
+      allowSubstitution: false,
     };
 
     setItems((currentItems) => [
@@ -90,12 +118,15 @@ function GroceryList() {
     // Clear inputs after successful add
     setNewItem("");
     setQuantity(1);
+    setEstimatedPrice("");
     setError("");
   };
 
   const handleRemoveItem = (id) => {
     setItems((currentItems) =>
-      currentItems.filter((item) => item.id !== id)
+      currentItems.filter(
+        (item) => item.id !== id
+      )
     );
 
     setError("");
@@ -134,6 +165,7 @@ function GroceryList() {
 
         {/* Add Item */}
         <div className="add-item">
+          {/* Item name */}
           <input
             type="text"
             placeholder="Enter grocery item"
@@ -156,8 +188,27 @@ function GroceryList() {
             min="1"
             step="1"
             value={quantity}
+            placeholder="Quantity"
             onChange={(e) => {
               setQuantity(e.target.value);
+
+              if (error) {
+                setError("");
+              }
+            }}
+            onKeyDown={handleKeyDown}
+          />
+
+          {/* Estimated Price */}
+          <input
+            className="price-input"
+            type="number"
+            min="0.01"
+            step="0.01"
+            value={estimatedPrice}
+            placeholder="Estimated price"
+            onChange={(e) => {
+              setEstimatedPrice(e.target.value);
 
               if (error) {
                 setError("");
@@ -205,6 +256,21 @@ function GroceryList() {
                   <p>
                     Quantity: {item.quantity}
                   </p>
+
+                  <p>
+                    Estimated Price: $
+                    {Number(
+                      item.estimatedPrice
+                    ).toFixed(2)}
+                  </p>
+
+                  <p>
+                    Estimated Subtotal: $
+                    {(
+                      Number(item.estimatedPrice) *
+                      Number(item.quantity)
+                    ).toFixed(2)}
+                  </p>
                 </div>
 
                 <button
@@ -219,6 +285,26 @@ function GroceryList() {
             ))
           )}
         </div>
+
+        {/* Estimated Total */}
+        {items.length > 0 && (
+          <div className="grocery-total">
+            <span>Estimated Total</span>
+
+            <strong>
+              $
+              {items
+                .reduce(
+                  (total, item) =>
+                    total +
+                    Number(item.estimatedPrice) *
+                      Number(item.quantity),
+                  0
+                )
+                .toFixed(2)}
+            </strong>
+          </div>
+        )}
 
         {/* Continue to Store Selection */}
         {items.length > 0 && (

@@ -2,20 +2,37 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Payment.css";
 
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 function Payment() {
   const navigate = useNavigate();
 
-  const [paymentMethod, setPaymentMethod] = useState("credit");
-  const [cardholderName, setCardholderName] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expiryDate, setExpiryDate] = useState("");
+  const [paymentMethod, setPaymentMethod] =
+    useState("credit");
+
+  const [cardholderName, setCardholderName] =
+    useState("");
+
+  const [cardNumber, setCardNumber] =
+    useState("");
+
+  const [expiryDate, setExpiryDate] =
+    useState("");
+
   const [cvv, setCvv] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [completedOrder, setCompletedOrder] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  // Get saved data from localStorage
+  const [completedOrder, setCompletedOrder] =
+    useState(null);
+
+  // ==========================================
+  // Read localStorage safely
+  // ==========================================
+
   const getSavedData = (key, fallback) => {
     try {
       const savedData = localStorage.getItem(key);
@@ -26,18 +43,61 @@ function Payment() {
 
       return JSON.parse(savedData);
     } catch (error) {
-      console.error(`Could not load ${key}:`, error);
+      console.error(
+        `Could not load ${key}:`,
+        error
+      );
+
       return fallback;
     }
   };
 
-  // Get current order information
-  const groceryItems = getSavedData("groceryItems", []);
-  const selectedStore = getSavedData("selectedStore", null);
+  // ==========================================
+  // Order data
+  // ==========================================
+
+  const groceryItems =
+    getSavedData("groceryItems", []);
+
+  const selectedStore =
+    getSavedData("selectedStore", null);
+
+  const currentOrder =
+    getSavedData("currentOrder", null);
+
   const deliverySlot =
     localStorage.getItem("deliverySlot") || "";
 
-  // Format delivery date and time
+  const deliveryAddress =
+    localStorage.getItem("deliveryAddress") || "";
+
+  const savedOrderId =
+    localStorage.getItem("orderId");
+
+  // Support different possible backend property names
+  const orderId = Number(
+    currentOrder?.order_id ||
+      currentOrder?.id ||
+      savedOrderId
+  );
+
+  // ==========================================
+  // Estimated total
+  // ==========================================
+
+  const estimatedTotal =
+    groceryItems.reduce(
+      (total, item) =>
+        total +
+        Number(item.estimatedPrice || 0) *
+          Number(item.quantity || 0),
+      0
+    );
+
+  // ==========================================
+  // Format delivery date
+  // ==========================================
+
   const formatDelivery = (slot) => {
     if (!slot) {
       return "Not selected";
@@ -59,27 +119,35 @@ function Payment() {
     });
   };
 
-  // Format card number:
-  // 1234 5678 9012 3456
-  const handleCardNumberChange = (e) => {
-    const numbersOnly = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, 16);
+  // ==========================================
+  // Card Number
+  // ==========================================
 
-    const formatted = numbersOnly.replace(
-      /(\d{4})(?=\d)/g,
-      "$1 "
-    );
+  const handleCardNumberChange = (e) => {
+    const numbersOnly =
+      e.target.value
+        .replace(/\D/g, "")
+        .slice(0, 16);
+
+    const formatted =
+      numbersOnly.replace(
+        /(\d{4})(?=\d)/g,
+        "$1 "
+      );
 
     setCardNumber(formatted);
     setError("");
   };
 
-  // Format expiry date: MM/YY
+  // ==========================================
+  // Expiry Date MM/YY
+  // ==========================================
+
   const handleExpiryChange = (e) => {
-    let value = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, 4);
+    let value =
+      e.target.value
+        .replace(/\D/g, "")
+        .slice(0, 4);
 
     if (value.length >= 3) {
       value =
@@ -92,46 +160,91 @@ function Payment() {
     setError("");
   };
 
-  // CVV numbers only
+  // ==========================================
+  // CVV
+  // ==========================================
+
   const handleCvvChange = (e) => {
-    const value = e.target.value
-      .replace(/\D/g, "")
-      .slice(0, 3);
+    const value =
+      e.target.value
+        .replace(/\D/g, "")
+        .slice(0, 3);
 
     setCvv(value);
     setError("");
   };
 
-  const handlePayment = () => {
+  // ==========================================
+  // Pay Now
+  // ==========================================
+
+  const handlePayment = async () => {
     setError("");
 
-    // Check grocery items
+    // ------------------------------------------
+    // Order validation
+    // ------------------------------------------
+
+    if (
+      !Number.isInteger(orderId) ||
+      orderId <= 0
+    ) {
+      setError(
+        "Order information is not available. Please return to Order Summary."
+      );
+
+      return;
+    }
+
+    // ------------------------------------------
+    // Grocery validation
+    // ------------------------------------------
+
     if (groceryItems.length === 0) {
       setError(
         "No grocery items were found for this order."
       );
+
       return;
     }
 
-    // Check store
+    // ------------------------------------------
+    // Store validation
+    // ------------------------------------------
+
     if (!selectedStore) {
       setError("No store was selected.");
       return;
     }
 
-    // Check delivery
+    // ------------------------------------------
+    // Delivery validation
+    // ------------------------------------------
+
     if (!deliverySlot) {
-      setError("No delivery time was selected.");
+      setError(
+        "No delivery time was selected."
+      );
+
       return;
     }
 
-    // Check cardholder name
+    // ------------------------------------------
+    // Cardholder validation
+    // ------------------------------------------
+
     if (!cardholderName.trim()) {
-      setError("Please enter the cardholder name.");
+      setError(
+        "Please enter the cardholder name."
+      );
+
       return;
     }
 
-    // Check card number
+    // ------------------------------------------
+    // Card number validation
+    // ------------------------------------------
+
     const rawCardNumber =
       cardNumber.replace(/\s/g, "");
 
@@ -139,29 +252,40 @@ function Payment() {
       setError(
         "Please enter a valid 16-digit card number."
       );
+
       return;
     }
 
-    // Check expiry format MM/YY
+    // ------------------------------------------
+    // Expiry validation
+    // ------------------------------------------
+
     if (!/^\d{2}\/\d{2}$/.test(expiryDate)) {
       setError(
         "Please enter the expiry date in MM/YY format."
       );
+
       return;
     }
 
-    const [month, year] = expiryDate
-      .split("/")
-      .map(Number);
+    const [month, year] =
+      expiryDate
+        .split("/")
+        .map(Number);
 
     if (month < 1 || month > 12) {
-      setError("Please enter a valid expiry month.");
+      setError(
+        "Please enter a valid expiry month."
+      );
+
       return;
     }
 
-    // Check whether card is expired
     const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1;
+
+    const currentMonth =
+      currentDate.getMonth() + 1;
+
     const currentYear =
       currentDate.getFullYear() % 100;
 
@@ -174,85 +298,214 @@ function Payment() {
       return;
     }
 
-    // Check CVV
+    // ------------------------------------------
+    // CVV validation
+    // ------------------------------------------
+
     if (!/^\d{3}$/.test(cvv)) {
-      setError("Please enter a valid 3-digit CVV.");
+      setError(
+        "Please enter a valid 3-digit CVV."
+      );
+
       return;
     }
 
-    // Create frontend demo order
-    const newOrder = {
-      id: Date.now(),
+    // ==========================================
+    // Create demo transaction reference
+    // ==========================================
 
-      items: groceryItems,
-
-      store: selectedStore,
-
-      deliverySlot: deliverySlot,
-
-      paymentMethod:
-        paymentMethod === "credit"
-          ? "Credit Card"
-          : "Debit Card",
-
-      paymentStatus: "Paid",
-
-      orderStatus: "Placed",
-
-      createdAt: new Date().toISOString(),
-    };
-
-    // Get previous orders
-    let existingOrders = [];
+    const transactionRef =
+      `TXN-${orderId}-${Date.now()}`;
 
     try {
-      existingOrders = JSON.parse(
-        localStorage.getItem("orders") || "[]"
+      setLoading(true);
+
+      const token =
+        localStorage.getItem("token");
+
+      // ========================================
+      // REAL PAYMENT API
+      // ========================================
+
+      const response = await fetch(
+        `${API_BASE}/api/payments`,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+
+            ...(token
+              ? {
+                  Authorization:
+                    `Bearer ${token}`,
+                }
+              : {}),
+          },
+
+          body: JSON.stringify({
+            order_id: orderId,
+            transaction_ref:
+              transactionRef,
+          }),
+        }
       );
 
-      if (!Array.isArray(existingOrders)) {
-        existingOrders = [];
+      let data = null;
+
+      try {
+        data = await response.json();
+      } catch {
+        data = null;
       }
+
+      // ========================================
+      // Backend error
+      // ========================================
+
+      if (!response.ok) {
+        const message =
+          data?.errors?.[0] ||
+          data?.error ||
+          data?.message ||
+          "Payment could not be completed.";
+
+        throw new Error(message);
+      }
+
+      // ========================================
+      // Payment successful
+      // ========================================
+
+      /*
+       * IMPORTANT:
+       * Keep the original order creation time
+       * from the backend if it exists.
+       *
+       * Only use the current time as a fallback
+       * if the order does not contain a date.
+       */
+
+      const orderCreatedAt =
+        currentOrder?.createdAt ||
+        currentOrder?.created_at ||
+        currentOrder?.orderDate ||
+        currentOrder?.order_date ||
+        new Date().toISOString();
+
+      const completed = {
+        ...(currentOrder || {}),
+
+        id: orderId,
+        order_id: orderId,
+
+        items: groceryItems,
+
+        store: selectedStore,
+
+        deliverySlot,
+
+        deliveryAddress,
+
+        total: estimatedTotal,
+
+        paymentMethod,
+
+        paymentStatus: "Paid",
+
+        status:
+          currentOrder?.status ||
+          currentOrder?.orderStatus ||
+          currentOrder?.order_status ||
+          "Pending",
+
+        payment: data,
+
+        transactionRef,
+
+        // Preserve order creation time
+        createdAt: orderCreatedAt,
+      };
+
+      // ========================================
+      // Save current completed order
+      // ========================================
+
+      localStorage.setItem(
+        "currentOrder",
+        JSON.stringify(completed)
+      );
+
+      // Keep orderId available
+      localStorage.setItem(
+        "orderId",
+        String(orderId)
+      );
+
+      // ========================================
+      // Update frontend Orders list
+      // ========================================
+
+      const savedOrders =
+        getSavedData("orders", []);
+
+      let updatedOrders =
+        Array.isArray(savedOrders)
+          ? [...savedOrders]
+          : [];
+
+      const existingOrderIndex =
+        updatedOrders.findIndex(
+          (order) =>
+            String(
+              order.id ||
+                order.order_id
+            ) === String(orderId)
+        );
+
+      if (existingOrderIndex >= 0) {
+        updatedOrders[
+          existingOrderIndex
+        ] = completed;
+      } else {
+        updatedOrders.unshift(
+          completed
+        );
+      }
+
+      localStorage.setItem(
+        "orders",
+        JSON.stringify(updatedOrders)
+      );
+
+      // ========================================
+      // Clear sensitive card fields
+      // ========================================
+
+      setCardNumber("");
+      setExpiryDate("");
+      setCvv("");
+
+      setCompletedOrder(completed);
+      setSuccess(true);
     } catch (error) {
       console.error(
-        "Could not load orders:",
+        "Payment failed:",
         error
       );
 
-      existingOrders = [];
+      setError(
+        error.message ||
+          "Payment could not be completed."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    // Add new order
-    const updatedOrders = [
-      ...existingOrders,
-      newOrder,
-    ];
-
-    // Save all orders
-    localStorage.setItem(
-      "orders",
-      JSON.stringify(updatedOrders)
-    );
-
-    // Save current order
-    localStorage.setItem(
-      "currentOrder",
-      JSON.stringify(newOrder)
-    );
-
-    // Keep current order in state
-    // so View Order knows which order to open
-    setCompletedOrder(newOrder);
-
-    // IMPORTANT:
-    // Never save card number, expiry date or CVV
-    setCardNumber("");
-    setExpiryDate("");
-    setCvv("");
-
-    // Show payment successful
-    setSuccess(true);
   };
+
+  // ==========================================
+  // View completed order
+  // ==========================================
 
   const handleViewOrder = () => {
     if (!completedOrder) {
@@ -264,11 +517,24 @@ function Payment() {
     );
   };
 
+  // ==========================================
+  // Dashboard
+  // ==========================================
+
+  const handleDashboard = () => {
+    navigate("/dashboard");
+  };
+
   return (
     <div className="payment-page">
-      {/* Header */}
+      {/* ==============================
+          Header
+      ============================== */}
+
       <header className="payment-header">
-        <h1>Grocery Link Helper</h1>
+        <h1>
+          Grocery Link Helper
+        </h1>
 
         <nav>
           <Link to="/dashboard">
@@ -286,7 +552,10 @@ function Payment() {
       </header>
 
       <main className="payment-content">
-        {/* Title */}
+        {/* ==============================
+            Title
+        ============================== */}
+
         <div className="payment-title">
           <p>Checkout</p>
 
@@ -297,229 +566,12 @@ function Payment() {
           </span>
         </div>
 
-        {/* Order Details */}
-        <section className="payment-card">
-          <h3>Order Details</h3>
+        {/* ==============================
+            SUCCESS
+        ============================== */}
 
-          {/* Grocery Items */}
-          <div className="payment-summary-section">
-            <h4>Grocery Items</h4>
-
-            {groceryItems.length === 0 ? (
-              <p className="payment-empty">
-                No grocery items found.
-              </p>
-            ) : (
-              groceryItems.map((item) => (
-                <div
-                  className="payment-summary-row"
-                  key={item.id}
-                >
-                  <span>
-                    {item.name}
-                  </span>
-
-                  <strong>
-                    Quantity: {item.quantity}
-                  </strong>
-                </div>
-              ))
-            )}
-          </div>
-
-          {/* Store */}
-          <div className="payment-summary-row">
-            <span>Store</span>
-
-            <strong>
-              {selectedStore
-                ? selectedStore.name ||
-                  selectedStore.store_name
-                : "Not selected"}
-            </strong>
-          </div>
-
-          {/* Delivery */}
-          <div className="payment-summary-row">
-            <span>Delivery Slot</span>
-
-            <strong>
-              {formatDelivery(deliverySlot)}
-            </strong>
-          </div>
-        </section>
-
-        {/* Payment Form */}
-        {!success && (
-          <section className="payment-card">
-            <h3>Payment Method</h3>
-
-            {/* Credit / Debit */}
-            <div className="payment-methods">
-              <label
-                className={`payment-method ${
-                  paymentMethod === "credit"
-                    ? "selected"
-                    : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="credit"
-                  checked={
-                    paymentMethod === "credit"
-                  }
-                  onChange={(e) => {
-                    setPaymentMethod(
-                      e.target.value
-                    );
-
-                    setError("");
-                  }}
-                />
-
-                <span>Credit Card</span>
-              </label>
-
-              <label
-                className={`payment-method ${
-                  paymentMethod === "debit"
-                    ? "selected"
-                    : ""
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="paymentMethod"
-                  value="debit"
-                  checked={
-                    paymentMethod === "debit"
-                  }
-                  onChange={(e) => {
-                    setPaymentMethod(
-                      e.target.value
-                    );
-
-                    setError("");
-                  }}
-                />
-
-                <span>Debit Card</span>
-              </label>
-            </div>
-
-            {/* Cardholder Name */}
-            <div className="payment-form-group">
-              <label htmlFor="cardholder-name">
-                Cardholder Name
-              </label>
-
-              <input
-                id="cardholder-name"
-                type="text"
-                placeholder="Enter cardholder name"
-                value={cardholderName}
-                onChange={(e) => {
-                  setCardholderName(
-                    e.target.value
-                  );
-
-                  setError("");
-                }}
-              />
-            </div>
-
-            {/* Card Number */}
-            <div className="payment-form-group">
-              <label htmlFor="card-number">
-                Card Number
-              </label>
-
-              <input
-                id="card-number"
-                type="text"
-                inputMode="numeric"
-                placeholder="1234 5678 9012 3456"
-                value={cardNumber}
-                onChange={
-                  handleCardNumberChange
-                }
-              />
-            </div>
-
-            {/* Expiry + CVV */}
-            <div className="payment-form-row">
-              <div className="payment-form-group">
-                <label htmlFor="expiry-date">
-                  Expiry Date
-                </label>
-
-                <input
-                  id="expiry-date"
-                  type="text"
-                  inputMode="numeric"
-                  placeholder="MM/YY"
-                  value={expiryDate}
-                  onChange={
-                    handleExpiryChange
-                  }
-                />
-              </div>
-
-              <div className="payment-form-group">
-                <label htmlFor="cvv">
-                  CVV
-                </label>
-
-                <input
-                  id="cvv"
-                  type="password"
-                  inputMode="numeric"
-                  placeholder="123"
-                  value={cvv}
-                  onChange={handleCvvChange}
-                />
-              </div>
-            </div>
-
-            <p className="payment-demo-note">
-              Demo payment form only. No card
-              information will be stored or
-              processed.
-            </p>
-
-            {error && (
-              <p className="payment-error">
-                {error}
-              </p>
-            )}
-          </section>
-        )}
-
-        {/* Payment Buttons */}
-        {!success && (
-          <div className="payment-actions">
-            <Link
-              to="/order-summary"
-              className="payment-back"
-            >
-              Back to Order Summary
-            </Link>
-
-            <button
-              type="button"
-              className="payment-button"
-              onClick={handlePayment}
-            >
-              Pay Now
-            </button>
-          </div>
-        )}
-
-        {/* Payment Success */}
-        {success && (
-          <div className="payment-success-box">
+        {success ? (
+          <section className="payment-success-box">
             <div className="success-icon">
               ✓
             </div>
@@ -529,14 +581,19 @@ function Payment() {
             </h3>
 
             <p>
-              Your order has been placed
-              successfully.
+              Your payment has been submitted successfully.
             </p>
 
             {completedOrder && (
-              <p>
-                Order #{completedOrder.id}
-              </p>
+              <div className="payment-success-order">
+                <span>
+                  Order Number
+                </span>
+
+                <strong>
+                  #{completedOrder.id}
+                </strong>
+              </div>
             )}
 
             <div className="success-actions">
@@ -551,14 +608,318 @@ function Payment() {
               <button
                 type="button"
                 className="dashboard-button"
-                onClick={() =>
-                  navigate("/dashboard")
-                }
+                onClick={handleDashboard}
               >
                 Back to Dashboard
               </button>
             </div>
-          </div>
+          </section>
+        ) : (
+          <>
+            {/* ==============================
+                ORDER DETAILS
+            ============================== */}
+
+            <section className="payment-card">
+              <h3>
+                Order Details
+              </h3>
+
+              {/* Order ID */}
+
+              {Number.isInteger(orderId) &&
+                orderId > 0 && (
+                  <div className="payment-summary-row">
+                    <span>
+                      Order
+                    </span>
+
+                    <strong>
+                      #{orderId}
+                    </strong>
+                  </div>
+                )}
+
+              {/* Grocery Items */}
+
+              <div className="payment-summary-section">
+                <h4>
+                  Grocery Items
+                </h4>
+
+                {groceryItems.length === 0 ? (
+                  <p className="payment-empty">
+                    No grocery items found.
+                  </p>
+                ) : (
+                  groceryItems.map(
+                    (item) => (
+                      <div
+                        className="payment-summary-row"
+                        key={item.id}
+                      >
+                        <span>
+                          {item.name}
+                        </span>
+
+                        <strong>
+                          {item.quantity} × $
+                          {Number(
+                            item.estimatedPrice ||
+                              0
+                          ).toFixed(2)}
+                        </strong>
+                      </div>
+                    )
+                  )
+                )}
+              </div>
+
+              {/* Store */}
+
+              <div className="payment-summary-row">
+                <span>
+                  Store
+                </span>
+
+                <strong>
+                  {selectedStore
+                    ? selectedStore.name ||
+                      selectedStore.store_name
+                    : "Not selected"}
+                </strong>
+              </div>
+
+              {/* Delivery */}
+
+              <div className="payment-summary-row">
+                <span>
+                  Delivery
+                </span>
+
+                <strong>
+                  {formatDelivery(
+                    deliverySlot
+                  )}
+                </strong>
+              </div>
+
+              {/* Delivery Address */}
+
+              {deliveryAddress && (
+                <div className="payment-summary-row">
+                  <span>
+                    Delivery Address
+                  </span>
+
+                  <strong>
+                    {deliveryAddress}
+                  </strong>
+                </div>
+              )}
+
+              {/* Total */}
+
+              <div className="payment-summary-row payment-total">
+                <span>
+                  Estimated Total
+                </span>
+
+                <strong>
+                  $
+                  {estimatedTotal.toFixed(2)}
+                </strong>
+              </div>
+            </section>
+
+            {/* ==============================
+                PAYMENT METHOD
+            ============================== */}
+
+            <section className="payment-card">
+              <h3>
+                Payment Method
+              </h3>
+
+              <div className="payment-methods">
+                {/* Credit Card */}
+
+                <label
+                  className={`payment-method ${
+                    paymentMethod === "credit"
+                      ? "selected"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="credit"
+                    checked={
+                      paymentMethod === "credit"
+                    }
+                    onChange={(e) => {
+                      setPaymentMethod(
+                        e.target.value
+                      );
+
+                      setError("");
+                    }}
+                  />
+
+                  <span>
+                    Credit Card
+                  </span>
+                </label>
+
+                {/* Debit Card */}
+
+                <label
+                  className={`payment-method ${
+                    paymentMethod === "debit"
+                      ? "selected"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value="debit"
+                    checked={
+                      paymentMethod === "debit"
+                    }
+                    onChange={(e) => {
+                      setPaymentMethod(
+                        e.target.value
+                      );
+
+                      setError("");
+                    }}
+                  />
+
+                  <span>
+                    Debit Card
+                  </span>
+                </label>
+              </div>
+
+              {/* Cardholder */}
+
+              <div className="payment-form-group">
+                <label htmlFor="cardholder-name">
+                  Cardholder Name
+                </label>
+
+                <input
+                  id="cardholder-name"
+                  type="text"
+                  placeholder="Enter cardholder name"
+                  value={cardholderName}
+                  onChange={(e) => {
+                    setCardholderName(
+                      e.target.value
+                    );
+
+                    setError("");
+                  }}
+                />
+              </div>
+
+              {/* Card Number */}
+
+              <div className="payment-form-group">
+                <label htmlFor="card-number">
+                  Card Number
+                </label>
+
+                <input
+                  id="card-number"
+                  type="text"
+                  inputMode="numeric"
+                  placeholder="1234 5678 9012 3456"
+                  value={cardNumber}
+                  onChange={
+                    handleCardNumberChange
+                  }
+                />
+              </div>
+
+              {/* Expiry / CVV */}
+
+              <div className="payment-form-row">
+                <div className="payment-form-group">
+                  <label htmlFor="expiry-date">
+                    Expiry Date
+                  </label>
+
+                  <input
+                    id="expiry-date"
+                    type="text"
+                    inputMode="numeric"
+                    placeholder="MM/YY"
+                    value={expiryDate}
+                    onChange={
+                      handleExpiryChange
+                    }
+                  />
+                </div>
+
+                <div className="payment-form-group">
+                  <label htmlFor="cvv">
+                    CVV
+                  </label>
+
+                  <input
+                    id="cvv"
+                    type="password"
+                    inputMode="numeric"
+                    placeholder="123"
+                    value={cvv}
+                    onChange={
+                      handleCvvChange
+                    }
+                  />
+                </div>
+              </div>
+
+              <p className="payment-demo-note">
+                Demo payment form only. Card information
+                is not stored or sent to the backend.
+              </p>
+
+              {/* Error */}
+
+              {error && (
+                <p className="payment-error">
+                  {error}
+                </p>
+              )}
+            </section>
+
+            {/* ==============================
+                ACTIONS
+            ============================== */}
+
+            <div className="payment-actions">
+              <Link
+                to="/order-summary"
+                className="payment-back"
+              >
+                Back to Order Summary
+              </Link>
+
+              <button
+                type="button"
+                className="payment-button"
+                onClick={handlePayment}
+                disabled={loading}
+              >
+                {loading
+                  ? "Processing..."
+                  : "Pay Now"}
+              </button>
+            </div>
+          </>
         )}
       </main>
     </div>

@@ -4,6 +4,10 @@
   color: #222;
 }
 
+/* =========================
+   Header
+========================= */
+
 .summary-header {
   height: 70px;
   padding: 0 50px;
@@ -36,11 +40,19 @@
   color: #2e7d32;
 }
 
+/* =========================
+   Main Content
+========================= */
+
 .summary-content {
   max-width: 900px;
   margin: 0 auto;
   padding: 45px 30px;
 }
+
+/* =========================
+   Title
+========================= */
 
 .summary-title {
   margin-bottom: 30px;
@@ -64,6 +76,10 @@
   font-size: 15px;
 }
 
+/* =========================
+   Cards
+========================= */
+
 .summary-card {
   margin-bottom: 18px;
   padding: 25px;
@@ -78,6 +94,10 @@
   color: #333;
   font-size: 18px;
 }
+
+/* =========================
+   Grocery Items
+========================= */
 
 .summary-items {
   display: flex;
@@ -97,21 +117,58 @@
   padding-top: 0;
 }
 
-.summary-item:last-child {
-  padding-bottom: 0;
-  border-bottom: none;
+.summary-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
 .summary-item span {
   color: #333;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 600;
+}
+
+.summary-item p {
+  margin: 0;
+  color: #777;
+  font-size: 13px;
 }
 
 .summary-item strong {
-  color: #666;
-  font-size: 14px;
+  color: #333;
+  font-size: 15px;
+  font-weight: 600;
 }
+
+/* =========================
+   Estimated Total
+========================= */
+
+.summary-total {
+  margin-top: 10px;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 2px solid #e5e5e5;
+}
+
+.summary-total span {
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.summary-total strong {
+  color: #2e7d32;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* =========================
+   Store / Delivery
+========================= */
 
 .summary-detail strong {
   color: #333;
@@ -129,6 +186,65 @@
   color: #888;
   font-size: 14px;
 }
+
+/* =========================
+   Delivery Address
+========================= */
+
+.summary-address {
+  margin-top: 25px;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid #eee;
+}
+
+.summary-address label {
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.summary-address input {
+  width: 100%;
+  padding: 13px 15px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #222;
+  font-size: 15px;
+  outline: none;
+}
+
+.summary-address input::placeholder {
+  color: #aaa;
+}
+
+.summary-address input:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+/* =========================
+   Error
+========================= */
+
+.summary-error {
+  margin: 20px 0 0;
+  padding: 12px 15px;
+  background: #fff1f1;
+  border: 1px solid #ffcdd2;
+  border-radius: 8px;
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* =========================
+   Actions
+========================= */
 
 .summary-actions {
   margin-top: 30px;
@@ -164,7 +280,7 @@
   cursor: pointer;
 }
 
-.summary-continue:hover {
+.summary-continue:hover:not(:disabled) {
   background: #2e7d32;
 }
 
@@ -172,6 +288,10 @@
   background: #aaa;
   cursor: not-allowed;
 }
+
+/* =========================
+   Responsive
+========================= */
 
 @media (max-width: 768px) {
   .summary-header {
@@ -193,7 +313,11 @@
   .summary-item {
     align-items: flex-start;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
+  }
+
+  .summary-total {
+    width: 100%;
   }
 
   .summary-actions {
