@@ -245,3 +245,8 @@
     text-align: center;
   }
 }
+.store-message {
+  margin: 0 0 20px;
+  color: #777;
+  font-size: 15px;
+}

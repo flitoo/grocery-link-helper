@@ -1,6 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./StoreSelection.css";
+
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function StoreSelection() {
   const navigate = useNavigate();
@@ -8,25 +11,52 @@ function StoreSelection() {
   const [selectedStore, setSelectedStore] = useState(null);
   const [error, setError] = useState("");
 
-  // Temporary mock data.
-  
-  const stores = [
-    {
-      id: 1,
-      name: "Walmart",
-      address: "100 Grocery Street, Toronto, ON",
-    },
-    {
-      id: 2,
-      name: "No Frills",
-      address: "200 Market Avenue, Toronto, ON",
-    },
-    {
-      id: 3,
-      name: "FreshCo",
-      address: "300 Food Road, Toronto, ON",
-    },
-  ];
+  const [stores, setStores] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
+  // Load the real stores so the id we send matches the database
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadStores = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/stores`);
+
+        if (!response.ok) {
+          throw new Error("Unable to load stores.");
+        }
+
+        const data = await response.json();
+
+        if (!cancelled) {
+          setStores(
+            data.stores.map((store) => ({
+              id: store.store_id,
+              name: store.store_name,
+              address: store.address,
+            }))
+          );
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLoadError(
+            err.message || "Unable to load stores."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadStores();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const handleSelectStore = (store) => {
     setSelectedStore(store);
@@ -68,6 +98,23 @@ function StoreSelection() {
             Choose where you would like your groceries purchased.
           </span>
         </div>
+
+        {loading && (
+          <p className="store-message">Loading stores...</p>
+        )}
+
+        {loadError && (
+          <p className="store-error">
+            {loadError} Check that the server is running, then
+            reload.
+          </p>
+        )}
+
+        {!loading && !loadError && stores.length === 0 && (
+          <p className="store-message">
+            No stores are available right now.
+          </p>
+        )}
 
         <div className="store-list">
           {stores.map((store) => (
