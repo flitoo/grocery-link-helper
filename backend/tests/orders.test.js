@@ -4,10 +4,14 @@ const request = require('supertest');
 const app = require('../src/app');
 const ordersModel = require('../src/models/orders.model');
 
+// Fixed "now" so slot validation is deterministic. 2026-10-07T18:00Z is
+// 2:00 PM Toronto time, inside operating hours and within the 7-day window.
+const NOW = Date.parse('2026-10-06T12:00:00.000Z');
+
 const validPayload = {
   customer_id: 1,
   store_id: 1,
-  delivery_slot: '2026-09-25T18:00:00.000Z',
+  delivery_slot: '2026-10-07T18:00:00.000Z',
   delivery_address: '123 Main St, Toronto, ON',
   items: [
     { item_name: 'Milk', quantity: 2, estimated_price: 4.5, allow_substitution: true },
@@ -17,6 +21,11 @@ const validPayload = {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  jest.spyOn(Date, 'now').mockReturnValue(NOW);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 describe('POST /api/orders', () => {
@@ -75,6 +84,39 @@ describe('POST /api/orders', () => {
       expect.arrayContaining([expect.stringContaining('active store')])
     );
     expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ['in the past', '2026-10-05T18:00:00.000Z'],
+    ['not on the hour', '2026-10-07T18:30:00.000Z'],
+    ['outside operating hours (3:00 AM Toronto)', '2026-10-07T07:00:00.000Z'],
+    ['more than 7 days ahead', '2026-10-20T18:00:00.000Z'],
+  ])('rejects a delivery slot that is %s with 400', async (_label, slot) => {
+    ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1, is_active: true });
+
+    const res = await request(app)
+      .post('/api/orders')
+      .send({ ...validPayload, delivery_slot: slot });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors).toEqual(
+      expect.arrayContaining([expect.stringContaining('delivery_slot')])
+    );
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+
+  it('returns 409 when the delivery slot is full', async () => {
+    ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1, is_active: true });
+    const fullError = new Error('Delivery slot is full.');
+    fullError.code = 'SLOT_FULL';
+    ordersModel.createOrder.mockRejectedValue(fullError);
+
+    const res = await request(app).post('/api/orders').send(validPayload);
+
+    expect(res.status).toBe(409);
+    expect(res.body.errors).toEqual(
+      expect.arrayContaining([expect.stringContaining('slot is full')])
+    );
   });
 
   it('translates a foreign key violation (bad customer_id) into a 400', async () => {

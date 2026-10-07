@@ -1,5 +1,6 @@
 const { validateCreateOrderPayload } = require('../validators/orders.validator');
 const ordersModel = require('../models/orders.model');
+const { validateSlot } = require('../services/slots.service');
 
 // Postgres error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 const PG_FOREIGN_KEY_VIOLATION = '23503';
@@ -16,16 +17,24 @@ async function createOrder(req, res) {
     return res.status(400).json({ errors: ['store_id does not refer to an active store.'] });
   }
 
+  const { slot, error: slotError } = validateSlot(req.body.delivery_slot);
+  if (slotError) {
+    return res.status(400).json({ errors: [slotError] });
+  }
+
   try {
     const order = await ordersModel.createOrder({
       customerId: req.body.customer_id,
       storeId: req.body.store_id,
-      deliverySlot: req.body.delivery_slot,
+      deliverySlot: slot.toISOString(),
       deliveryAddress: req.body.delivery_address,
       items: req.body.items,
     });
     return res.status(201).json(order);
   } catch (err) {
+    if (err.code === 'SLOT_FULL') {
+      return res.status(409).json({ errors: ['That delivery slot is full. Please choose another.'] });
+    }
     if (err.code === PG_FOREIGN_KEY_VIOLATION) {
       return res.status(400).json({ errors: ['customer_id does not refer to an existing user.'] });
     }

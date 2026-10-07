@@ -1,4 +1,5 @@
 const { pool, withTransaction } = require('../config/db');
+const slotsModel = require('./slots.model');
 
 /**
  * Looks up an active store by id. Returns the row, or undefined if the
@@ -20,9 +21,10 @@ async function findActiveStoreById(storeId, client = pool) {
  * total_amount is computed here (sum of quantity * estimated_price) rather
  * than trusted from the client, per FR-02.
  *
- * Returns the created order row with its items attached, or throws a
- * Postgres error (e.g. FK violation on a bad customer_id) for the caller
- * to translate into an HTTP response.
+ * Returns the created order row with its items attached, or throws for the
+ * caller to translate into an HTTP response: a Postgres error (e.g. FK
+ * violation on a bad customer_id) or SLOT_FULL when the delivery slot has no
+ * capacity left (BR-07).
  */
 async function createOrder({ customerId, storeId, deliverySlot, deliveryAddress, items }) {
   const totalAmount = items.reduce(
@@ -31,6 +33,8 @@ async function createOrder({ customerId, storeId, deliverySlot, deliveryAddress,
   );
 
   return withTransaction(async (client) => {
+    await slotsModel.assertSlotHasCapacity(client, deliverySlot);
+
     const orderResult = await client.query(
       `INSERT INTO orders (customer_id, store_id, status, delivery_slot, delivery_address, total_amount)
        VALUES ($1, $2, 'Pending', $3, $4, $5)

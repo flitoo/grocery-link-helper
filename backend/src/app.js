@@ -4,6 +4,7 @@ const healthRoutes = require('./routes/health.routes');
 const authRoutes = require('./routes/auth.routes');
 const ordersRoutes = require('./routes/orders.routes');
 const paymentsRoutes = require('./routes/payments.routes');
+const slotsRoutes = require('./routes/slots.routes');
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.use('/health', healthRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', ordersRoutes);
 app.use('/api/payments', paymentsRoutes);
+app.use('/api/slots', slotsRoutes);
 
 module.exports = app;
