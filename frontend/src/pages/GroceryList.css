@@ -1,285 +1,62 @@
-.grocery-page {
-  min-height: 100vh;
-  background: #f5f8f5;
-  color: #222;
-}
-
-/* =========================
-   Header
-========================= */
-
-.grocery-header {
-  height: 70px;
-  padding: 0 50px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: white;
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.grocery-header h1 {
-  margin: 0;
-  color: #2e7d32;
-  font-size: 24px;
-}
-
-.grocery-header nav {
-  display: flex;
-  gap: 28px;
-}
-
-.grocery-header nav a {
-  color: #555;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.grocery-header nav a:hover {
-  color: #2e7d32;
-}
-
-/* =========================
-   Main Content
-========================= */
-
-.grocery-content {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 45px 30px;
-}
-
-/* =========================
-   Title
-========================= */
-
-.grocery-title {
-  margin-bottom: 30px;
-}
-
-.grocery-title p {
-  margin: 0 0 5px;
-  color: #43a047;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.grocery-title h2 {
-  margin: 0;
-  font-size: 32px;
-  color: #222;
-}
-
-/* =========================
-   Add Item
-========================= */
-
 .add-item {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 25px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 100px 130px auto;
+  align-items: end;
+  gap: 0 14px;
 }
 
-.add-item input {
-  flex: 1;
-  padding: 13px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: white;
-  color: #222;
-  font-size: 15px;
-  outline: none;
-  box-sizing: border-box;
+.add-item .field {
+  margin-bottom: 0;
 }
 
-.add-item input::placeholder {
-  color: #999;
-  opacity: 1;
+.add-item-button {
+  min-height: 52px;
 }
 
-.add-item input:focus {
-  border-color: #43a047;
-  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+.add-item-error {
+  grid-column: 1 / -1;
+  margin-top: 16px;
 }
-
-/* Quantity Input */
-
-.add-item .quantity-input {
-  flex: 0 0 110px;
-  width: 110px;
-  min-width: 110px;
-  text-align: center;
-}
-
-.add-item button {
-  padding: 13px 22px;
-  border: none;
-  border-radius: 8px;
-  background: #43a047;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.add-item button:hover {
-  background: #2e7d32;
-}
-
-/* =========================
-   Validation Error
-========================= */
-
-.grocery-error {
-  margin: -10px 0 20px;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: #fff1f1;
-  color: #d32f2f;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-/* =========================
-   Grocery List
-========================= */
 
 .grocery-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+  margin-top: 20px;
 }
 
-.grocery-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+.grocery-list .row {
+  gap: 14px;
 }
 
-.grocery-item h3 {
-  margin: 0 0 5px;
-  color: #333;
-  font-size: 17px;
+.grocery-list .row-main {
+  flex: 1;
 }
 
-.grocery-item p {
-  margin: 0;
-  color: #888;
-  font-size: 14px;
+.grocery-list .receipt-total {
+  margin-top: 8px;
 }
 
-.grocery-item button {
-  padding: 8px 15px;
-  border: 1px solid #d9534f;
-  border-radius: 7px;
-  background: white;
-  color: #d9534f;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.grocery-item button:hover {
-  background: #fff1f1;
-}
-
-/* =========================
-   Empty List
-========================= */
-
-.empty-list {
-  padding: 45px 20px;
-  text-align: center;
-  background: white;
-  border: 1px solid #e5e5e5;
-  border-radius: 12px;
-}
-
-.empty-list h3 {
-  margin: 0 0 8px;
-  color: #333;
-}
-
-.empty-list p {
-  margin: 0;
-  color: #888;
-}
-
-/* =========================
-   Continue to Store Selection
-========================= */
-
-.grocery-next {
-  margin-top: 30px;
-  display: flex;
+.action-bar-end {
   justify-content: flex-end;
 }
 
-.grocery-next .continue-button {
-  display: inline-block;
-  padding: 13px 22px;
-  border-radius: 8px;
-  background: #43a047;
-  color: white;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: 0.2s;
-}
-
-.grocery-next .continue-button:hover {
-  background: #2e7d32;
-  transform: translateY(-1px);
-}
-
-/* =========================
-   Responsive
-========================= */
-
-@media (max-width: 768px) {
-  .grocery-header {
-    padding: 0 20px;
-  }
-
-  .grocery-header nav {
-    display: none;
-  }
-
-  .grocery-content {
-    padding: 30px 20px;
-  }
-
+@media (max-width: 720px) {
   .add-item {
-    flex-direction: column;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px 14px;
   }
 
-  .add-item .quantity-input {
-    width: 100%;
-    min-width: 100%;
-    flex: none;
+  .add-item-name {
+    grid-column: 1 / -1;
   }
 
-  .add-item button {
-    width: 100%;
+  .add-item-button {
+    grid-column: 1 / -1;
   }
 
-  .grocery-item {
-    gap: 15px;
+  .grocery-list .row {
+    flex-wrap: wrap;
   }
 
-  .grocery-next {
-    justify-content: stretch;
-  }
-
-  .grocery-next .continue-button {
-    width: 100%;
-    text-align: center;
-    box-sizing: border-box;
+  .grocery-list .row-main {
+    flex-basis: 60%;
   }
 }

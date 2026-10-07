@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { BrandMark } from "../components/AppHeader";
 import "./Login.css";
 
 const API_BASE =
@@ -77,74 +78,73 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-card">
-        <h1>Grocery Link Helper</h1>
-        <h2>Login</h2>
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="email">
-              Email
-            </label>
-
-            <input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) =>
-                setEmail(e.target.value)
-              }
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="password">
-              Password
-            </label>
-
-            <input
-              id="password"
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
-            />
-          </div>
-
-          {error && (
-            <p className="error-message">
-              {error}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-          >
-            {loading
-              ? "Logging in..."
-              : "Login"}
-          </button>
-
-          <Link
-            to="/forgot-password"
-            className="forgot-password"
-          >
-            Forgot password?
-          </Link>
-
-          <p className="register-link">
-            Don't have an account?{" "}
-            <Link to="/register">
-              Register
-            </Link>
+    <div className="auth-page">
+      <aside className="auth-aside">
+        <div className="auth-aside-inner">
+          <BrandMark />
+          <h1>Groceries from the store you choose, delivered by a helper nearby.</h1>
+          <p>
+            Make a list, pick a time that suits you, and we handle the
+            shopping and the carry.
           </p>
-        </form>
-      </div>
+        </div>
+      </aside>
+
+      <main className="auth-main">
+        <div className="auth-card">
+          <h2>Log in</h2>
+          <p className="auth-sub">
+            Welcome back. Pick up where you left off.
+          </p>
+
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="field">
+              <label htmlFor="email">Email</label>
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+
+            <div className="field">
+              <label htmlFor="password">Password</label>
+              <input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                placeholder="Your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            {error && (
+              <p className="notice notice-error" role="alert">
+                {error}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="btn btn-primary btn-block"
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Log in"}
+            </button>
+
+            <div className="auth-links">
+              <Link to="/forgot-password">Forgot password?</Link>
+              <p>
+                New here? <Link to="/register">Create an account</Link>
+              </p>
+            </div>
+          </form>
+        </div>
+      </main>
     </div>
   );
 }

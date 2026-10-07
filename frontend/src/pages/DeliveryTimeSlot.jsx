@@ -1,210 +1,288 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import CheckoutSteps from "../components/CheckoutSteps";
 import "./DeliveryTimeSlot.css";
+
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function DeliveryTimeSlot() {
   const navigate = useNavigate();
 
-  const [deliveryDate, setDeliveryDate] = useState("");
-  const [deliveryTime, setDeliveryTime] = useState("");
+  const [slots, setSlots] = useState([]);
+  const [timeZone, setTimeZone] = useState("America/Toronto");
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+
+  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedSlot, setSelectedSlot] = useState("");
   const [error, setError] = useState("");
 
-  // Get today's date in YYYY-MM-DD format
-  const getToday = () => {
-    const today = new Date();
+  // Load available slots from the backend (US-07)
+  useEffect(() => {
+    let cancelled = false;
 
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, "0");
-    const day = String(today.getDate()).padStart(2, "0");
+    const loadSlots = async () => {
+      try {
+        const response = await fetch(`${API_BASE}/api/slots`);
 
-    return `${year}-${month}-${day}`;
-  };
+        if (!response.ok) {
+          throw new Error("Unable to load delivery slots.");
+        }
 
-  // Format selected date
-  // Example: December 12, 2026
-  const formatDate = (date) => {
-    if (!date) {
-      return "";
-    }
+        const data = await response.json();
 
+        if (cancelled) {
+          return;
+        }
+
+        setSlots(data.slots);
+        setTimeZone(data.time_zone || "America/Toronto");
+
+        // Restore a previously chosen slot if it is still available
+        const saved = localStorage.getItem("deliverySlot");
+        const savedSlot = data.slots.find(
+          (slot) => slot.start === saved && slot.available
+        );
+        const firstOpen = data.slots.find((slot) => slot.available);
+        const initial = savedSlot || firstOpen;
+
+        if (initial) {
+          setSelectedDate(initial.date);
+          setSelectedSlot(savedSlot ? savedSlot.start : "");
+        }
+      } catch (err) {
+        if (!cancelled) {
+          setLoadError(
+            err.message || "Unable to load delivery slots."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadSlots();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  // Group slots by date, keeping the API's chronological order
+  const days = useMemo(() => {
+    const byDate = new Map();
+
+    slots.forEach((slot) => {
+      if (!byDate.has(slot.date)) {
+        byDate.set(slot.date, []);
+      }
+      byDate.get(slot.date).push(slot);
+    });
+
+    return [...byDate.entries()].map(([date, daySlots]) => ({
+      date,
+      slots: daySlots,
+      hasAvailability: daySlots.some((slot) => slot.available),
+    }));
+  }, [slots]);
+
+  const visibleSlots =
+    days.find((day) => day.date === selectedDate)?.slots || [];
+
+  const parseDay = (date) => {
     const [year, month, day] = date.split("-");
 
-    const selectedDate = new Date(
+    return new Date(
       Number(year),
       Number(month) - 1,
       Number(day)
     );
-
-    return selectedDate.toLocaleDateString("en-CA", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
   };
 
-  // Format selected time
-  // Example: 16:00 -> 4:00 PM
-  const formatTime = (time) => {
-    if (!time) {
-      return "";
-    }
+  // Example: Tue, Oct 6
+  const formatDay = (date) =>
+    parseDay(date).toLocaleDateString("en-CA", {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+    });
 
-    const [hour, minute] = time.split(":");
+  // Example: 4:00 PM to 5:00 PM (in the delivery time zone)
+  const formatRange = (start) => {
+    const startDate = new Date(start);
+    const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
-    const selectedTime = new Date();
-
-    selectedTime.setHours(
-      Number(hour),
-      Number(minute),
-      0,
-      0
-    );
-
-    return selectedTime.toLocaleTimeString("en-CA", {
+    const options = {
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
-    });
+      timeZone,
+    };
+
+    return `${startDate.toLocaleTimeString(
+      "en-CA",
+      options
+    )} to ${endDate.toLocaleTimeString("en-CA", options)}`;
+  };
+
+  const handleSelectDate = (date) => {
+    setSelectedDate(date);
+    setSelectedSlot("");
+    setError("");
+  };
+
+  const handleSelectSlot = (slot) => {
+    if (!slot.available) {
+      return;
+    }
+
+    setSelectedSlot(slot.start);
+    setError("");
   };
 
   const handleContinue = () => {
-    if (!deliveryDate) {
-      setError("Please select a delivery date.");
+    if (!selectedSlot) {
+      setError("Choose a delivery time to continue.");
       return;
     }
 
-    if (!deliveryTime) {
-      setError("Please select a delivery time.");
-      return;
-    }
-
-    const selectedDateTime = new Date(
-      `${deliveryDate}T${deliveryTime}`
-    );
-
-    if (selectedDateTime <= new Date()) {
-      setError(
-        "Please select a future delivery date and time."
-      );
-      return;
-    }
-
-    // Keep ISO-like format for storage
-    // Example: 2026-12-12T16:00
-    const deliverySlot =
-      `${deliveryDate}T${deliveryTime}`;
-
-    localStorage.setItem(
-      "deliverySlot",
-      deliverySlot
-    );
+    // ISO timestamp exactly as returned by /api/slots,
+    // which is what POST /api/orders expects
+    localStorage.setItem("deliverySlot", selectedSlot);
 
     setError("");
 
     navigate("/order-summary");
   };
 
-  return (
-    <div className="delivery-page">
-      <header className="delivery-header">
-        <h1>Grocery Link Helper</h1>
+  const renderSlots = () => {
+    if (loading) {
+      return <p className="slot-message">Loading delivery times...</p>;
+    }
 
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
+    if (loadError) {
+      return (
+        <p className="notice notice-error" role="alert">
+          {loadError} Check that the server is running, then reload.
+        </p>
+      );
+    }
 
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-        </nav>
-      </header>
+    if (!days.some((day) => day.hasAvailability)) {
+      return (
+        <p className="slot-message">
+          No delivery times are open right now. Please check back
+          later.
+        </p>
+      );
+    }
 
-      <main className="delivery-content">
-        <div className="delivery-title">
-          <p>Schedule Delivery</p>
+    return (
+      <>
+        <h2 className="slot-heading" id="slot-day-label">
+          Day
+        </h2>
 
-          <h2>Choose Delivery Time</h2>
-
-          <span>
-            Select your preferred delivery date and time.
-          </span>
+        <div
+          className="slot-days"
+          role="radiogroup"
+          aria-labelledby="slot-day-label"
+        >
+          {days.map((day) => (
+            <button
+              key={day.date}
+              type="button"
+              role="radio"
+              aria-checked={day.date === selectedDate}
+              className={`slot-day${
+                day.date === selectedDate ? " selected" : ""
+              }`}
+              disabled={!day.hasAvailability}
+              onClick={() => handleSelectDate(day.date)}
+            >
+              {formatDay(day.date)}
+            </button>
+          ))}
         </div>
 
-        <div className="delivery-card">
+        <h2 className="slot-heading" id="slot-time-label">
+          Time
+        </h2>
 
-          {/* Delivery Date */}
-          <div className="delivery-form-group">
-            <label htmlFor="delivery-date">
-              Delivery Date
-            </label>
+        <div
+          className="slot-times"
+          role="radiogroup"
+          aria-labelledby="slot-time-label"
+        >
+          {visibleSlots.map((slot) => (
+            <button
+              key={slot.start}
+              type="button"
+              role="radio"
+              aria-checked={slot.start === selectedSlot}
+              className={`slot-time${
+                slot.start === selectedSlot ? " selected" : ""
+              }`}
+              disabled={!slot.available}
+              onClick={() => handleSelectSlot(slot)}
+            >
+              {formatRange(slot.start)}
+              {!slot.available && <small>Full</small>}
+            </button>
+          ))}
+        </div>
 
-            <input
-              id="delivery-date"
-              type="date"
-              min={getToday()}
-              value={deliveryDate}
-              onChange={(e) => {
-                setDeliveryDate(e.target.value);
-                setError("");
-              }}
-            />
-          </div>
+        {selectedSlot && (
+          <p className="slot-chosen" role="status">
+            Delivery on <strong>{formatDay(selectedDate)}</strong>,{" "}
+            <strong>{formatRange(selectedSlot)}</strong>
+          </p>
+        )}
+      </>
+    );
+  };
 
-          {/* Delivery Time */}
-          <div className="delivery-form-group">
-            <label htmlFor="delivery-time">
-              Delivery Time
-            </label>
+  return (
+    <div className="delivery-page">
+      <AppHeader />
 
-            <input
-              id="delivery-time"
-              type="time"
-              value={deliveryTime}
-              onChange={(e) => {
-                setDeliveryTime(e.target.value);
-                setError("");
-              }}
-            />
-          </div>
+      <main className="container-narrow page-body">
+        <CheckoutSteps current={2} />
 
-          {/* Selected Delivery */}
-          {deliveryDate && deliveryTime && (
-            <div className="selected-delivery">
-              <span>
-                Selected delivery
-              </span>
+        <div className="page-title">
+          <h1>When do you want it?</h1>
+          <p>
+            Pick a one-hour window in the next 7 days. Times that
+            are full can't be chosen.
+          </p>
+        </div>
 
-              <strong>
-                {formatDate(deliveryDate)}
-                {" at "}
-                {formatTime(deliveryTime)}
-              </strong>
-            </div>
-          )}
+        <section className="panel">
+          {renderSlots()}
 
-          {/* Validation Error */}
           {error && (
-            <p className="delivery-error">
+            <p className="notice notice-error slot-error" role="alert">
               {error}
             </p>
           )}
-        </div>
+        </section>
 
-        <div className="delivery-actions">
-          <Link
-            to="/store-selection"
-            className="back-button"
-          >
-            Back to Store Selection
+        <div className="action-bar">
+          <Link to="/store-selection" className="btn btn-secondary">
+            Back to stores
           </Link>
 
           <button
             type="button"
-            className="delivery-continue"
+            className="btn btn-primary"
             onClick={handleContinue}
+            disabled={loading || Boolean(loadError)}
           >
-            Continue
+            Review order
           </button>
         </div>
       </main>

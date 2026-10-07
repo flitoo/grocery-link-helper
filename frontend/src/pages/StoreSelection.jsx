@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import CheckoutSteps from "../components/CheckoutSteps";
+import Icon from "../components/Icon";
 import "./StoreSelection.css";
 
 function StoreSelection() {
@@ -51,81 +54,65 @@ function StoreSelection() {
 
   return (
     <div className="store-page">
-      <header className="store-header">
-        <h1>Grocery Link Helper</h1>
+      <AppHeader />
 
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
-        </nav>
-      </header>
+      <main className="container-narrow page-body">
+        <CheckoutSteps current={1} />
 
-      <main className="store-content">
-        <div className="store-title">
-          <p>Store Selection</p>
-          <h2>Select a Store</h2>
-          <span>
-            Choose where you would like your groceries purchased.
-          </span>
+        <div className="page-title">
+          <h1>Where should we shop?</h1>
+          <p>
+            Choose the store you want your groceries bought from.
+          </p>
         </div>
 
-        <div className="store-list">
-          {stores.map((store) => (
-            <button
-              type="button"
-              key={store.id}
-              className={`store-card ${
-                selectedStore?.id === store.id
-                  ? "selected"
-                  : ""
-              }`}
-              onClick={() => handleSelectStore(store)}
-            >
-              <div className="store-icon">
-                🏪
-              </div>
+        <div className="store-list" role="radiogroup" aria-label="Stores">
+          {stores.map((store) => {
+            const isSelected = selectedStore?.id === store.id;
 
-              <div className="store-info">
-                <h3>{store.name}</h3>
-                <p>{store.address}</p>
-              </div>
+            return (
+              <button
+                type="button"
+                key={store.id}
+                role="radio"
+                aria-checked={isSelected}
+                className={`store-card ${isSelected ? "selected" : ""}`}
+                onClick={() => handleSelectStore(store)}
+              >
+                <span className="store-icon">
+                  <Icon name="store" size={26} />
+                </span>
 
-              <div className="store-select">
-                {selectedStore?.id === store.id
-                  ? "✓ Selected"
-                  : "Select"}
-              </div>
-            </button>
-          ))}
+                <span className="store-info">
+                  <strong>{store.name}</strong>
+                  <span>{store.address}</span>
+                </span>
+
+                <span className="store-check" aria-hidden="true">
+                  {isSelected && <Icon name="check" size={18} />}
+                </span>
+              </button>
+            );
+          })}
         </div>
 
         {error && (
-          <p className="store-error">
+          <p className="notice notice-error store-error" role="alert">
             {error}
           </p>
         )}
 
-        {selectedStore && (
-          <div className="selected-store-summary">
-            <span>Selected store</span>
-            <strong>{selectedStore.name}</strong>
-          </div>
-        )}
-
-        <div className="store-actions">
-          <Link
-            to="/grocery-list"
-            className="back-button"
-          >
-            Back to Grocery List
+        <div className="action-bar">
+          <Link to="/grocery-list" className="btn btn-secondary">
+            Back to list
           </Link>
 
           <button
             type="button"
-            className="continue-button"
+            className="btn btn-primary"
             onClick={handleContinue}
           >
-            Continue
+            Choose a time
           </button>
         </div>
       </main>

@@ -1,4 +1,6 @@
 import { Link } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import Icon from "../components/Icon";
 import "./Orders.css";
 
 function Orders() {
@@ -47,126 +49,62 @@ function Orders() {
 
   return (
     <div className="orders-page">
-      <header className="orders-header">
-        <h1>Grocery Link Helper</h1>
+      <AppHeader />
 
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-        </nav>
-      </header>
-
-      <main className="orders-content">
-        <div className="orders-title">
-          <p>Order History</p>
-
-          <h2>My Orders</h2>
-
-          <span>
-            View your previous grocery orders.
-          </span>
+      <main className="container-narrow page-body">
+        <div className="page-title">
+          <h1>Your orders</h1>
+          <p>Everything you have ordered, newest first.</p>
         </div>
 
         {orders.length === 0 ? (
-          <div className="orders-empty">
-            <div className="orders-empty-icon">
-              📦
-            </div>
+          <div className="panel empty">
+            <Icon name="box" size={44} />
 
             <h3>No orders yet</h3>
 
-            <p>
-              Your completed orders will appear
-              here after payment.
-            </p>
+            <p>Orders you place will show up here once you have paid.</p>
 
-            <Link
-              to="/grocery-list"
-              className="orders-start-button"
-            >
-              Start Shopping
+            <Link to="/grocery-list" className="btn btn-primary">
+              Start a list
             </Link>
           </div>
         ) : (
-          <div className="orders-list">
+          <ul className="panel rows orders-list">
             {orders.map((order) => (
-              <div
-                className="order-card"
-                key={order.id}
-              >
-                <div className="order-card-header">
-                  <div>
-                    <span>Order</span>
+              <li className="row order-row" key={order.id}>
+                <div className="row-main">
+                  <h3>
+                    Order #{order.id}
+                    {" "}
+                    <span className="badge">
+                      {order.status || "Order placed"}
+                    </span>
+                  </h3>
 
-                    <h3>
-                      #{order.id}
-                    </h3>
-                  </div>
+                  <p>
+                    {order.store?.name ||
+                      order.store?.store_name ||
+                      "Store not available"}
+                    {", "}
+                    {order.items?.length || 0}{" "}
+                    {(order.items?.length || 0) === 1
+                      ? "item"
+                      : "items"}
+                  </p>
 
-                  <span className="order-status">
-                    {order.status ||
-                      "Order Placed"}
-                  </span>
+                  <p>Delivery: {formatDelivery(order.deliverySlot)}</p>
                 </div>
 
-                <div className="order-information">
-                  <div>
-                    <span>Store</span>
-
-                    <strong>
-                      {order.store?.name ||
-                        order.store?.store_name ||
-                        "Not available"}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>Items</span>
-
-                    <strong>
-                      {order.items?.length || 0}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>Delivery</span>
-
-                    <strong>
-                      {formatDelivery(
-                        order.deliverySlot
-                      )}
-                    </strong>
-                  </div>
-
-                  <div>
-                    <span>Payment</span>
-
-                    <strong className="paid-status">
-                      Paid
-                    </strong>
-                  </div>
-                </div>
-
-                <div className="order-card-actions">
-                  <Link
-                    to={`/order-details/${order.id}`}
-                    className="view-details-button"
-                  >
-                    View Details
-                  </Link>
-                </div>
-              </div>
+                <Link
+                  to={`/order-details/${order.id}`}
+                  className="btn btn-secondary"
+                >
+                  View details
+                </Link>
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </main>
     </div>

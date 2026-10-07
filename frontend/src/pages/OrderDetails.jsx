@@ -1,4 +1,6 @@
 import { Link, useParams } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import Icon from "../components/Icon";
 import "./OrderDetails.css";
 
 function OrderDetails() {
@@ -50,41 +52,20 @@ function OrderDetails() {
   if (!order) {
     return (
       <div className="order-details-page">
-        <header className="order-details-header">
-          <h1>Grocery Link Helper</h1>
+        <AppHeader />
 
-          <nav>
-            <Link to="/dashboard">
-              Dashboard
+        <main className="container-narrow page-body">
+          <div className="panel empty">
+            <Icon name="receipt" size={44} />
+
+            <h3>No order found</h3>
+
+            <p>There is no order information available.</p>
+
+            <Link to="/orders" className="btn btn-primary">
+              Back to orders
             </Link>
-
-            <Link to="/grocery-list">
-              Grocery List
-            </Link>
-
-            <Link to="/orders">
-              Orders
-            </Link>
-          </nav>
-        </header>
-
-        <main className="order-details-content">
-          <section className="order-details-card">
-            <div className="no-order">
-              <h3>No Order Found</h3>
-
-              <p>
-                There is no order information available.
-              </p>
-
-              <Link
-                to="/orders"
-                className="order-dashboard-button"
-              >
-                Back to Orders
-              </Link>
-            </div>
-          </section>
+          </div>
         </main>
       </div>
     );
@@ -158,173 +139,87 @@ function OrderDetails() {
 
   return (
     <div className="order-details-page">
-      <header className="order-details-header">
-        <h1>Grocery Link Helper</h1>
+      <AppHeader />
 
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-        </nav>
-      </header>
-
-      <main className="order-details-content">
-        <div className="order-details-title">
-          <p>Order</p>
-
-          <h2>Order Details</h2>
-
-          <span>
-            View your order information and delivery details.
-          </span>
+      <main className="container-narrow page-body">
+        <div className="page-title">
+          <h1>Order #{displayOrderId}</h1>
+          <p>Placed {formatDate(orderDate)}</p>
         </div>
 
-        {/* Order Information */}
-        <section className="order-details-card">
-          <div className="order-top">
-            <div>
-              <span>Order Number</span>
+        <div className="receipt-wrap">
+          <section className="receipt" aria-label="Order details">
+            <div className="receipt-head">
+              <h2>{storeName}</h2>
 
-              <h3>#{displayOrderId}</h3>
+              <span className="badge">{orderStatus}</span>
             </div>
 
-            <div className="order-status">
-              {orderStatus}
+            {storeAddress && (
+              <p className="receipt-meta">{storeAddress}</p>
+            )}
+
+            <div className="receipt-section">
+              {items.length === 0 ? (
+                <p className="receipt-meta">
+                  No grocery items available.
+                </p>
+              ) : (
+                items.map((item, index) => (
+                  <div
+                    className="receipt-line"
+                    key={item.id ?? item.order_item_id ?? index}
+                  >
+                    <span>
+                      {item.name ??
+                        item.itemName ??
+                        item.item_name ??
+                        "Item"}
+                    </span>
+
+                    <strong className="num">
+                      × {item.quantity ?? 1}
+                    </strong>
+                  </div>
+                ))
+              )}
             </div>
-          </div>
 
-          <div className="order-info-row">
-            <span>Order Date</span>
-
-            <strong>
-              {formatDate(orderDate)}
-            </strong>
-          </div>
-        </section>
-
-        {/* Grocery Items */}
-        <section className="order-details-card">
-          <h3>Grocery Items</h3>
-
-          {items.length === 0 ? (
-            <p>No grocery items available.</p>
-          ) : (
-            items.map((item, index) => (
-              <div
-                className="order-info-row"
-                key={
-                  item.id ??
-                  item.order_item_id ??
-                  index
-                }
-              >
-                <span>
-                  {item.name ??
-                    item.itemName ??
-                    item.item_name ??
-                    "Item"}
-                </span>
-
-                <strong>
-                  Quantity: {item.quantity ?? 1}
-                </strong>
+            <div className="receipt-section">
+              <div className="receipt-line">
+                <span>Delivery time</span>
+                <strong>{formatDate(deliverySlot)}</strong>
               </div>
-            ))
-          )}
-        </section>
 
-        {/* Store */}
-        <section className="order-details-card">
-          <h3>Store</h3>
-
-          <div className="order-info-row">
-            <span>Selected Store</span>
-
-            <strong>
-              {storeName}
-            </strong>
-          </div>
-
-          {storeAddress && (
-            <div className="order-info-row">
-              <span>Store Address</span>
-
-              <strong>
-                {storeAddress}
-              </strong>
+              {deliveryAddress && (
+                <div className="receipt-line">
+                  <span>Address</span>
+                  <strong>{deliveryAddress}</strong>
+                </div>
+              )}
             </div>
-          )}
-        </section>
 
-        {/* Delivery */}
-        <section className="order-details-card">
-          <h3>Delivery</h3>
+            <div className="receipt-section">
+              <div className="receipt-line">
+                <span>Payment method</span>
+                <strong>{paymentMethod}</strong>
+              </div>
 
-          <div className="order-info-row">
-            <span>
-              Delivery Date & Time
-            </span>
-
-            <strong>
-              {formatDate(deliverySlot)}
-            </strong>
-          </div>
-
-          {deliveryAddress && (
-            <div className="order-info-row">
-              <span>
-                Delivery Address
-              </span>
-
-              <strong>
-                {deliveryAddress}
-              </strong>
+              <div className="receipt-line">
+                <span>Payment status</span>
+                <strong className="paid-status">{paymentStatus}</strong>
+              </div>
             </div>
-          )}
-        </section>
+          </section>
+        </div>
 
-        {/* Payment */}
-        <section className="order-details-card">
-          <h3>Payment</h3>
-
-          <div className="order-info-row">
-            <span>Payment Method</span>
-
-            <strong>
-              {paymentMethod}
-            </strong>
-          </div>
-
-          <div className="order-info-row">
-            <span>Payment Status</span>
-
-            <strong className="paid-status">
-              {paymentStatus}
-            </strong>
-          </div>
-        </section>
-
-        <div className="order-details-actions">
-          <Link
-            to="/orders"
-            className="order-dashboard-button"
-          >
-            Back to Orders
+        <div className="action-bar">
+          <Link to="/orders" className="btn btn-secondary">
+            Back to orders
           </Link>
 
-          <Link
-            to="/dashboard"
-            className="order-dashboard-button"
-          >
-            Back to Dashboard
+          <Link to="/dashboard" className="btn btn-primary">
+            Back to home
           </Link>
         </div>
       </main>

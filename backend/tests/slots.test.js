@@ -109,6 +109,7 @@ describe('GET /api/slots', () => {
 
     expect(res.status).toBe(200);
     expect(res.body.capacity).toBe(2);
+    expect(res.body.time_zone).toBe('America/Toronto');
     const full = res.body.slots.find((s) => s.start === '2026-10-07T18:00:00.000Z');
     expect(full).toMatchObject({ booked: 2, remaining: 0, available: false });
     const open = res.body.slots.find((s) => s.start === '2026-10-07T19:00:00.000Z');

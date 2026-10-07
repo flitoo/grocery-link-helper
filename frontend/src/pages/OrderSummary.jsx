@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import CheckoutSteps from "../components/CheckoutSteps";
 import "./OrderSummary.css";
 
 const API_BASE =
@@ -321,202 +323,109 @@ function OrderSummary() {
 
   return (
     <div className="summary-page">
-      {/* Header */}
-      <header className="summary-header">
-        <h1>
-          Grocery Link Helper
-        </h1>
+      <AppHeader />
 
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
+      <main className="container-narrow page-body">
+        <CheckoutSteps current={3} />
 
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-        </nav>
-      </header>
-
-      <main className="summary-content">
-        {/* Title */}
-        <div className="summary-title">
-          <p>
-            Review Order
-          </p>
-
-          <h2>
-            Order Summary
-          </h2>
-
-          <span>
-            Review your grocery order before
-            continuing.
-          </span>
+        <div className="page-title">
+          <h1>Review your order</h1>
+          <p>Check the details, add your address, then go to payment.</p>
         </div>
 
-        {/* Grocery Items */}
-        <section className="summary-card">
-          <h3>
-            Grocery Items
-          </h3>
+        <div className="receipt-wrap">
+          <section className="receipt" aria-label="Order summary">
+            <h2>
+              {selectedStore
+                ? selectedStore.name || selectedStore.store_name
+                : "No store selected"}
+            </h2>
 
-          {groceryItems.length === 0 ? (
-            <p className="summary-empty">
-              No grocery items found.
-            </p>
-          ) : (
-            <div className="summary-items">
-              {groceryItems.map((item) => {
-                const price =
-                  Number(
-                    item.estimatedPrice
-                  ) || 0;
+            {selectedStore?.address && (
+              <p className="receipt-meta">{selectedStore.address}</p>
+            )}
 
-                const quantity =
-                  Number(
-                    item.quantity
-                  ) || 0;
+            <div className="receipt-section">
+              {groceryItems.length === 0 ? (
+                <p className="receipt-meta">No grocery items found.</p>
+              ) : (
+                groceryItems.map((item) => {
+                  const price = Number(item.estimatedPrice) || 0;
+                  const quantity = Number(item.quantity) || 0;
 
-                const subtotal =
-                  price * quantity;
+                  return (
+                    <div className="receipt-item" key={item.id}>
+                      <div className="receipt-line">
+                        <strong>{item.name}</strong>
+                        <strong className="num">
+                          ${(price * quantity).toFixed(2)}
+                        </strong>
+                      </div>
 
-                return (
-                  <div
-                    className="summary-item"
-                    key={item.id}
-                  >
-                    <div>
-                      <span>
-                        {item.name}
-                      </span>
-
-                      <p>
-                        Quantity:{" "}
-                        {quantity}
-                      </p>
-
-                      <p>
-                        Estimated Price: $
-                        {price.toFixed(2)}
-                      </p>
+                      <small>
+                        {quantity} × ${price.toFixed(2)}
+                      </small>
                     </div>
+                  );
+                })
+              )}
+            </div>
 
-                    <strong>
-                      $
-                      {subtotal.toFixed(2)}
-                    </strong>
-                  </div>
-                );
-              })}
-
-              <div className="summary-total">
-                <span>
-                  Estimated Total
-                </span>
-
+            <div className="receipt-section">
+              <div className="receipt-line">
+                <span>Delivery time</span>
                 <strong>
-                  $
-                  {estimatedTotal.toFixed(2)}
+                  {deliverySlot
+                    ? formatDelivery(deliverySlot)
+                    : "Not selected"}
                 </strong>
               </div>
             </div>
-          )}
-        </section>
 
-        {/* Store */}
-        <section className="summary-card">
-          <h3>
-            Selected Store
-          </h3>
-
-          {selectedStore ? (
-            <div className="summary-detail">
-              <strong>
-                {selectedStore.name ||
-                  selectedStore.store_name}
-              </strong>
-
-              {selectedStore.address && (
-                <p>
-                  {selectedStore.address}
-                </p>
-              )}
+            <div className="receipt-total">
+              <span>Estimated total</span>
+              <strong>${estimatedTotal.toFixed(2)}</strong>
             </div>
-          ) : (
-            <p className="summary-empty">
-              No store selected.
-            </p>
-          )}
-        </section>
+          </section>
+        </div>
 
-        {/* Delivery */}
-        <section className="summary-card">
-          <h3>
-            Delivery
-          </h3>
-
-          {deliverySlot ? (
-            <div className="summary-detail">
-              <strong>
-                Delivery Date & Time
-              </strong>
-
-              <p>
-                {formatDelivery(
-                  deliverySlot
-                )}
-              </p>
-            </div>
-          ) : (
-            <p className="summary-empty">
-              No delivery time selected.
-            </p>
-          )}
-
-          <div className="summary-address">
-            <label htmlFor="delivery-address">
-              Delivery Address
-            </label>
+        <section className="panel summary-address">
+          <div className="field">
+            <label htmlFor="delivery-address">Delivery address</label>
 
             <input
               id="delivery-address"
               type="text"
-              placeholder="Enter delivery address"
+              autoComplete="street-address"
+              placeholder="Street, unit, city"
               value={deliveryAddress}
               onChange={(e) => {
-                setDeliveryAddress(
-                  e.target.value
-                );
+                setDeliveryAddress(e.target.value);
 
                 setError("");
               }}
             />
+
+            <span className="field-hint">
+              Include your unit number or concierge instructions.
+            </span>
           </div>
 
           {error && (
-            <p className="summary-error">
+            <p className="notice notice-error" role="alert">
               {error}
             </p>
           )}
         </section>
 
-        {/* Actions */}
-        <div className="summary-actions">
-          <Link
-            to="/delivery-time"
-            className="summary-back"
-          >
-            Back to Delivery Time
+        <div className="action-bar">
+          <Link to="/delivery-time" className="btn btn-secondary">
+            Back to time
           </Link>
 
           <button
             type="button"
-            className="summary-continue"
+            className="btn btn-primary"
             onClick={handleContinue}
             disabled={
               loading ||
@@ -525,9 +434,7 @@ function OrderSummary() {
               !deliverySlot
             }
           >
-            {loading
-              ? "Creating Order..."
-              : "Continue to Payment"}
+            {loading ? "Creating order..." : "Continue to payment"}
           </button>
         </div>
       </main>

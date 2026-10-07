@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import CheckoutSteps from "../components/CheckoutSteps";
+import Icon from "../components/Icon";
 import "./GroceryList.css";
 
 function GroceryList() {
@@ -139,181 +142,163 @@ function GroceryList() {
     }
   };
 
+  const estimatedTotal = items.reduce(
+    (total, item) =>
+      total +
+      Number(item.estimatedPrice) * Number(item.quantity),
+    0
+  );
+
   return (
     <div className="grocery-page">
-      {/* Header */}
-      <header className="grocery-header">
-        <h1>Grocery Link Helper</h1>
+      <AppHeader />
 
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
+      <main className="container-narrow page-body">
+        <CheckoutSteps current={0} />
 
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-        </nav>
-      </header>
-
-      {/* Main Content */}
-      <main className="grocery-content">
-        <div className="grocery-title">
-          <p>My Grocery List</p>
-          <h2>Grocery List</h2>
+        <div className="page-title">
+          <h1>Your grocery list</h1>
+          <p>
+            Add what you need and roughly what it costs. The
+            helper buys it at the store you pick next.
+          </p>
         </div>
 
         {/* Add Item */}
-        <div className="add-item">
-          {/* Item name */}
-          <input
-            type="text"
-            placeholder="Enter grocery item"
-            value={newItem}
-            maxLength={50}
-            onChange={(e) => {
-              setNewItem(e.target.value);
+        <section className="panel add-item" aria-label="Add an item">
+          <div className="field add-item-name">
+            <label htmlFor="item-name">Item</label>
+            <input
+              id="item-name"
+              type="text"
+              placeholder="e.g. Milk, 2%"
+              value={newItem}
+              maxLength={50}
+              onChange={(e) => {
+                setNewItem(e.target.value);
 
-              if (error) {
-                setError("");
-              }
-            }}
-            onKeyDown={handleKeyDown}
-          />
+                if (error) {
+                  setError("");
+                }
+              }}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
 
-          {/* Quantity */}
-          <input
-            className="quantity-input"
-            type="number"
-            min="1"
-            step="1"
-            value={quantity}
-            placeholder="Quantity"
-            onChange={(e) => {
-              setQuantity(e.target.value);
+          <div className="field">
+            <label htmlFor="item-quantity">Quantity</label>
+            <input
+              id="item-quantity"
+              type="number"
+              inputMode="numeric"
+              min="1"
+              step="1"
+              value={quantity}
+              onChange={(e) => {
+                setQuantity(e.target.value);
 
-              if (error) {
-                setError("");
-              }
-            }}
-            onKeyDown={handleKeyDown}
-          />
+                if (error) {
+                  setError("");
+                }
+              }}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
 
-          {/* Estimated Price */}
-          <input
-            className="price-input"
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={estimatedPrice}
-            placeholder="Estimated price"
-            onChange={(e) => {
-              setEstimatedPrice(e.target.value);
+          <div className="field">
+            <label htmlFor="item-price">Price each ($)</label>
+            <input
+              id="item-price"
+              type="number"
+              inputMode="decimal"
+              min="0.01"
+              step="0.01"
+              value={estimatedPrice}
+              placeholder="0.00"
+              onChange={(e) => {
+                setEstimatedPrice(e.target.value);
 
-              if (error) {
-                setError("");
-              }
-            }}
-            onKeyDown={handleKeyDown}
-          />
+                if (error) {
+                  setError("");
+                }
+              }}
+              onKeyDown={handleKeyDown}
+            />
+          </div>
 
           <button
             type="button"
+            className="btn btn-primary add-item-button"
             onClick={handleAddItem}
           >
-            Add Item
+            <Icon name="plus" />
+            Add item
           </button>
-        </div>
 
-        {/* Validation Error */}
-        {error && (
-          <p className="grocery-error">
-            {error}
-          </p>
-        )}
+          {error && (
+            <p className="notice notice-error add-item-error" role="alert">
+              {error}
+            </p>
+          )}
+        </section>
 
         {/* Grocery List */}
-        <div className="grocery-list">
+        <section className="panel grocery-list" aria-label="Your items">
           {items.length === 0 ? (
-            <div className="empty-list">
-              <h3>
-                Your grocery list is empty
-              </h3>
+            <div className="empty">
+              <Icon name="cart" size={44} />
 
-              <p>
-                Add an item to get started.
-              </p>
+              <h3>Your list is empty</h3>
+
+              <p>Add your first item above to get started.</p>
             </div>
           ) : (
-            items.map((item) => (
-              <div
-                className="grocery-item"
-                key={item.id}
-              >
-                <div>
-                  <h3>{item.name}</h3>
+            <ul className="rows">
+              {items.map((item) => (
+                <li className="row" key={item.id}>
+                  <div className="row-main">
+                    <strong>{item.name}</strong>
 
-                  <p>
-                    Quantity: {item.quantity}
-                  </p>
+                    <span>
+                      {item.quantity} × $
+                      {Number(item.estimatedPrice).toFixed(2)}
+                    </span>
+                  </div>
 
-                  <p>
-                    Estimated Price: $
-                    {Number(
-                      item.estimatedPrice
-                    ).toFixed(2)}
-                  </p>
-
-                  <p>
-                    Estimated Subtotal: $
+                  <span className="row-value">
+                    $
                     {(
                       Number(item.estimatedPrice) *
                       Number(item.quantity)
                     ).toFixed(2)}
-                  </p>
-                </div>
+                  </span>
 
-                <button
-                  type="button"
-                  onClick={() =>
-                    handleRemoveItem(item.id)
-                  }
-                >
-                  Remove
-                </button>
-              </div>
-            ))
+                  <button
+                    type="button"
+                    className="btn btn-quiet"
+                    aria-label={`Remove ${item.name}`}
+                    onClick={() => handleRemoveItem(item.id)}
+                  >
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
           )}
-        </div>
 
-        {/* Estimated Total */}
-        {items.length > 0 && (
-          <div className="grocery-total">
-            <span>Estimated Total</span>
-
-            <strong>
-              $
-              {items
-                .reduce(
-                  (total, item) =>
-                    total +
-                    Number(item.estimatedPrice) *
-                      Number(item.quantity),
-                  0
-                )
-                .toFixed(2)}
-            </strong>
-          </div>
-        )}
+          {items.length > 0 && (
+            <div className="receipt-total">
+              <span>Estimated total</span>
+              <strong>${estimatedTotal.toFixed(2)}</strong>
+            </div>
+          )}
+        </section>
 
         {/* Continue to Store Selection */}
         {items.length > 0 && (
-          <div className="grocery-next">
-            <Link
-              to="/store-selection"
-              className="continue-button"
-            >
-              Continue to Store Selection
+          <div className="action-bar action-bar-end">
+            <Link to="/store-selection" className="btn btn-primary">
+              Choose a store
             </Link>
           </div>
         )}

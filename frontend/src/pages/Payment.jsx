@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import AppHeader from "../components/AppHeader";
+import CheckoutSteps from "../components/CheckoutSteps";
 import "./Payment.css";
 
 const API_BASE =
@@ -527,396 +529,262 @@ function Payment() {
 
   return (
     <div className="payment-page">
-      {/* ==============================
-          Header
-      ============================== */}
+      <AppHeader />
 
-      <header className="payment-header">
-        <h1>
-          Grocery Link Helper
-        </h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-        </nav>
-      </header>
-
-      <main className="payment-content">
-        {/* ==============================
-            Title
-        ============================== */}
-
-        <div className="payment-title">
-          <p>Checkout</p>
-
-          <h2>Payment</h2>
-
-          <span>
-            Review your order and complete payment.
-          </span>
-        </div>
-
-        {/* ==============================
-            SUCCESS
-        ============================== */}
-
+      <main className="container-narrow page-body">
         {success ? (
-          <section className="payment-success-box">
-            <div className="success-icon">
-              ✓
-            </div>
+          <section className="payment-success" role="status">
+            <span className="success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="40" height="40">
+                <path
+                  d="m5 12.5 4.5 4.5L19 7.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
 
-            <h3>
-              Payment Successful!
-            </h3>
+            <h1>Payment successful</h1>
 
             <p>
-              Your payment has been submitted successfully.
+              Your order is in. We will let you know when a helper
+              picks it up.
             </p>
 
             {completedOrder && (
-              <div className="payment-success-order">
-                <span>
-                  Order Number
-                </span>
-
-                <strong>
-                  #{completedOrder.id}
-                </strong>
-              </div>
+              <p className="success-order">
+                Order <strong>#{completedOrder.id}</strong>
+              </p>
             )}
 
             <div className="success-actions">
               <button
                 type="button"
-                className="view-order-button"
+                className="btn btn-primary"
                 onClick={handleViewOrder}
               >
-                View Order
+                View order
               </button>
 
               <button
                 type="button"
-                className="dashboard-button"
+                className="btn btn-secondary"
                 onClick={handleDashboard}
               >
-                Back to Dashboard
+                Back to home
               </button>
             </div>
           </section>
         ) : (
           <>
-            {/* ==============================
-                ORDER DETAILS
-            ============================== */}
+            <CheckoutSteps current={4} />
 
-            <section className="payment-card">
-              <h3>
-                Order Details
-              </h3>
+            <div className="page-title">
+              <h1>Pay for your order</h1>
+              <p>Check the total, then enter your card details.</p>
+            </div>
 
-              {/* Order ID */}
+            <div className="receipt-wrap">
+              <section className="receipt" aria-label="Order details">
+                <h2>
+                  {selectedStore
+                    ? selectedStore.name || selectedStore.store_name
+                    : "No store selected"}
+                </h2>
 
-              {Number.isInteger(orderId) &&
-                orderId > 0 && (
-                  <div className="payment-summary-row">
-                    <span>
-                      Order
-                    </span>
-
-                    <strong>
-                      #{orderId}
-                    </strong>
-                  </div>
+                {Number.isInteger(orderId) && orderId > 0 && (
+                  <p className="receipt-meta">Order #{orderId}</p>
                 )}
 
-              {/* Grocery Items */}
-
-              <div className="payment-summary-section">
-                <h4>
-                  Grocery Items
-                </h4>
-
-                {groceryItems.length === 0 ? (
-                  <p className="payment-empty">
-                    No grocery items found.
-                  </p>
-                ) : (
-                  groceryItems.map(
-                    (item) => (
-                      <div
-                        className="payment-summary-row"
-                        key={item.id}
-                      >
+                <div className="receipt-section">
+                  {groceryItems.length === 0 ? (
+                    <p className="receipt-meta">
+                      No grocery items found.
+                    </p>
+                  ) : (
+                    groceryItems.map((item) => (
+                      <div className="receipt-line" key={item.id}>
                         <span>
                           {item.name}
+                          {" "}
+                          <small>
+                            {item.quantity} × $
+                            {Number(item.estimatedPrice || 0).toFixed(2)}
+                          </small>
                         </span>
 
-                        <strong>
-                          {item.quantity} × $
-                          {Number(
-                            item.estimatedPrice ||
-                              0
+                        <strong className="num">
+                          $
+                          {(
+                            Number(item.estimatedPrice || 0) *
+                            Number(item.quantity || 0)
                           ).toFixed(2)}
                         </strong>
                       </div>
-                    )
-                  )
-                )}
-              </div>
-
-              {/* Store */}
-
-              <div className="payment-summary-row">
-                <span>
-                  Store
-                </span>
-
-                <strong>
-                  {selectedStore
-                    ? selectedStore.name ||
-                      selectedStore.store_name
-                    : "Not selected"}
-                </strong>
-              </div>
-
-              {/* Delivery */}
-
-              <div className="payment-summary-row">
-                <span>
-                  Delivery
-                </span>
-
-                <strong>
-                  {formatDelivery(
-                    deliverySlot
+                    ))
                   )}
-                </strong>
-              </div>
-
-              {/* Delivery Address */}
-
-              {deliveryAddress && (
-                <div className="payment-summary-row">
-                  <span>
-                    Delivery Address
-                  </span>
-
-                  <strong>
-                    {deliveryAddress}
-                  </strong>
                 </div>
-              )}
 
-              {/* Total */}
+                <div className="receipt-section">
+                  <div className="receipt-line">
+                    <span>Delivery time</span>
+                    <strong>{formatDelivery(deliverySlot)}</strong>
+                  </div>
 
-              <div className="payment-summary-row payment-total">
-                <span>
-                  Estimated Total
-                </span>
+                  {deliveryAddress && (
+                    <div className="receipt-line">
+                      <span>Address</span>
+                      <strong>{deliveryAddress}</strong>
+                    </div>
+                  )}
+                </div>
 
-                <strong>
-                  $
-                  {estimatedTotal.toFixed(2)}
-                </strong>
-              </div>
-            </section>
+                <div className="receipt-total">
+                  <span>Estimated total</span>
+                  <strong>${estimatedTotal.toFixed(2)}</strong>
+                </div>
+              </section>
+            </div>
 
-            {/* ==============================
-                PAYMENT METHOD
-            ============================== */}
+            <section className="panel payment-form">
+              <h2>Card details</h2>
 
-            <section className="payment-card">
-              <h3>
-                Payment Method
-              </h3>
-
-              <div className="payment-methods">
-                {/* Credit Card */}
-
+              <div
+                className="payment-methods"
+                role="radiogroup"
+                aria-label="Card type"
+              >
                 <label
                   className={`payment-method ${
-                    paymentMethod === "credit"
-                      ? "selected"
-                      : ""
+                    paymentMethod === "credit" ? "selected" : ""
                   }`}
                 >
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="credit"
-                    checked={
-                      paymentMethod === "credit"
-                    }
+                    checked={paymentMethod === "credit"}
                     onChange={(e) => {
-                      setPaymentMethod(
-                        e.target.value
-                      );
+                      setPaymentMethod(e.target.value);
 
                       setError("");
                     }}
                   />
 
-                  <span>
-                    Credit Card
-                  </span>
+                  <span>Credit card</span>
                 </label>
-
-                {/* Debit Card */}
 
                 <label
                   className={`payment-method ${
-                    paymentMethod === "debit"
-                      ? "selected"
-                      : ""
+                    paymentMethod === "debit" ? "selected" : ""
                   }`}
                 >
                   <input
                     type="radio"
                     name="paymentMethod"
                     value="debit"
-                    checked={
-                      paymentMethod === "debit"
-                    }
+                    checked={paymentMethod === "debit"}
                     onChange={(e) => {
-                      setPaymentMethod(
-                        e.target.value
-                      );
+                      setPaymentMethod(e.target.value);
 
                       setError("");
                     }}
                   />
 
-                  <span>
-                    Debit Card
-                  </span>
+                  <span>Debit card</span>
                 </label>
               </div>
 
-              {/* Cardholder */}
-
-              <div className="payment-form-group">
-                <label htmlFor="cardholder-name">
-                  Cardholder Name
-                </label>
+              <div className="field">
+                <label htmlFor="cardholder-name">Name on card</label>
 
                 <input
                   id="cardholder-name"
                   type="text"
-                  placeholder="Enter cardholder name"
+                  autoComplete="cc-name"
+                  placeholder="As shown on the card"
                   value={cardholderName}
                   onChange={(e) => {
-                    setCardholderName(
-                      e.target.value
-                    );
+                    setCardholderName(e.target.value);
 
                     setError("");
                   }}
                 />
               </div>
 
-              {/* Card Number */}
-
-              <div className="payment-form-group">
-                <label htmlFor="card-number">
-                  Card Number
-                </label>
+              <div className="field">
+                <label htmlFor="card-number">Card number</label>
 
                 <input
                   id="card-number"
                   type="text"
                   inputMode="numeric"
+                  autoComplete="cc-number"
                   placeholder="1234 5678 9012 3456"
                   value={cardNumber}
-                  onChange={
-                    handleCardNumberChange
-                  }
+                  onChange={handleCardNumberChange}
                 />
               </div>
 
-              {/* Expiry / CVV */}
-
-              <div className="payment-form-row">
-                <div className="payment-form-group">
-                  <label htmlFor="expiry-date">
-                    Expiry Date
-                  </label>
+              <div className="field-row">
+                <div className="field">
+                  <label htmlFor="expiry-date">Expiry (MM/YY)</label>
 
                   <input
                     id="expiry-date"
                     type="text"
                     inputMode="numeric"
+                    autoComplete="cc-exp"
                     placeholder="MM/YY"
                     value={expiryDate}
-                    onChange={
-                      handleExpiryChange
-                    }
+                    onChange={handleExpiryChange}
                   />
                 </div>
 
-                <div className="payment-form-group">
-                  <label htmlFor="cvv">
-                    CVV
-                  </label>
+                <div className="field">
+                  <label htmlFor="cvv">Security code (CVV)</label>
 
                   <input
                     id="cvv"
                     type="password"
                     inputMode="numeric"
+                    autoComplete="cc-csc"
                     placeholder="123"
                     value={cvv}
-                    onChange={
-                      handleCvvChange
-                    }
+                    onChange={handleCvvChange}
                   />
                 </div>
               </div>
 
-              <p className="payment-demo-note">
-                Demo payment form only. Card information
-                is not stored or sent to the backend.
+              <p className="notice notice-info">
+                This is a demo form. Card details are not stored or
+                sent to the server.
               </p>
 
-              {/* Error */}
-
               {error && (
-                <p className="payment-error">
+                <p className="notice notice-error payment-error" role="alert">
                   {error}
                 </p>
               )}
             </section>
 
-            {/* ==============================
-                ACTIONS
-            ============================== */}
-
-            <div className="payment-actions">
-              <Link
-                to="/order-summary"
-                className="payment-back"
-              >
-                Back to Order Summary
+            <div className="action-bar">
+              <Link to="/order-summary" className="btn btn-secondary">
+                Back to review
               </Link>
 
               <button
                 type="button"
-                className="payment-button"
+                className="btn btn-primary"
                 onClick={handlePayment}
                 disabled={loading}
               >
                 {loading
                   ? "Processing..."
-                  : "Pay Now"}
+                  : `Pay $${estimatedTotal.toFixed(2)}`}
               </button>
             </div>
           </>
