@@ -11,7 +11,8 @@ import OrderSummary from "./pages/OrderSummary";
 import Payment from "./pages/Payment";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
-
+import HelperDashboard from "./pages/HelperDashboard";
+import HelperOrderDetails from "./pages/HelperOrderDetails";
 function App() {
   return (
     <Routes>
@@ -73,7 +74,20 @@ function App() {
         path="/order-details/:orderId"
         element={<OrderDetails />}
       />
+
+      <Route
+      path="/helper-dashboard"
+      element={<HelperDashboard />}
+      />
+
+      <Route
+      path="/helper/orders/:orderId"
+      element={<HelperOrderDetails />}
+      
+      />
+
     </Routes>
+    
   );
 }
 
