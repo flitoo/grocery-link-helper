@@ -66,6 +66,31 @@ Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
+### Delivery assignment and order messaging
+Delivery helpers can claim paid, unassigned orders with their login token:
+
+```http
+POST /api/deliveries/{orderId}/claim
+Authorization: Bearer <token>
+```
+
+The claim is atomic. A successful claim creates the delivery and sets the
+order's helper and status to `Assigned`. Only users with the `Helper` role can
+claim an order.
+
+Customers and assigned helpers can read and send messages for their order:
+
+```http
+GET  /api/orders/{orderId}/messages
+POST /api/orders/{orderId}/messages
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+Send a message with `{"message_text":"Buzz 1204, please."}`. The API derives
+the sender from the token and allows access only to the customer or assigned
+helper for that order.
+
 ### Tests and lint
 ```bash
 cd backend && npm test
