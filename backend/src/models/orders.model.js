@@ -88,4 +88,44 @@ async function getOrderById(orderId) {
   return { ...order, items: itemsResult.rows };
 }
 
-module.exports = { findActiveStoreById, createOrder, getOrderById };
+
+// Only the assigned helper may advance the order one step at a time.
+const NEXT_STATUS = {
+  Assigned: 'Shopping',
+  Shopping: 'Out_for_Delivery',
+  Out_for_Delivery: 'Delivered',
+};
+
+async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
+  return withTransaction(async (client) => {
+    const result = await client.query(
+      `SELECT order_id, helper_id, status FROM orders WHERE order_id = $1 FOR UPDATE`,
+      [orderId]
+    );
+    const order = result.rows[0];
+    if (!order) return undefined;
+    if (Number(order.helper_id) !== Number(helperId)) {
+      const error = new Error('Only the assigned helper may update this order.');
+      error.code = 'NOT_ASSIGNED_HELPER';
+      throw error;
+    }
+    if (NEXT_STATUS[order.status] !== nextStatus) {
+      const error = new Error('Invalid status transition.');
+      error.code = 'INVALID_STATUS_TRANSITION';
+      throw error;
+    }
+    const updated = await client.query(
+      `UPDATE orders SET status = $1 WHERE order_id = $2 RETURNING order_id, helper_id, status`,
+      [nextStatus, orderId]
+    );
+    if (nextStatus === 'Delivered') {
+      await client.query(
+        `UPDATE deliveries SET delivery_status = 'Completed', completed_at = NOW() WHERE order_id = $1 AND helper_id = $2`,
+        [orderId, helperId]
+      );
+    }
+    return updated.rows[0];
+  });
+}
+
+module.exports = { findActiveStoreById, createOrder, getOrderById, updateDeliveryStatus };

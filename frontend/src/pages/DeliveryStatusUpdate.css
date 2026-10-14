@@ -1,0 +1,204 @@
+
+.delivery-status-page {
+  min-height: 100vh;
+  background: #f5f7f5;
+  color: #263238;
+}
+
+.delivery-status-header {
+  background: #2e7d32;
+  color: white;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.delivery-status-header h1 {
+  margin: 0;
+  font-size: 23px;
+}
+
+.delivery-status-header a {
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.delivery-status-content {
+  max-width: 900px;
+  margin: 35px auto;
+  padding: 0 20px 50px;
+}
+
+.delivery-status-title {
+  margin-bottom: 25px;
+}
+
+.delivery-status-title p {
+  color: #2e7d32;
+  font-weight: 600;
+}
+
+.delivery-status-title h2 {
+  color: #263238;
+  font-size: 28px;
+  margin: 8px 0;
+}
+
+.delivery-status-title span {
+  color: #66736a;
+}
+
+.delivery-status-card {
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
+}
+
+.delivery-status-card h3 {
+  margin-top: 0;
+  color: #263238;
+}
+
+.delivery-status-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
+
+.delivery-status-card-top p {
+  color: #66736a;
+}
+
+.delivery-status-info {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf0ed;
+}
+
+.delivery-status-info strong {
+  text-align: right;
+  overflow-wrap: anywhere;
+}
+
+.delivery-progress-list {
+  margin-top: 25px;
+}
+
+.delivery-progress-step {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 0;
+  color: #7c8580;
+}
+
+.delivery-step-circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: 2px solid #cfd8d3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+.delivery-progress-step.completed
+  .delivery-step-circle {
+  background: #2e7d32;
+  border-color: #2e7d32;
+  color: white;
+}
+
+.delivery-progress-step.active strong {
+  color: #2e7d32;
+}
+
+.delivery-progress-step p {
+  margin: 5px 0 0;
+  font-size: 13px;
+}
+
+.delivery-status-label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 600;
+}
+
+.delivery-status-select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccd8ce;
+  border-radius: 8px;
+  background: white;
+  color: #263238;
+  font-size: 15px;
+}
+
+.delivery-status-note {
+  color: #66736a;
+  line-height: 1.6;
+}
+
+.delivery-status-error {
+  color: #c62828;
+}
+
+.delivery-refresh-button,
+.delivery-back-button {
+  padding: 11px 18px;
+  background: #e8f3e9;
+  border: none;
+  border-radius: 8px;
+  color: #2e7d32;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.delivery-update-button {
+  margin-top: 18px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  background: #aebbb0;
+  color: white;
+  font-weight: 600;
+  cursor: not-allowed;
+}
+
+.delivery-status-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .delivery-status-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .delivery-status-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .delivery-status-info strong {
+    text-align: left;
+  }
+
+  .delivery-status-card {
+    padding: 18px;
+  }
+}

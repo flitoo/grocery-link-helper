@@ -9,6 +9,7 @@ function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("Customer");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ function Register() {
       const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, email, password, role }),
       });
 
       const data = await res.json();
@@ -50,7 +51,7 @@ function Register() {
 
       // Save token and go straight to the dashboard
       localStorage.setItem("token", data.token);
-      navigate("/dashboard");
+      navigate(data.user?.role === "Helper" ? "/helper-dashboard" : "/dashboard");
     } catch (err) {
       console.error("Register request failed:", err);
       setError("Could not reach the server. Please try again.");
@@ -66,6 +67,13 @@ function Register() {
         <h2>Register</h2>
 
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="role">Account Type</label>
+            <select id="role" value={role} onChange={(e) => setRole(e.target.value)}>
+              <option value="Customer">Customer</option>
+              <option value="Helper">Delivery Helper (local demo only)</option>
+            </select>
+          </div>
           <div className="form-group">
             <label htmlFor="name">Name</label>
             <input

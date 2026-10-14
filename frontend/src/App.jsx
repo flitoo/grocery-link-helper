@@ -13,6 +13,8 @@ import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
 import HelperDashboard from "./pages/HelperDashboard";
 import HelperOrderDetails from "./pages/HelperOrderDetails";
+import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
+import CustomerChat from "./pages/CustomerChat";
 function App() {
   return (
     <Routes>
@@ -84,6 +86,15 @@ function App() {
       path="/helper/orders/:orderId"
       element={<HelperOrderDetails />}
       
+      />
+      <Route
+      path="/helper/orders/:orderId/status"
+      element={<DeliveryStatusUpdate />}
+      />
+      
+      <Route
+      path="/orders/:orderId/chat"
+      element={<CustomerChat />}
       />
 
     </Routes>

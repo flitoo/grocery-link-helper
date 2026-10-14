@@ -65,27 +65,25 @@ function OrderSummary() {
   // Format Delivery
   // ==========================================
 
-  const formatDelivery = (slot) => {
-    if (!slot) {
-      return "Not selected";
-    }
+const formatDelivery = (slot) => {
+  if (!slot) return "Not selected";
 
-    const date = new Date(slot);
+  const date = new Date(slot);
 
-    if (Number.isNaN(date.getTime())) {
-      return slot.replace("T", " ");
-    }
+  if (Number.isNaN(date.getTime())) {
+    return "Invalid delivery time";
+  }
 
-    return date.toLocaleString("en-CA", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  };
-
+  return date.toLocaleString("en-CA", {
+    timeZone: "America/Toronto",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+};
   // ==========================================
   // Continue to Payment
   // Create a NEW backend order first
@@ -208,10 +206,7 @@ function OrderSummary() {
 
             // Send the selected local time
             // as a full ISO timestamp
-            delivery_slot:
-              new Date(
-                deliverySlot
-              ).toISOString(),
+            delivery_slot: new Date(deliverySlot).toISOString(),
 
             items: orderItems,
           }),

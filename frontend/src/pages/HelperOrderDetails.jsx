@@ -16,6 +16,7 @@ function HelperOrderDetails() {
   const [message, setMessage] = useState("");
   const [claiming, setClaiming] = useState(false);
 
+  // Load order details from backend
   useEffect(() => {
     const controller = new AbortController();
 
@@ -29,7 +30,9 @@ function HelperOrderDetails() {
       try {
         const response = await fetch(
           `${API_BASE}/api/orders/${orderId}`,
-          { signal: controller.signal }
+          {
+            signal: controller.signal,
+          }
         );
 
         const data = await response.json();
@@ -37,6 +40,7 @@ function HelperOrderDetails() {
         if (!response.ok) {
           throw new Error(
             data.errors?.[0] ||
+              data.error ||
               "Failed to load order details."
           );
         }
@@ -45,15 +49,22 @@ function HelperOrderDetails() {
 
         setOrder(data);
 
+        // Load store information
         const storesResponse = await fetch(
           `${API_BASE}/api/stores`,
-          { signal: controller.signal }
+          {
+            signal: controller.signal,
+          }
         );
 
         if (storesResponse.ok) {
           const storesData = await storesResponse.json();
 
-          const store = storesData.stores?.find(
+          const stores = Array.isArray(storesData)
+            ? storesData
+            : storesData.stores || [];
+
+          const store = stores.find(
             (item) =>
               Number(item.store_id) ===
               Number(data.store_id)
@@ -79,6 +90,7 @@ function HelperOrderDetails() {
     return () => controller.abort();
   }, [orderId]);
 
+  // Claim an available order
   async function handleClaimOrder() {
     const token = localStorage.getItem("token");
 
@@ -107,16 +119,32 @@ function HelperOrderDetails() {
       if (!response.ok) {
         throw new Error(
           data.errors?.[0] ||
+            data.error ||
             "Failed to claim this order."
         );
       }
 
       setMessage("Order claimed successfully!");
 
-      setOrder((previous) => ({
-        ...previous,
-        status: "Assigned",
-      }));
+      // Refresh order details after claiming
+      const updatedResponse = await fetch(
+        `${API_BASE}/api/orders/${orderId}`
+      );
+
+      if (updatedResponse.ok) {
+        const updatedOrder = await updatedResponse.json();
+        setOrder(updatedOrder);
+      } else {
+        // Fallback to the confirmed claim status
+        setOrder((previous) =>
+          previous
+            ? {
+                ...previous,
+                status: "Assigned",
+              }
+            : previous
+        );
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -124,6 +152,7 @@ function HelperOrderDetails() {
     }
   }
 
+  // Format date and time
   function formatDate(value) {
     if (!value) return "Not available";
 
@@ -145,6 +174,7 @@ function HelperOrderDetails() {
 
   return (
     <div className="order-details-page">
+      {/* Header */}
       <header className="order-details-header">
         <h1>Grocery Link Helper</h1>
 
@@ -155,38 +185,46 @@ function HelperOrderDetails() {
         </nav>
       </header>
 
+      {/* Main Content */}
       <main className="order-details-content">
         <div className="order-details-title">
           <h2>Helper Order Details</h2>
+
           <span>
             View and manage delivery information.
           </span>
         </div>
 
+        {/* Loading */}
         {loading && (
           <section className="order-details-card">
             <p>Loading order details...</p>
           </section>
         )}
 
+        {/* Error */}
         {error && (
           <section className="order-details-card">
             <p style={{ color: "red" }}>{error}</p>
           </section>
         )}
 
+        {/* Success Message */}
         {message && (
           <section className="order-details-card">
             <p style={{ color: "green" }}>{message}</p>
           </section>
         )}
 
+        {/* Order Details */}
         {!loading && order && (
           <>
+            {/* Order Information */}
             <section className="order-details-card">
               <div className="order-top">
                 <div>
                   <span>Order Number</span>
+
                   <h3>#{order.order_id}</h3>
                 </div>
 
@@ -197,38 +235,52 @@ function HelperOrderDetails() {
 
               <div className="order-info-row">
                 <span>Customer ID</span>
-                <strong>#{order.customer_id}</strong>
+
+                <strong>
+                  #{order.customer_id}
+                </strong>
               </div>
 
               <div className="order-info-row">
                 <span>Order Date</span>
+
                 <strong>
                   {formatDate(order.created_at)}
                 </strong>
               </div>
             </section>
 
+            {/* Grocery Items */}
             <section className="order-details-card">
               <h3>Grocery Items</h3>
 
-              {order.items?.map((item) => (
-                <div
-                  className="order-info-row"
-                  key={item.item_id}
-                >
-                  <span>{item.item_name}</span>
-                  <strong>
-                    Quantity: {item.quantity}
-                  </strong>
-                </div>
-              ))}
+              {order.items?.length > 0 ? (
+                order.items.map((item, index) => (
+                  <div
+                    className="order-info-row"
+                    key={item.item_id ?? index}
+                  >
+                    <span>
+                      {item.item_name}
+                    </span>
+
+                    <strong>
+                      Quantity: {item.quantity}
+                    </strong>
+                  </div>
+                ))
+              ) : (
+                <p>No grocery items available.</p>
+              )}
             </section>
 
+            {/* Store Information */}
             <section className="order-details-card">
               <h3>Store</h3>
 
               <div className="order-info-row">
                 <span>Store Name</span>
+
                 <strong>
                   {storeName ||
                     `Store #${order.store_id}`}
@@ -236,29 +288,35 @@ function HelperOrderDetails() {
               </div>
             </section>
 
+            {/* Delivery Information */}
             <section className="order-details-card">
               <h3>Delivery</h3>
 
               <div className="order-info-row">
                 <span>Delivery Address</span>
+
                 <strong>
-                  {order.delivery_address}
+                  {order.delivery_address ||
+                    "Not available"}
                 </strong>
               </div>
 
               <div className="order-info-row">
                 <span>Delivery Time</span>
+
                 <strong>
                   {formatDate(order.delivery_slot)}
                 </strong>
               </div>
             </section>
 
+            {/* Order Total */}
             <section className="order-details-card">
               <h3>Order Total</h3>
 
               <div className="order-info-row">
                 <span>Total Amount</span>
+
                 <strong>
                   $
                   {Number(
@@ -268,6 +326,7 @@ function HelperOrderDetails() {
               </div>
             </section>
 
+            {/* Claim Order */}
             {order.status === "Paid" &&
               order.helper_id == null && (
                 <section className="order-details-card">
@@ -279,6 +338,7 @@ function HelperOrderDetails() {
                   </p>
 
                   <button
+                    type="button"
                     onClick={handleClaimOrder}
                     disabled={claiming}
                     className="order-dashboard-button"
@@ -289,9 +349,29 @@ function HelperOrderDetails() {
                   </button>
                 </section>
               )}
+
+            {/* Delivery Status Information */}
+            <section className="order-details-card">
+              <h3>Delivery Management</h3>
+
+              <p>
+                View the delivery progress and
+                manage the status of this order.
+              </p>
+
+              <div className="order-details-actions">
+                <Link
+                  to={`/helper/orders/${orderId}/status`}
+                  className="order-dashboard-button"
+                >
+                  Update Delivery Status
+                </Link>
+              </div>
+            </section>
           </>
         )}
 
+        {/* Back Button */}
         <div className="order-details-actions">
           <Link
             to="/helper-dashboard"

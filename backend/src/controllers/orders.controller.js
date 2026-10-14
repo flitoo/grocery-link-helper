@@ -64,4 +64,34 @@ async function getOrder(req, res) {
   }
 }
 
-module.exports = { createOrder, getOrder };
+
+async function updateDeliveryStatus(req, res) {
+  const orderId = Number(req.params.id);
+  const helperId = Number(req.user?.userId);
+  const { status } = req.body || {};
+  if (!Number.isInteger(orderId) || orderId <= 0) {
+    return res.status(400).json({ errors: ['Invalid order ID.'] });
+  }
+  if (!Number.isInteger(helperId) || helperId <= 0) {
+    return res.status(401).json({ errors: ['Authentication required.'] });
+  }
+  if (!['Shopping', 'Out_for_Delivery', 'Delivered'].includes(status)) {
+    return res.status(400).json({ errors: ['Invalid delivery status.'] });
+  }
+  try {
+    const order = await ordersModel.updateDeliveryStatus({ orderId, helperId, nextStatus: status });
+    if (!order) return res.status(404).json({ errors: ['Order not found.'] });
+    return res.status(200).json(order);
+  } catch (err) {
+    if (err.code === 'NOT_ASSIGNED_HELPER') {
+      return res.status(403).json({ errors: [err.message] });
+    }
+    if (err.code === 'INVALID_STATUS_TRANSITION') {
+      return res.status(409).json({ errors: [err.message] });
+    }
+    console.error('Failed to update delivery status:', err);
+    return res.status(500).json({ errors: ['Unexpected error updating delivery status.'] });
+  }
+}
+
+module.exports = { createOrder, getOrder, updateDeliveryStatus };

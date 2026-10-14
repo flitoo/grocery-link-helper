@@ -9,7 +9,14 @@ const SALT_ROUNDS = 10;
 
 async function register(req, res) {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role = 'Customer' } = req.body;
+    // Never accept privileged roles from public registration.
+    if (role === 'Helper' && (
+      process.env.NODE_ENV === 'production' ||
+      process.env.ENABLE_DEMO_HELPER_REGISTRATION !== 'true'
+    )) {
+      return res.status(403).json({ error: 'Helper self-registration is disabled.' });
+    }
 
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
@@ -17,7 +24,7 @@ async function register(req, res) {
     }
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-    const newUser = await createUser({ name, email, passwordHash });
+    const newUser = await createUser({ name, email, passwordHash, role });
 
     const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
@@ -51,7 +58,7 @@ async function login(req, res) {
     return res.status(200).json({
       message: 'Login successful.',
       token,
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
     });
   } catch (err) {
     console.error('Login error:', err);

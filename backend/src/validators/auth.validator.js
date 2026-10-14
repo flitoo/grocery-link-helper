@@ -15,10 +15,14 @@ function validateLogin(req, res, next) {
 }
 
 function validateRegister(req, res, next) {
-  const { name, email, password } = req.body;
+  const { name, email, password, role = "Customer" } = req.body;
 
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Name, email, and password are required.' });
+  }
+
+  if (!['Customer', 'Helper'].includes(role)) {
+    return res.status(400).json({ error: 'Invalid account type.' });
   }
 
   if (password.length < 8) {

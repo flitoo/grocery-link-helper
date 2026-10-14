@@ -25,9 +25,13 @@ function CustomerDashboard() {
   const groceryItems = getSavedData("groceryItems", []);
 
   // Get completed orders from localStorage
-  const orders = getSavedData("orders", []);
+  const savedOrders = getSavedData("orders", []);
+  const orders = Array.isArray(savedOrders) ? savedOrders : [];
 
-  const groceryItemCount = groceryItems.length;
+  const groceryItemCount = Array.isArray(groceryItems)
+    ? groceryItems.length
+    : 0;
+
   const recentOrderCount = orders.length;
 
   // Show newest orders first
@@ -61,7 +65,6 @@ function CustomerDashboard() {
             Orders
           </Link>
 
-          {/* Helper Dashboard navigation */}
           <Link to="/helper-dashboard">
             Helper Dashboard
           </Link>
@@ -225,46 +228,63 @@ function CustomerDashboard() {
             </div>
           ) : (
             <div className="dashboard-order-list">
-              {recentOrders.map((order) => (
-                <div
-                  className="dashboard-order-item"
-                  key={order.id}
-                >
-                  <div>
-                    <h3>
-                      Order #{order.id}
-                    </h3>
+              {recentOrders.map((order, index) => {
+                const orderId =
+                  order.order_id ?? order.id;
 
-                    <p>
-                      {order.store?.name ||
-                        order.store?.store_name ||
-                        "Store"}
-                    </p>
-                  </div>
-
-                  <div>
-                    <strong>
-                      {order.status}
-                    </strong>
-
-                    <p>
-                      {order.deliverySlot
-                        ? order.deliverySlot.replace(
-                            "T",
-                            " "
-                          )
-                        : ""}
-                    </p>
-                  </div>
-
-                  <Link
-                    to={`/order-details/${order.id}`}
-                    className="card-button"
+                return (
+                  <div
+                    className="dashboard-order-item"
+                    key={orderId ?? index}
                   >
-                    View Details
-                  </Link>
-                </div>
-              ))}
+                    {/* Order Information */}
+                    <div>
+                      <h3>
+                        Order #{orderId ?? "Unknown"}
+                      </h3>
+
+                      <p>
+                        {order.store?.name ||
+                          order.store?.store_name ||
+                          order.store_name ||
+                          "Store"}
+                      </p>
+                    </div>
+
+                    {/* Order Status */}
+                    <div>
+                      <strong>
+                        {order.status || "Pending"}
+                      </strong>
+
+                      <p>
+                        {order.deliverySlot
+                          ? String(
+                              order.deliverySlot
+                            ).replace("T", " ")
+                          : ""}
+                      </p>
+                    </div>
+
+                    {/* Order Actions */}
+                    <div>
+                      <Link
+                        to={`/order-details/${orderId}`}
+                        className="card-button"
+                      >
+                        View Details
+                      </Link>
+
+                      <Link
+                        to={`/orders/${orderId}/chat`}
+                        className="card-button"
+                      >
+                        Chat with Helper
+                      </Link>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
         </section>
