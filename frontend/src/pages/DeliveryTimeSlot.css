@@ -92,37 +92,83 @@
    Date & Time Inputs
 ========================= */
 
-.delivery-form-group {
-  margin-bottom: 25px;
-}
-
-.delivery-form-group:last-of-type {
-  margin-bottom: 0;
-}
-
-.delivery-form-group label {
-  display: block;
-  margin-bottom: 10px;
+.slot-heading {
+  margin: 0 0 12px;
   color: #333;
   font-size: 15px;
   font-weight: 600;
 }
 
-.delivery-form-group input {
-  width: 100%;
-  padding: 13px 15px;
+.slot-days + .slot-heading {
+  margin-top: 28px;
+}
+
+.slot-days {
+  display: flex;
+  gap: 10px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+}
+
+.slot-times {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 10px;
+}
+
+.slot-day,
+.slot-time {
+  min-height: 46px;
+  padding: 0 18px;
   border: 1px solid #ddd;
   border-radius: 8px;
   background: white;
-  color: #222;
+  color: #2e7d32;
   font-size: 15px;
-  outline: none;
-  box-sizing: border-box;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
 }
 
-.delivery-form-group input:focus {
+.slot-time {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.slot-day:hover:not(:disabled),
+.slot-time:hover:not(:disabled) {
   border-color: #43a047;
+}
+
+.slot-day.selected,
+.slot-time.selected {
+  border-color: #43a047;
+  background: #e8f5e9;
   box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+.slot-day:disabled,
+.slot-time:disabled {
+  background: #f3f3f3;
+  color: #999;
+  cursor: not-allowed;
+}
+
+.slot-time small {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #fff1f1;
+  color: #d32f2f;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.slot-message {
+  margin: 0;
+  color: #777;
+  font-size: 15px;
 }
 
 /* =========================
@@ -202,8 +248,13 @@
   cursor: pointer;
 }
 
-.delivery-continue:hover {
+.delivery-continue:hover:not(:disabled) {
   background: #2e7d32;
+}
+
+.delivery-continue:disabled {
+  background: #a5d6a7;
+  cursor: not-allowed;
 }
 
 /* =========================

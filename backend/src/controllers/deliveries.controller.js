@@ -19,6 +19,11 @@ async function claimDelivery(req, res) {
     if (err.code === 'NOT_A_HELPER') {
       return res.status(403).json({ errors: ['Only delivery helpers can claim orders.'] });
     }
+    if (err.code === 'HELPER_HAS_ACTIVE_ORDER') {
+      return res.status(409).json({
+        errors: ['You already have an active order. Complete it before claiming another.'],
+      });
+    }
     if (err.code === 'ORDER_NOT_AVAILABLE') {
       return res.status(409).json({ errors: ['Order is not available to claim.'] });
     }

@@ -76,7 +76,9 @@ Authorization: Bearer <token>
 
 The claim is atomic. A successful claim creates the delivery and sets the
 order's helper and status to `Assigned`. Only users with the `Helper` role can
-claim an order.
+claim an order. A helper can hold only one active order (status `Assigned`,
+`Shopping` or `Out_for_Delivery`) at a time; claiming another returns `409`
+until the current one is `Delivered` or `Cancelled`.
 
 Customers and assigned helpers can read and send messages for their order:
 

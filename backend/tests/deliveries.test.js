@@ -62,6 +62,19 @@ describe('POST /api/deliveries/:orderId/claim', () => {
     expect(res.status).toBe(404);
   });
 
+  it('returns 409 when the helper already has an active order', async () => {
+    const error = new Error('Helper already has an active order.');
+    error.code = 'HELPER_HAS_ACTIVE_ORDER';
+    deliveriesModel.claimDelivery.mockRejectedValue(error);
+
+    const res = await request(app)
+      .post('/api/deliveries/42/claim')
+      .set('Authorization', `Bearer ${helperToken()}`);
+
+    expect(res.status).toBe(409);
+    expect(res.body.errors[0]).toMatch(/active order/i);
+  });
+
   it('returns 409 when the order is already claimed or not paid', async () => {
     const error = new Error('Order is not available to claim.');
     error.code = 'ORDER_NOT_AVAILABLE';
