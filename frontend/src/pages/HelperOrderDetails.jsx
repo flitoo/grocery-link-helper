@@ -1,39 +1,147 @@
+
+import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./OrderDetails.css";
 
-const sampleOrders = [
-  {
-    id: 1,
-    customer: "Sarah Chen",
-    store: "No Frills",
-    address: "Toronto, ON",
-    deliveryTime: "2:00 PM",
-    status: "Assigned",
-    items: [
-      { name: "Milk", quantity: 2 },
-      { name: "Bread", quantity: 1 },
-    ],
-  },
-  {
-    id: 2,
-    customer: "Michael Brown",
-    store: "FreshCo",
-    address: "North York, ON",
-    deliveryTime: "4:00 PM",
-    status: "In Progress",
-    items: [
-      { name: "Eggs", quantity: 1 },
-      { name: "Apples", quantity: 5 },
-    ],
-  },
-];
+const API_BASE =
+  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function HelperOrderDetails() {
   const { orderId } = useParams();
 
-  const order = sampleOrders.find(
-    (item) => String(item.id) === String(orderId)
-  );
+  const [order, setOrder] = useState(null);
+  const [storeName, setStoreName] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [message, setMessage] = useState("");
+  const [claiming, setClaiming] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadOrder() {
+      setLoading(true);
+      setError("");
+      setMessage("");
+      setOrder(null);
+      setStoreName("");
+
+      try {
+        const response = await fetch(
+          `${API_BASE}/api/orders/${orderId}`,
+          { signal: controller.signal }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(
+            data.errors?.[0] ||
+              "Failed to load order details."
+          );
+        }
+
+        if (controller.signal.aborted) return;
+
+        setOrder(data);
+
+        const storesResponse = await fetch(
+          `${API_BASE}/api/stores`,
+          { signal: controller.signal }
+        );
+
+        if (storesResponse.ok) {
+          const storesData = await storesResponse.json();
+
+          const store = storesData.stores?.find(
+            (item) =>
+              Number(item.store_id) ===
+              Number(data.store_id)
+          );
+
+          if (!controller.signal.aborted) {
+            setStoreName(store?.store_name || "");
+          }
+        }
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setError(err.message);
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    loadOrder();
+
+    return () => controller.abort();
+  }, [orderId]);
+
+  async function handleClaimOrder() {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("Please log in as a helper first.");
+      return;
+    }
+
+    setClaiming(true);
+    setError("");
+    setMessage("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/deliveries/${orderId}/claim`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.errors?.[0] ||
+            "Failed to claim this order."
+        );
+      }
+
+      setMessage("Order claimed successfully!");
+
+      setOrder((previous) => ({
+        ...previous,
+        status: "Assigned",
+      }));
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setClaiming(false);
+    }
+  }
+
+  function formatDate(value) {
+    if (!value) return "Not available";
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return "Not available";
+    }
+
+    return date.toLocaleString("en-CA", {
+      timeZone: "America/Toronto",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+    });
+  }
 
   return (
     <div className="order-details-page">
@@ -50,21 +158,36 @@ function HelperOrderDetails() {
       <main className="order-details-content">
         <div className="order-details-title">
           <h2>Helper Order Details</h2>
-          <span>View your assigned delivery information.</span>
+          <span>
+            View and manage delivery information.
+          </span>
         </div>
 
-        {!order ? (
+        {loading && (
           <section className="order-details-card">
-            <h3>Order Not Found</h3>
-            <p>This order is not available.</p>
+            <p>Loading order details...</p>
           </section>
-        ) : (
+        )}
+
+        {error && (
+          <section className="order-details-card">
+            <p style={{ color: "red" }}>{error}</p>
+          </section>
+        )}
+
+        {message && (
+          <section className="order-details-card">
+            <p style={{ color: "green" }}>{message}</p>
+          </section>
+        )}
+
+        {!loading && order && (
           <>
             <section className="order-details-card">
               <div className="order-top">
                 <div>
                   <span>Order Number</span>
-                  <h3>#{order.id}</h3>
+                  <h3>#{order.order_id}</h3>
                 </div>
 
                 <div className="order-status">
@@ -73,18 +196,30 @@ function HelperOrderDetails() {
               </div>
 
               <div className="order-info-row">
-                <span>Customer</span>
-                <strong>{order.customer}</strong>
+                <span>Customer ID</span>
+                <strong>#{order.customer_id}</strong>
+              </div>
+
+              <div className="order-info-row">
+                <span>Order Date</span>
+                <strong>
+                  {formatDate(order.created_at)}
+                </strong>
               </div>
             </section>
 
             <section className="order-details-card">
               <h3>Grocery Items</h3>
 
-              {order.items.map((item, index) => (
-                <div className="order-info-row" key={index}>
-                  <span>{item.name}</span>
-                  <strong>Quantity: {item.quantity}</strong>
+              {order.items?.map((item) => (
+                <div
+                  className="order-info-row"
+                  key={item.item_id}
+                >
+                  <span>{item.item_name}</span>
+                  <strong>
+                    Quantity: {item.quantity}
+                  </strong>
                 </div>
               ))}
             </section>
@@ -94,7 +229,10 @@ function HelperOrderDetails() {
 
               <div className="order-info-row">
                 <span>Store Name</span>
-                <strong>{order.store}</strong>
+                <strong>
+                  {storeName ||
+                    `Store #${order.store_id}`}
+                </strong>
               </div>
             </section>
 
@@ -103,14 +241,54 @@ function HelperOrderDetails() {
 
               <div className="order-info-row">
                 <span>Delivery Address</span>
-                <strong>{order.address}</strong>
+                <strong>
+                  {order.delivery_address}
+                </strong>
               </div>
 
               <div className="order-info-row">
                 <span>Delivery Time</span>
-                <strong>{order.deliveryTime}</strong>
+                <strong>
+                  {formatDate(order.delivery_slot)}
+                </strong>
               </div>
             </section>
+
+            <section className="order-details-card">
+              <h3>Order Total</h3>
+
+              <div className="order-info-row">
+                <span>Total Amount</span>
+                <strong>
+                  $
+                  {Number(
+                    order.total_amount || 0
+                  ).toFixed(2)}
+                </strong>
+              </div>
+            </section>
+
+            {order.status === "Paid" &&
+              order.helper_id == null && (
+                <section className="order-details-card">
+                  <h3>Available Delivery</h3>
+
+                  <p>
+                    This order is available for a
+                    helper to claim.
+                  </p>
+
+                  <button
+                    onClick={handleClaimOrder}
+                    disabled={claiming}
+                    className="order-dashboard-button"
+                  >
+                    {claiming
+                      ? "Claiming..."
+                      : "Claim Order"}
+                  </button>
+                </section>
+              )}
           </>
         )}
 

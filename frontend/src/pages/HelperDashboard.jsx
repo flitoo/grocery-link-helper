@@ -1,32 +1,41 @@
+
 import { useNavigate } from "react-router-dom";
 import "./HelperDashboard.css";
 
-const sampleOrders = [
-  {
-    id: 1,
-    customer: "Sarah Chen",
-    store: "No Frills",
-    address: "Toronto, ON",
-    deliveryTime: "2:00 PM",
-    status: "Assigned",
-  },
-  {
-    id: 2,
-    customer: "Michael Brown",
-    store: "FreshCo",
-    address: "North York, ON",
-    deliveryTime: "4:00 PM",
-    status: "In Progress",
-  },
-];
-
 function HelperDashboard() {
   const navigate = useNavigate();
+
+  const getSavedOrders = () => {
+    try {
+      const saved = localStorage.getItem("orders");
+      const orders = saved ? JSON.parse(saved) : [];
+
+      return Array.isArray(orders) ? orders : [];
+    } catch (error) {
+      console.error("Failed to load orders:", error);
+      return [];
+    }
+  };
+
+  const orders = getSavedOrders();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     navigate("/");
+  };
+
+  const getOrderId = (order) =>
+    order.order_id ?? order.orderId ?? order.id;
+
+  const formatDeliveryTime = (value) => {
+    if (!value) return "Not available";
+
+    const date = new Date(value);
+
+    return Number.isNaN(date.getTime())
+      ? String(value)
+      : date.toLocaleString("en-CA");
   };
 
   return (
@@ -35,8 +44,10 @@ function HelperDashboard() {
         <h1>Grocery Helper</h1>
 
         <nav>
-          <button onClick={() => navigate("/helper-dashboard")}>
-            Dashboard
+          <button
+            onClick={() => navigate("/dashboard")}
+          >
+            Customer Dashboard
           </button>
 
           <button onClick={handleLogout}>
@@ -47,31 +58,76 @@ function HelperDashboard() {
 
       <main className="helper-content">
         <h2>Helper Dashboard</h2>
-        <p>View and manage your assigned deliveries.</p>
+
+        <p>View grocery orders for development testing.</p>
 
         <section className="helper-orders">
-          <h3>Assigned Orders</h3>
+          <h3>Orders</h3>
 
-          {sampleOrders.map((order) => (
-            <div className="helper-order-card" key={order.id}>
-              <h4>Order #{order.id}</h4>
-
-              <p><strong>Customer:</strong> {order.customer}</p>
-              <p><strong>Store:</strong> {order.store}</p>
-              <p><strong>Delivery Address:</strong> {order.address}</p>
-              <p><strong>Delivery Time:</strong> {order.deliveryTime}</p>
-              <p><strong>Status:</strong> {order.status}</p>
-
-              <button
-                className="helper-details-button"
-                onClick={() =>
-                  navigate(`/helper/orders/${order.id}`)
-                }
-              >
-                View Details
-              </button>
+          {orders.length === 0 ? (
+            <div className="helper-order-card">
+              <p>No orders available.</p>
             </div>
-          ))}
+          ) : (
+            [...orders].reverse().map((order, index) => {
+              const orderId = getOrderId(order);
+
+              const store =
+                order.store?.name ||
+                order.store?.store_name ||
+                order.store_name ||
+                "Not available";
+
+              const address =
+                order.delivery_address ||
+                order.deliveryAddress ||
+                "Not available";
+
+              const deliveryTime =
+                order.delivery_slot ||
+                order.deliverySlot;
+
+              return (
+                <div
+                  className="helper-order-card"
+                  key={orderId ?? index}
+                >
+                  <h4>
+                    Order #{orderId ?? "Unknown"}
+                  </h4>
+
+                  <p>
+                    <strong>Store:</strong> {store}
+                  </p>
+
+                  <p>
+                    <strong>Delivery Address:</strong>{" "}
+                    {address}
+                  </p>
+
+                  <p>
+                    <strong>Delivery Time:</strong>{" "}
+                    {formatDeliveryTime(deliveryTime)}
+                  </p>
+
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    {order.status || "Pending"}
+                  </p>
+
+                  <button
+                    className="helper-details-button"
+                    disabled={!orderId}
+                    onClick={() =>
+                      navigate(`/helper/orders/${orderId}`)
+                    }
+                  >
+                    View Details
+                  </button>
+                </div>
+              );
+            })
+          )}
         </section>
       </main>
     </div>

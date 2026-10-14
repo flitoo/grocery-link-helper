@@ -1,3 +1,4 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import "./CustomerDashboard.css";
 
@@ -58,6 +59,11 @@ function CustomerDashboard() {
 
           <Link to="/orders">
             Orders
+          </Link>
+
+          {/* Helper Dashboard navigation */}
+          <Link to="/helper-dashboard">
+            Helper Dashboard
           </Link>
 
           <button
