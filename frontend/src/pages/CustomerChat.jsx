@@ -6,10 +6,12 @@ import "./CustomerChat.css";
 const API_BASE =
   import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-function CustomerChat() {
+function CustomerChat({ isHelper = false }) {
   const { orderId } = useParams();
 
   const [messages, setMessages] = useState([]);
+  const [orderParticipants, setOrderParticipants] =
+    useState(null);
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [sending, setSending] = useState(false);
@@ -36,6 +38,7 @@ function CustomerChat() {
             Authorization: `Bearer ${token}`,
           },
           signal,
+          cache: "no-store",
         }
       );
 
@@ -54,8 +57,10 @@ function CustomerChat() {
         ? data
         : data.messages || [];
 
-      setMessages(messageList);
-      setError("");
+      if (!signal?.aborted) {
+        setMessages(messageList);
+        setError("");
+      }
     } catch (err) {
       if (err.name !== "AbortError") {
         setError(err.message);
@@ -67,19 +72,56 @@ function CustomerChat() {
     }
   }
 
-  // Load messages when order changes
+  // Load conversation when order changes
   useEffect(() => {
     const controller = new AbortController();
 
     setLoading(true);
     setMessages([]);
+    setOrderParticipants(null);
     setError("");
     setSuccess("");
 
     loadMessages(controller.signal);
 
+    // Load order information for sender labels
+    async function loadOrderParticipants() {
+      try {
+        const response = await fetch(
+          `${API_BASE}/api/orders/${orderId}`,
+          {
+            signal: controller.signal,
+          }
+        );
+
+        if (!response.ok) return;
+
+        const order = await response.json();
+
+        if (!controller.signal.aborted) {
+          setOrderParticipants(order);
+        }
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          console.error(
+            "Failed to load order information:",
+            err
+          );
+        }
+      }
+    }
+
+    loadOrderParticipants();
+
     return () => controller.abort();
   }, [orderId]);
+
+  // Refresh messages
+  async function handleRefresh() {
+    setLoading(true);
+    setSuccess("");
+    await loadMessages();
+  }
 
   // Send message to backend
   async function handleSend(event) {
@@ -109,8 +151,6 @@ function CustomerChat() {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-
-          // Backend requires message_text
           body: JSON.stringify({
             message_text: content,
           }),
@@ -131,7 +171,7 @@ function CustomerChat() {
       setNewMessage("");
       setSuccess("Message sent successfully.");
 
-      // Reload conversation after sending
+      // Reload messages after sending
       await loadMessages();
     } catch (err) {
       setError(err.message);
@@ -140,18 +180,45 @@ function CustomerChat() {
     }
   }
 
-  // Format message time
+  // Format message timestamp
   function formatTime(value) {
     if (!value) return "";
 
     const date = new Date(value);
 
-    return Number.isNaN(date.getTime())
-      ? ""
-      : date.toLocaleString("en-CA", {
-          dateStyle: "medium",
-          timeStyle: "short",
-        });
+    if (Number.isNaN(date.getTime())) {
+      return "";
+    }
+
+    return date.toLocaleString("en-CA", {
+      dateStyle: "medium",
+      timeStyle: "short",
+    });
+  }
+
+  // Identify message sender
+  function getSenderName(item) {
+    const senderId = Number(item.sender_id);
+
+    if (
+      orderParticipants &&
+      senderId === Number(orderParticipants.customer_id)
+    ) {
+      return "Customer";
+    }
+
+    if (
+      orderParticipants?.helper_id != null &&
+      senderId === Number(orderParticipants.helper_id)
+    ) {
+      return "Helper";
+    }
+
+    return (
+      item.sender_name ||
+      item.sender_role ||
+      `User #${item.sender_id ?? "Unknown"}`
+    );
   }
 
   return (
@@ -161,22 +228,34 @@ function CustomerChat() {
         <h1>Grocery Link Helper</h1>
 
         <nav>
-          <Link to="/dashboard">
+          <Link
+            to={
+              isHelper
+                ? "/helper-dashboard"
+                : "/dashboard"
+            }
+          >
             Dashboard
           </Link>
 
-          <Link to="/orders">
-            Orders
-          </Link>
+          {!isHelper && (
+            <Link to="/orders">
+              Orders
+            </Link>
+          )}
         </nav>
       </header>
 
       {/* Main Content */}
       <main className="customer-chat-content">
         <div className="customer-chat-title">
-          <p>Customer Support</p>
+          <p>Order Conversation</p>
 
-          <h2>Chat with Helper</h2>
+          <h2>
+            {isHelper
+              ? "Chat with Customer"
+              : "Chat with Helper"}
+          </h2>
 
           <span>Order #{orderId}</span>
         </div>
@@ -186,19 +265,19 @@ function CustomerChat() {
           <div className="customer-chat-card-header">
             <div>
               <h3>Order #{orderId}</h3>
-              <p>Order conversation</p>
+              <p>
+                {isHelper
+                  ? "Customer conversation"
+                  : "Helper conversation"}
+              </p>
             </div>
 
             <button
               type="button"
-              onClick={() => {
-                setLoading(true);
-                setSuccess("");
-                loadMessages();
-              }}
+              onClick={handleRefresh}
               disabled={loading || sending}
             >
-              Refresh
+              {loading ? "Loading..." : "Refresh"}
             </button>
           </div>
 
@@ -213,7 +292,7 @@ function CustomerChat() {
               </p>
             ) : messages.length === 0 ? (
               <p className="customer-chat-empty">
-                No messages yet.
+                No messages yet. Start the conversation!
               </p>
             ) : (
               messages.map((item, index) => {
@@ -224,18 +303,15 @@ function CustomerChat() {
                   item.body ??
                   "";
 
-                const sender =
-                  item.sender_name ||
-                  item.sender_role ||
-                  `User #${item.sender_id ?? "Unknown"}`;
-
                 return (
                   <div
                     className="customer-chat-message"
                     key={item.message_id ?? index}
                   >
                     <div className="customer-chat-message-top">
-                      <strong>{sender}</strong>
+                      <strong>
+                        {getSenderName(item)}
+                      </strong>
 
                       <small>
                         {formatTime(
@@ -279,7 +355,11 @@ function CustomerChat() {
               onChange={(event) =>
                 setNewMessage(event.target.value)
               }
-              placeholder="Type your message..."
+              placeholder={
+                isHelper
+                  ? "Type a message to the customer..."
+                  : "Type a message to the helper..."
+              }
               rows={3}
               maxLength={2000}
               disabled={sending}
@@ -288,7 +368,10 @@ function CustomerChat() {
             <button
               type="submit"
               disabled={
-                !newMessage.trim() || sending
+                !newMessage.trim() ||
+                sending ||
+                loading ||
+                Boolean(error)
               }
             >
               {sending
@@ -300,7 +383,11 @@ function CustomerChat() {
 
         {/* Back Button */}
         <Link
-          to={`/order-details/${orderId}`}
+          to={
+            isHelper
+              ? `/helper/orders/${orderId}`
+              : `/order-details/${orderId}`
+          }
           className="customer-chat-back"
         >
           Back to Order Details

@@ -58,7 +58,8 @@ function HelperOrderDetails() {
         );
 
         if (storesResponse.ok) {
-          const storesData = await storesResponse.json();
+          const storesData =
+            await storesResponse.json();
 
           const stores = Array.isArray(storesData)
             ? storesData
@@ -71,7 +72,9 @@ function HelperOrderDetails() {
           );
 
           if (!controller.signal.aborted) {
-            setStoreName(store?.store_name || "");
+            setStoreName(
+              store?.store_name || ""
+            );
           }
         }
       } catch (err) {
@@ -132,17 +135,13 @@ function HelperOrderDetails() {
       );
 
       if (updatedResponse.ok) {
-        const updatedOrder = await updatedResponse.json();
+        const updatedOrder =
+          await updatedResponse.json();
+
         setOrder(updatedOrder);
       } else {
-        // Fallback to the confirmed claim status
-        setOrder((previous) =>
-          previous
-            ? {
-                ...previous,
-                status: "Assigned",
-              }
-            : previous
+        setMessage(
+          "Order claimed. Refresh the page to view updated details."
         );
       }
     } catch (err) {
@@ -205,14 +204,18 @@ function HelperOrderDetails() {
         {/* Error */}
         {error && (
           <section className="order-details-card">
-            <p style={{ color: "red" }}>{error}</p>
+            <p style={{ color: "red" }}>
+              {error}
+            </p>
           </section>
         )}
 
         {/* Success Message */}
         {message && (
           <section className="order-details-card">
-            <p style={{ color: "green" }}>{message}</p>
+            <p style={{ color: "green" }}>
+              {message}
+            </p>
           </section>
         )}
 
@@ -270,7 +273,9 @@ function HelperOrderDetails() {
                   </div>
                 ))
               ) : (
-                <p>No grocery items available.</p>
+                <p>
+                  No grocery items available.
+                </p>
               )}
             </section>
 
@@ -350,7 +355,7 @@ function HelperOrderDetails() {
                 </section>
               )}
 
-            {/* Delivery Status Information */}
+            {/* Delivery Management */}
             <section className="order-details-card">
               <h3>Delivery Management</h3>
 
@@ -366,6 +371,16 @@ function HelperOrderDetails() {
                 >
                   Update Delivery Status
                 </Link>
+
+                {/* Chat with Customer */}
+                {order.helper_id != null && (
+                  <Link
+                    to={`/helper/orders/${orderId}/chat`}
+                    className="order-dashboard-button"
+                  >
+                    Chat with Customer
+                  </Link>
+                )}
               </div>
             </section>
           </>
