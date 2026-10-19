@@ -171,10 +171,23 @@
   padding: 14px;
   border: none;
   border-radius: 8px;
+  background: #2e7d32;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.delivery-update-button:hover:not(:disabled) {
+  background: #1b5e20;
+}
+
+.delivery-update-button:disabled {
   background: #aebbb0;
   color: white;
-  font-weight: 600;
   cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .delivery-status-actions {
