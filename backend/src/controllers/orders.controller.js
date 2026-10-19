@@ -1,6 +1,7 @@
 const { validateCreateOrderPayload } = require('../validators/orders.validator');
 const ordersModel = require('../models/orders.model');
 const { validateSlot } = require('../services/slots.service');
+const { HELPER_SETTABLE_STATUSES } = require('../constants/order-status');
 
 // Postgres error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 const PG_FOREIGN_KEY_VIOLATION = '23503';
@@ -65,18 +66,31 @@ async function getOrder(req, res) {
 }
 
 
+// orders.order_id is an int4, so larger values can never match a row.
+const MAX_ORDER_ID = 2147483647;
+
+function parseOrderId(value) {
+  if (!/^[1-9]\d*$/.test(String(value))) {
+    return undefined;
+  }
+  const id = Number(value);
+  return id <= MAX_ORDER_ID ? id : undefined;
+}
+
 async function updateDeliveryStatus(req, res) {
-  const orderId = Number(req.params.id);
+  const orderId = parseOrderId(req.params.id);
   const helperId = Number(req.user?.userId);
   const { status } = req.body || {};
-  if (!Number.isInteger(orderId) || orderId <= 0) {
-    return res.status(400).json({ errors: ['Invalid order ID.'] });
+  if (!orderId) {
+    return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
   if (!Number.isInteger(helperId) || helperId <= 0) {
     return res.status(401).json({ errors: ['Authentication required.'] });
   }
-  if (!['Shopping', 'Out_for_Delivery', 'Delivered'].includes(status)) {
-    return res.status(400).json({ errors: ['Invalid delivery status.'] });
+  if (!HELPER_SETTABLE_STATUSES.includes(status)) {
+    return res.status(400).json({
+      errors: [`Status must be one of: ${HELPER_SETTABLE_STATUSES.join(', ')}.`],
+    });
   }
   try {
     const order = await ordersModel.updateDeliveryStatus({ orderId, helperId, nextStatus: status });
@@ -93,6 +107,7 @@ async function updateDeliveryStatus(req, res) {
     return res.status(500).json({ errors: ['Unexpected error updating delivery status.'] });
   }
 }
+
 async function getAssignedTasks(req, res) {
   const helperId = Number(req.user?.userId);
 

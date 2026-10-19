@@ -60,6 +60,22 @@ describe('ordersModel.updateDeliveryStatus', () => {
     expect(client.query).toHaveBeenCalledTimes(1);
   });
 
+  it('names the expected next status in the error', async () => {
+    queueResults([{ order_id: 42, helper_id: 7, status: 'Assigned' }]);
+
+    await expect(update('Delivered')).rejects.toThrow(
+      'Cannot move order from Assigned to Delivered. Next status is Shopping.'
+    );
+  });
+
+  it('says so when the order can no longer be advanced', async () => {
+    queueResults([{ order_id: 42, helper_id: 7, status: 'Delivered' }]);
+
+    await expect(update('Delivered')).rejects.toThrow(
+      'Order is Delivered and cannot be advanced.'
+    );
+  });
+
   it.each([
     ['Assigned', 'Shopping'],
     ['Shopping', 'Out_for_Delivery'],

@@ -1,5 +1,6 @@
 const { pool, withTransaction } = require('../config/db');
 const slotsModel = require('./slots.model');
+const { NEXT_STATUS } = require('../constants/order-status');
 
 /**
  * Looks up an active store by id. Returns the row, or undefined if the
@@ -89,13 +90,18 @@ async function getOrderById(orderId) {
 }
 
 
-// Only the assigned helper may advance the order one step at a time.
-const NEXT_STATUS = {
-  Assigned: 'Shopping',
-  Shopping: 'Out_for_Delivery',
-  Out_for_Delivery: 'Delivered',
-};
+function invalidTransitionError(current, requested) {
+  const expected = NEXT_STATUS[current];
+  const error = new Error(
+    expected
+      ? `Cannot move order from ${current} to ${requested}. Next status is ${expected}.`
+      : `Order is ${current} and cannot be advanced.`
+  );
+  error.code = 'INVALID_STATUS_TRANSITION';
+  return error;
+}
 
+// Only the assigned helper may advance the order one step at a time.
 async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
   return withTransaction(async (client) => {
     const result = await client.query(
@@ -110,9 +116,7 @@ async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
       throw error;
     }
     if (NEXT_STATUS[order.status] !== nextStatus) {
-      const error = new Error('Invalid status transition.');
-      error.code = 'INVALID_STATUS_TRANSITION';
-      throw error;
+      throw invalidTransitionError(order.status, nextStatus);
     }
     const updated = await client.query(
       `UPDATE orders SET status = $1 WHERE order_id = $2 RETURNING order_id, helper_id, status`,

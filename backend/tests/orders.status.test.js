@@ -69,6 +69,40 @@ describe('PATCH /api/orders/:id/status', () => {
     expect(ordersModel.updateDeliveryStatus).not.toHaveBeenCalled();
   });
 
+  it.each(['1e3', '0x10', '5abc', '-3', '1.5', '2147483648'])(
+    'rejects the malformed or out-of-range order id %s with 400',
+    async (orderId) => {
+      const res = await patchStatus(orderId, { status: 'Shopping' });
+
+      expect(res.status).toBe(400);
+      expect(ordersModel.updateDeliveryStatus).not.toHaveBeenCalled();
+    }
+  );
+
+  it('lists the allowed statuses when the status is invalid', async () => {
+    const res = await patchStatus(42, { status: 'Teleported' });
+
+    expect(res.status).toBe(400);
+    expect(res.body.errors[0]).toBe(
+      'Status must be one of: Shopping, Out_for_Delivery, Delivered.'
+    );
+  });
+
+  it('accepts the largest valid order id', async () => {
+    ordersModel.updateDeliveryStatus.mockResolvedValue({
+      order_id: 2147483647,
+      helper_id: 7,
+      status: 'Shopping',
+    });
+
+    const res = await patchStatus(2147483647, { status: 'Shopping' });
+
+    expect(res.status).toBe(200);
+    expect(ordersModel.updateDeliveryStatus).toHaveBeenCalledWith(
+      expect.objectContaining({ orderId: 2147483647 })
+    );
+  });
+
   it('returns 404 when the order does not exist', async () => {
     ordersModel.updateDeliveryStatus.mockResolvedValue(undefined);
 
@@ -95,6 +129,7 @@ describe('PATCH /api/orders/:id/status', () => {
     const res = await patchStatus(42, { status: 'Delivered' });
 
     expect(res.status).toBe(409);
+    expect(res.body.errors[0]).toBe('Invalid status transition.');
   });
 
   it('returns 500 on an unexpected failure', async () => {
