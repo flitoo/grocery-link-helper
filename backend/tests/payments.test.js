@@ -24,6 +24,7 @@ describe('POST /api/payments', () => {
       .send({
         order_id: 42,
         transaction_ref: ' gateway-ref-123 ',
+        payment_method: 'credit',
         amount: 0.01,
         payment_status: 'Verified',
       });
@@ -33,6 +34,7 @@ describe('POST /api/payments', () => {
     expect(paymentsModel.createPayment).toHaveBeenCalledWith({
       orderId: 42,
       transactionRef: 'gateway-ref-123',
+      paymentMethod: 'credit',
     });
   });
 
@@ -50,7 +52,7 @@ describe('POST /api/payments', () => {
 
     const res = await request(app)
       .post('/api/payments')
-      .send({ order_id: 999, transaction_ref: 'gateway-ref-999' });
+      .send({ order_id: 999, transaction_ref: 'gateway-ref-999', payment_method: 'credit' });
 
     expect(res.status).toBe(404);
   });
@@ -62,7 +64,7 @@ describe('POST /api/payments', () => {
 
     const res = await request(app)
       .post('/api/payments')
-      .send({ order_id: 42, transaction_ref: 'gateway-ref-123' });
+      .send({ order_id: 42, transaction_ref: 'gateway-ref-123', payment_method: 'credit' });
 
     expect(res.status).toBe(409);
   });

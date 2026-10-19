@@ -80,6 +80,21 @@ claim an order. A helper can hold only one active order (status `Assigned`,
 `Shopping` or `Out_for_Delivery`) at a time; claiming another returns `409`
 until the current one is `Delivered` or `Cancelled`.
 
+The assigned helper advances an order one step at a time:
+
+```http
+PATCH /api/orders/{orderId}/status
+Authorization: Bearer <token>
+Content-Type: application/json
+```
+
+Send `{"status":"Shopping"}`, then `"Out_for_Delivery"`, then `"Delivered"`.
+Responses: `200` with `{order_id, helper_id, status}`, `400` for an invalid id
+or status, `401` without a valid token, `403` if the caller is not the order's
+helper, `404` if the order does not exist, and `409` for a skipped or repeated
+step. Setting `Delivered` also marks the delivery `Completed`, which frees the
+helper to claim another order.
+
 Customers and assigned helpers can read and send messages for their order:
 
 ```http
