@@ -127,5 +127,31 @@ async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
     return updated.rows[0];
   });
 }
+async function getAssignedTasks(helperId) {
+  const result = await pool.query(
+    `SELECT
+       order_id,
+       customer_id,
+       helper_id,
+       store_id,
+       status,
+       delivery_slot,
+       delivery_address,
+       total_amount,
+       created_at
+     FROM orders
+     WHERE helper_id = $1
+       AND status IN ('Assigned', 'Shopping', 'Out_for_Delivery')
+     ORDER BY created_at DESC`,
+    [helperId]
+  );
 
-module.exports = { findActiveStoreById, createOrder, getOrderById, updateDeliveryStatus };
+  return result.rows;
+}
+module.exports = {
+  findActiveStoreById,
+  createOrder,
+  getOrderById,
+  updateDeliveryStatus,
+  getAssignedTasks,
+};

@@ -93,5 +93,32 @@ async function updateDeliveryStatus(req, res) {
     return res.status(500).json({ errors: ['Unexpected error updating delivery status.'] });
   }
 }
+async function getAssignedTasks(req, res) {
+  const helperId = Number(req.user?.userId);
 
-module.exports = { createOrder, getOrder, updateDeliveryStatus };
+  if (!Number.isInteger(helperId) || helperId <= 0) {
+    return res.status(401).json({
+      errors: ['Authentication required.'],
+    });
+  }
+
+  try {
+    const orders = await ordersModel.getAssignedTasks(helperId);
+
+    return res.status(200).json({
+      orders,
+    });
+  } catch (err) {
+    console.error('Failed to fetch assigned tasks:', err);
+
+    return res.status(500).json({
+      errors: ['Unexpected error fetching assigned tasks.'],
+    });
+  }
+}
+module.exports = {
+  createOrder,
+  getOrder,
+  updateDeliveryStatus,
+  getAssignedTasks,
+};
