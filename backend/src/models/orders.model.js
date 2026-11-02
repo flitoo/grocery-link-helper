@@ -8,7 +8,7 @@ const { NEXT_STATUS } = require('../constants/order-status');
  */
 async function findActiveStoreById(storeId, client = pool) {
   const result = await client.query(
-    'SELECT store_id, store_name, is_active FROM stores WHERE store_id = $1',
+    'SELECT store_id, store_name, is_active FROM stores WHERE store_id = $1 AND is_active = TRUE',
     [storeId]
   );
   return result.rows[0];
@@ -89,6 +89,41 @@ async function getOrderById(orderId) {
   return { ...order, items: itemsResult.rows };
 }
 
+/**
+ * Loads what a repeat order copies from a previous order: its owner, store,
+ * address, slot and line items. Returns undefined if the order doesn't exist.
+ *
+ * delivery_slot is formatted as a UTC ISO string in SQL: the column is a
+ * TIMESTAMP holding UTC wall-clock time, and letting `pg` parse it would
+ * shift it by the server's local offset.
+ */
+async function getRepeatSource(orderId) {
+  const orderResult = await pool.query(
+    `SELECT order_id, customer_id, store_id, status, delivery_address,
+            to_char(delivery_slot, 'YYYY-MM-DD"T"HH24:MI:SS".000Z"') AS delivery_slot
+     FROM orders WHERE order_id = $1`,
+    [orderId]
+  );
+  const order = orderResult.rows[0];
+  if (!order) {
+    return undefined;
+  }
+
+  const itemsResult = await pool.query(
+    `SELECT item_name, quantity, estimated_price, allow_substitution
+     FROM order_items WHERE order_id = $1
+     ORDER BY item_id`,
+    [orderId]
+  );
+
+  const items = itemsResult.rows.map((item) => ({
+    item_name: item.item_name,
+    quantity: Number(item.quantity),
+    estimated_price: Number(item.estimated_price),
+    allow_substitution: Boolean(item.allow_substitution),
+  }));
+  return { ...order, items };
+}
 
 function invalidTransitionError(current, requested) {
   const expected = NEXT_STATUS[current];
@@ -156,6 +191,7 @@ module.exports = {
   findActiveStoreById,
   createOrder,
   getOrderById,
+  getRepeatSource,
   updateDeliveryStatus,
   getAssignedTasks,
 };

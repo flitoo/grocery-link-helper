@@ -2,6 +2,7 @@ const { validateCreateOrderPayload } = require('../validators/orders.validator')
 const ordersModel = require('../models/orders.model');
 const { validateSlot } = require('../services/slots.service');
 const { HELPER_SETTABLE_STATUSES } = require('../constants/order-status');
+const { parseId } = require('../validators/ids.validator');
 
 // Postgres error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 const PG_FOREIGN_KEY_VIOLATION = '23503';
@@ -65,20 +66,8 @@ async function getOrder(req, res) {
   }
 }
 
-
-// orders.order_id is an int4, so larger values can never match a row.
-const MAX_ORDER_ID = 2147483647;
-
-function parseOrderId(value) {
-  if (!/^[1-9]\d*$/.test(String(value))) {
-    return undefined;
-  }
-  const id = Number(value);
-  return id <= MAX_ORDER_ID ? id : undefined;
-}
-
 async function updateDeliveryStatus(req, res) {
-  const orderId = parseOrderId(req.params.id);
+  const orderId = parseId(req.params.id);
   const helperId = Number(req.user?.userId);
   const { status } = req.body || {};
   if (!orderId) {

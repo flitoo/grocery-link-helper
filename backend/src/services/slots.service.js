@@ -15,9 +15,14 @@ function localParts(date, timeZone) {
     day: '2-digit',
     hour: '2-digit',
     hourCycle: 'h23',
+    weekday: 'short',
   }).formatToParts(date);
   const get = (type) => parts.find((p) => p.type === type).value;
-  return { date: `${get('year')}-${get('month')}-${get('day')}`, hour: Number(get('hour')) };
+  return {
+    date: `${get('year')}-${get('month')}-${get('day')}`,
+    hour: Number(get('hour')),
+    weekday: get('weekday'),
+  };
 }
 
 /**
@@ -36,7 +41,7 @@ function buildSlotGrid({ at = now(), settings = config.slots } = {}) {
     const start = new Date(t);
     const local = localParts(start, timeZone);
     if (local.hour >= openHour && local.hour < closeHour) {
-      grid.push({ start, localDate: local.date });
+      grid.push({ start, localDate: local.date, localWeekday: local.weekday, localHour: local.hour });
     }
   }
   return grid;
@@ -75,4 +80,47 @@ function applyCapacity(grid, bookedBySlot, capacity) {
   });
 }
 
-module.exports = { buildSlotGrid, validateSlot, applyCapacity, HOUR_MS };
+/**
+ * "Same time as last time" for a repeat order: the next grid slot on the same
+ * local weekday and hour as `previous`. Returns undefined when `previous` is
+ * not a valid date or that time isn't on the current grid (e.g. it's inside
+ * today's lead time, so next week's falls outside the 7-day window).
+ */
+function findRecurringSlot(grid, previous, { settings = config.slots } = {}) {
+  // new Date(null) is the epoch, so only accept strings and Dates.
+  const usable = typeof previous === 'string' || previous instanceof Date;
+  const prev = usable ? new Date(previous) : new Date(NaN);
+  if (Number.isNaN(prev.getTime())) {
+    return undefined;
+  }
+  const { weekday, hour } = localParts(prev, settings.timeZone);
+  return grid.find((s) => s.localWeekday === weekday && s.localHour === hour);
+}
+
+/**
+ * Up to `limit` available slots closest in time to `target` (a Date), in
+ * chronological order, excluding `target` itself. With no target, returns
+ * the earliest available slots. `slots` is the output of applyCapacity.
+ */
+function nearestAvailableSlots(slots, target, limit = 3) {
+  const open = slots.filter((s) => s.available);
+  const targetMs = target instanceof Date ? target.getTime() : NaN;
+  if (Number.isNaN(targetMs)) {
+    return open.slice(0, limit);
+  }
+  const distance = (s) => Math.abs(new Date(s.start).getTime() - targetMs);
+  return open
+    .filter((s) => distance(s) !== 0)
+    .sort((a, b) => distance(a) - distance(b) || a.start.localeCompare(b.start))
+    .slice(0, limit)
+    .sort((a, b) => a.start.localeCompare(b.start));
+}
+
+module.exports = {
+  buildSlotGrid,
+  validateSlot,
+  applyCapacity,
+  findRecurringSlot,
+  nearestAvailableSlots,
+  HOUR_MS,
+};

@@ -108,6 +108,59 @@ Send a message with `{"message_text":"Buzz 1204, please."}`. The API derives
 the sender from the token and allows access only to the customer or assigned
 helper for that order.
 
+### Repeat order (US-06)
+A customer can repeat one of their previous orders. The new order keeps the
+same store, items and address; only the delivery slot (and optionally the
+address) changes. Both endpoints need the customer's token, and only the
+customer who placed the original order can use them (`403` otherwise).
+
+Check a slot before checkout:
+
+```http
+GET /api/orders/{orderId}/repeat/availability?delivery_slot=2026-11-08T23:00:00.000Z
+Authorization: Bearer <token>
+```
+
+`delivery_slot` is optional. Without it, the API checks the next slot on the
+same weekday and local time as the original order ("same time as last week",
+which keeps the local time across daylight-saving changes). The response is
+always `200` for a valid request:
+
+```json
+{
+  "source_order_id": 42, "store_id": 3, "store_active": true,
+  "requested_slot": "2026-11-08T23:00:00.000Z",
+  "recurring_slot": "2026-11-08T23:00:00.000Z",
+  "capacity": 2, "available": false, "reason": "SLOT_FULL",
+  "message": "That delivery slot is full. Please choose another.",
+  "remaining": 0,
+  "alternatives": [{ "start": "...", "date": "2026-11-08", "booked": 0, "remaining": 2, "available": true }]
+}
+```
+
+`reason` is `null` when the slot is available. Otherwise it is one of
+`SLOT_FULL`, `SLOT_NOT_BOOKABLE` (outside hours, not on the hour, inside the
+2-hour lead time or beyond 7 days), `NO_SLOT_SELECTED` (no slot given and the
+original time isn't bookable this week), or `STORE_INACTIVE`. When the slot
+isn't available, `alternatives` lists up to 3 open slots nearest the one you
+asked for. An unparseable `delivery_slot` returns `400`.
+
+Place the repeat order:
+
+```http
+POST /api/orders/{orderId}/repeat
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{ "delivery_slot": "2026-11-08T23:00:00.000Z", "delivery_address": "55 Bloor St" }
+```
+
+`delivery_address` is optional. Responses: `201` with the new order plus
+`repeated_from`; `400` with `alternatives` for a slot that isn't bookable;
+`409` with `alternatives` if the slot filled up since the check (capacity is
+enforced inside the order transaction, so the check alone does not reserve
+it); `409` if the store is no longer active; `404` if the order does not exist.
+
 ### Tests and lint
 ```bash
 cd backend && npm test
