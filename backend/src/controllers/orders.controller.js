@@ -120,9 +120,21 @@ async function getAssignedTasks(req, res) {
     });
   }
 }
+// GET /api/orders/available — paid, unclaimed orders a helper can claim.
+async function getAvailableOrders(req, res) {
+  try {
+    const orders = await ordersModel.getAvailableOrders();
+    return res.status(200).json({ orders });
+  } catch (err) {
+    console.error('Failed to fetch available orders:', err);
+    return res.status(500).json({ errors: ['Unexpected error fetching available orders.'] });
+  }
+}
+
 module.exports = {
   createOrder,
   getOrder,
   updateDeliveryStatus,
   getAssignedTasks,
+  getAvailableOrders,
 };

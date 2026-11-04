@@ -66,12 +66,16 @@ async function createOrder({ customerId, storeId, deliverySlot, deliveryAddress,
 }
 
 /**
- * Fetches an order with its items. Returns undefined if not found.
+ * Fetches an order with its items and the assigned helper's name
+ * (helper_name is null until a helper claims it). Returns undefined if not found.
  */
 async function getOrderById(orderId) {
   const orderResult = await pool.query(
-    `SELECT order_id, customer_id, helper_id, store_id, status, delivery_slot, delivery_address, total_amount, created_at
-     FROM orders WHERE order_id = $1`,
+    `SELECT o.order_id, o.customer_id, o.helper_id, h.full_name AS helper_name,
+            o.store_id, o.status, o.delivery_slot, o.delivery_address, o.total_amount, o.created_at
+     FROM orders o
+     LEFT JOIN users h ON h.user_id = o.helper_id
+     WHERE o.order_id = $1`,
     [orderId]
   );
   const order = orderResult.rows[0];
@@ -166,23 +170,32 @@ async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
     return updated.rows[0];
   });
 }
+const HELPER_ORDER_COLUMNS = `
+  o.order_id, o.customer_id, o.helper_id, o.store_id, s.store_name,
+  o.status, o.delivery_slot, o.delivery_address, o.total_amount, o.created_at`;
+
 async function getAssignedTasks(helperId) {
   const result = await pool.query(
-    `SELECT
-       order_id,
-       customer_id,
-       helper_id,
-       store_id,
-       status,
-       delivery_slot,
-       delivery_address,
-       total_amount,
-       created_at
-     FROM orders
-     WHERE helper_id = $1
-       AND status IN ('Assigned', 'Shopping', 'Out_for_Delivery')
-     ORDER BY created_at DESC`,
+    `SELECT ${HELPER_ORDER_COLUMNS}
+     FROM orders o
+     JOIN stores s ON s.store_id = o.store_id
+     WHERE o.helper_id = $1
+       AND o.status IN ('Assigned', 'Shopping', 'Out_for_Delivery')
+     ORDER BY o.created_at DESC`,
     [helperId]
+  );
+
+  return result.rows;
+}
+
+// Paid orders no helper has claimed yet (BR-01: only paid orders are claimable).
+async function getAvailableOrders() {
+  const result = await pool.query(
+    `SELECT ${HELPER_ORDER_COLUMNS}
+     FROM orders o
+     JOIN stores s ON s.store_id = o.store_id
+     WHERE o.status = 'Paid' AND o.helper_id IS NULL
+     ORDER BY o.delivery_slot, o.order_id`
   );
 
   return result.rows;
@@ -194,4 +207,5 @@ module.exports = {
   getRepeatSource,
   updateDeliveryStatus,
   getAssignedTasks,
+  getAvailableOrders,
 };

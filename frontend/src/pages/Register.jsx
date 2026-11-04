@@ -49,9 +49,21 @@ function Register() {
         return;
       }
 
-      // Save token and go straight to the dashboard
+      const account = data.user;
+      const userId = Number(account?.id ?? account?.user_id);
+
+      if (!data.token || !Number.isInteger(userId) || userId <= 0 || !account?.role) {
+        setError("Registration response is missing user information. Please log in.");
+        return;
+      }
+
+      // Save the session the same way Login does, replacing any previous user,
+      // so order screens read this account's id.
+      const savedUser = { ...account, id: userId, user_id: userId };
       localStorage.setItem("token", data.token);
-      navigate(data.user?.role === "Helper" ? "/helper-dashboard" : "/dashboard");
+      localStorage.setItem("user", JSON.stringify(savedUser));
+      localStorage.removeItem("customerId");
+      navigate(account.role === "Helper" ? "/helper-dashboard" : "/dashboard");
     } catch (err) {
       console.error("Register request failed:", err);
       setError("Could not reach the server. Please try again.");

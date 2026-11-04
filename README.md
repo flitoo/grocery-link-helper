@@ -66,7 +66,27 @@ Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
+### Demo setup
+The payment screen confirms payments through a development-only endpoint, and
+helper accounts can't self-register by default. For a local demo, add both
+flags to `backend/.env` (they are ignored when `NODE_ENV=production`):
+
+```
+ENABLE_DEMO_PAYMENTS=true
+ENABLE_DEMO_HELPER_REGISTRATION=true
+```
+
 ### Delivery assignment and order messaging
+Helpers see their work on the helper dashboard, which loads two lists with the
+helper's token (both return `{ orders: [...] }`, `401` without a token, `403`
+for non-helpers):
+
+```http
+GET /api/orders/assigned    # the helper's active order
+GET /api/orders/available   # paid orders no helper has claimed yet
+Authorization: Bearer <token>
+```
+
 Delivery helpers can claim paid, unassigned orders with their login token:
 
 ```http

@@ -5,6 +5,7 @@ const {
   getOrder,
   updateDeliveryStatus,
   getAssignedTasks,
+  getAvailableOrders,
 } = require('../controllers/orders.controller');
 
 const {
@@ -26,6 +27,9 @@ router.post('/', createOrder);
 
 // Get assigned tasks for logged-in helper
 router.get('/assigned', requireAuth, requireHelper, getAssignedTasks);
+
+// Paid, unclaimed orders a helper can claim
+router.get('/available', requireAuth, requireHelper, getAvailableOrders);
 
 // Order messages
 router.get('/:orderId/messages', requireAuth, getOrderMessages);

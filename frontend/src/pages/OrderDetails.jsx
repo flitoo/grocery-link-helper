@@ -111,7 +111,7 @@ function OrderDetails() {
                 <div className="order-status">{status.replaceAll("_", " ")}</div>
               </div>
               <div className="order-info-row"><span>Order Date</span><strong>{formatDate(order.created_at)}</strong></div>
-              <div className="order-info-row"><span>Assigned Helper</span><strong>{order.helper_id != null ? `Helper #${order.helper_id}` : "Not assigned"}</strong></div>
+              <div className="order-info-row"><span>Assigned Helper</span><strong>{order.helper_id != null ? (order.helper_name || `Helper #${order.helper_id}`) : "Not assigned"}</strong></div>
             </section>
             <section className="order-details-card">
               <h3>Grocery Items</h3>

@@ -1,6 +1,7 @@
 
 import { Link, useNavigate } from "react-router-dom";
 import "./CustomerDashboard.css";
+import { formatOrderStatus } from "../constants/orderStatus";
 
 function CustomerDashboard() {
   const customerName = "Customer";
@@ -254,7 +255,7 @@ function CustomerDashboard() {
                     {/* Order Status */}
                     <div>
                       <strong>
-                        {order.status || "Pending"}
+                        {formatOrderStatus(order.status)}
                       </strong>
 
                       <p>

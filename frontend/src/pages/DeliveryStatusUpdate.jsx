@@ -205,7 +205,7 @@ function DeliveryStatusUpdate() {
               </div>
               <div className="delivery-status-info">
                 <span>Helper</span>
-                <strong>{isAssigned ? `Helper #${order.helper_id}` : "Not assigned"}</strong>
+                <strong>{isAssigned ? (order.helper_name || `Helper #${order.helper_id}`) : "Not assigned"}</strong>
               </div>
               <div className="delivery-status-info">
                 <span>Delivery Time</span>
