@@ -1,3 +1,8 @@
+
+/* =========================
+   Order Details Page
+========================= */
+
 .order-details-page {
   min-height: 100vh;
   background: #f5f8f5;
@@ -126,7 +131,7 @@
    Order Status
 ========================= */
 
-.order-status {
+.order-details-page .order-status {
   padding: 8px 16px;
   background: #edf7ed;
   color: #2e7d32;
@@ -169,23 +174,27 @@
    Payment Status
 ========================= */
 
-.paid-status {
+.order-details-page .paid-status {
   color: #2e7d32 !important;
 }
 
 /* =========================
-   Actions
+   Action Buttons
 ========================= */
 
-.order-details-actions {
+.order-details-page .order-details-actions {
   margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
-.order-dashboard-button {
+/* Existing Buttons */
+
+.order-details-page .order-dashboard-button,
+.order-details-page .order-dashboard-button:visited {
   display: inline-block;
   padding: 13px 24px;
   border: 1px solid #43a047;
@@ -201,8 +210,36 @@
     color 0.2s ease;
 }
 
-.order-dashboard-button:hover {
+.order-details-page .order-dashboard-button:hover {
   background: #f1f8f1;
+  color: #2e7d32;
+}
+
+/* =========================
+   Repeat Order Button
+========================= */
+
+.order-details-page .order-repeat-button,
+.order-details-page .order-repeat-button:visited {
+  display: inline-block;
+  padding: 13px 24px;
+  border: 1px solid #166534;
+  border-radius: 8px;
+  background: #166534;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.order-details-page .order-repeat-button:hover {
+  background: #14532d;
+  color: white;
+  text-decoration: none;
 }
 
 /* =========================
@@ -227,7 +264,7 @@
 }
 
 /* =========================
-   Responsive
+   Responsive Design
 ========================= */
 
 @media (max-width: 768px) {
@@ -269,12 +306,13 @@
     text-align: left;
   }
 
-  .order-details-actions {
+  .order-details-page .order-details-actions {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .order-dashboard-button {
+  .order-details-page .order-dashboard-button,
+  .order-details-page .order-repeat-button {
     width: 100%;
     box-sizing: border-box;
   }

@@ -1,8 +1,17 @@
+
+/* =========================
+   Orders Page
+========================= */
+
 .orders-page {
   min-height: 100vh;
   background: #f5f8f5;
   color: #222;
 }
+
+/* =========================
+   Header
+========================= */
 
 .orders-header {
   height: 70px;
@@ -36,11 +45,19 @@
   color: #2e7d32;
 }
 
+/* =========================
+   Main Content
+========================= */
+
 .orders-content {
   max-width: 1000px;
   margin: 0 auto;
   padding: 45px 30px;
 }
+
+/* =========================
+   Page Title
+========================= */
 
 .orders-title {
   margin-bottom: 30px;
@@ -53,9 +70,11 @@
   font-weight: 600;
 }
 
-.orders-title h2 {
+.orders-page .orders-title h2 {
   margin: 0 0 8px;
+  color: #222;
   font-size: 32px;
+  font-weight: 700;
 }
 
 .orders-title span {
@@ -63,26 +82,38 @@
   font-size: 15px;
 }
 
+/* =========================
+   Orders List
+========================= */
+
 .orders-list {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
+/* =========================
+   Order Card
+========================= */
+
 .order-card {
   padding: 25px;
   background: white;
   border: 1px solid #e5e5e5;
   border-radius: 12px;
-  box-shadow: 0 2px 8px
-    rgba(0, 0, 0, 0.04);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
+
+/* =========================
+   Order Card Header
+========================= */
 
 .order-card-header {
   padding-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 15px;
   border-bottom: 1px solid #eeeeee;
 }
 
@@ -97,19 +128,28 @@
   font-size: 20px;
 }
 
-.order-status {
+/* =========================
+   Order Status
+========================= */
+
+.orders-page .order-status {
   padding: 8px 14px;
   background: #edf7ed;
   color: #2e7d32 !important;
   border-radius: 20px;
+  font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 }
+
+/* =========================
+   Order Information
+========================= */
 
 .order-information {
   padding: 22px 0;
   display: grid;
-  grid-template-columns:
-    repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
 }
 
@@ -129,17 +169,27 @@
   font-size: 14px;
 }
 
-.paid-status {
+.orders-page .paid-status {
   color: #2e7d32 !important;
 }
 
-.order-card-actions {
+/* =========================
+   Action Buttons
+========================= */
+
+.orders-page .order-card-actions {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.view-details-button,
-.orders-start-button {
+/* View Details Button */
+
+.orders-page .view-details-button,
+.orders-page .view-details-button:visited {
+  display: inline-block;
   padding: 12px 22px;
   border-radius: 8px;
   background: #43a047;
@@ -147,12 +197,38 @@
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
+  text-align: center;
 }
 
-.view-details-button:hover,
-.orders-start-button:hover {
+.orders-page .view-details-button:hover {
   background: #2e7d32;
+  color: white;
 }
+
+/* Repeat Order Button */
+
+.orders-page .repeat-order-button,
+.orders-page .repeat-order-button:visited {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: #166534;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.orders-page .repeat-order-button:hover {
+  background: #14532d;
+  color: white;
+  text-decoration: none;
+}
+
+/* =========================
+   Empty Orders
+========================= */
 
 .orders-empty {
   padding: 60px 30px;
@@ -169,6 +245,7 @@
 
 .orders-empty h3 {
   margin: 0 0 8px;
+  color: #222;
 }
 
 .orders-empty p {
@@ -176,9 +253,34 @@
   color: #777;
 }
 
+.orders-page .orders-start-button,
+.orders-page .orders-start-button:visited {
+  display: inline-block;
+  padding: 12px 22px;
+  border-radius: 8px;
+  background: #43a047;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.orders-page .orders-start-button:hover {
+  background: #2e7d32;
+  color: white;
+}
+
+/* =========================
+   Responsive Design
+========================= */
+
 @media (max-width: 768px) {
   .orders-header {
     padding: 0 20px;
+  }
+
+  .orders-header h1 {
+    font-size: 20px;
   }
 
   .orders-header nav {
@@ -189,7 +291,41 @@
     padding: 30px 20px;
   }
 
+  .orders-page .orders-title h2 {
+    font-size: 28px;
+  }
+
+  .order-card {
+    padding: 20px;
+  }
+
+  .order-card-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
   .order-information {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .orders-page .order-card-actions {
+    justify-content: stretch;
+  }
+
+  .orders-page .view-details-button,
+  .orders-page .repeat-order-button {
+    flex: 1;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-information {
+    grid-template-columns: 1fr;
+  }
+
+  .orders-page .order-card-actions {
+    flex-direction: column;
+    align-items: stretch;
   }
 }

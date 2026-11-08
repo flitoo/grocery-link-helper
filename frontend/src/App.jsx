@@ -12,6 +12,7 @@ import OrderSummary from "./pages/OrderSummary";
 import Payment from "./pages/Payment";
 import Orders from "./pages/Orders";
 import OrderDetails from "./pages/OrderDetails";
+import RepeatOrder from "./pages/RepeatOrder";
 import HelperDashboard from "./pages/HelperDashboard";
 import HelperOrderDetails from "./pages/HelperOrderDetails";
 import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
@@ -64,6 +65,12 @@ function App() {
       <Route
         path="/order-details/:orderId"
         element={<OrderDetails />}
+      />
+
+      {/* Repeat Order */}
+      <Route
+        path="/orders/:orderId/repeat"
+        element={<RepeatOrder />}
       />
 
       {/* Customer Chat */}
