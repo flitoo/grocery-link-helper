@@ -115,6 +115,39 @@ helper, `404` if the order does not exist, and `409` for a skipped or repeated
 step. Setting `Delivered` also marks the delivery `Completed`, which frees the
 helper to claim another order.
 
+### Ratings and substitution requests
+
+After an order is delivered, its customer can submit one 1-to-5 rating:
+
+```http
+POST /api/ratings/orders/{orderId}
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{ "score": 5, "comments": "Great delivery." }
+```
+
+The customer or assigned helper can read the rating with
+`GET /api/ratings/orders/{orderId}`. A second rating for the same order returns
+`409`.
+
+While shopping, the assigned helper can suggest a substitute for an order item
+whose `allow_substitution` value is true:
+
+```http
+POST /api/substitution-requests/orders/{orderId}
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{ "original_item_id": 12, "suggested_item_name": "Oat milk", "price_difference": 0.50 }
+```
+
+Either order participant can list requests with
+`GET /api/substitution-requests/orders/{orderId}`. The customer can approve or
+reject a pending request with
+`PATCH /api/substitution-requests/orders/{orderId}/{substitutionId}` and
+`{"status":"Approved"}` or `{"status":"Rejected"}`.
+
 Customers and assigned helpers can read and send messages for their order:
 
 ```http

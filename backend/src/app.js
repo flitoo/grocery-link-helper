@@ -9,6 +9,8 @@ const paymentsRoutes = require('./routes/payments.routes');
 const storesRoutes = require('./routes/stores.routes');
 const slotsRoutes = require('./routes/slots.routes');
 const deliveriesRoutes = require('./routes/deliveries.routes');
+const ratingsRoutes = require('./routes/ratings.routes');
+const substitutionRequestsRoutes = require('./routes/substitution-requests.routes');
 
 // Template routes
 const templatesRoutes = require('./routes/templates.routes');
@@ -25,6 +27,8 @@ app.use('/api/payments', paymentsRoutes);
 app.use('/api/stores', storesRoutes);
 app.use('/api/slots', slotsRoutes);
 app.use('/api/deliveries', deliveriesRoutes);
+app.use('/api/ratings', ratingsRoutes);
+app.use('/api/substitution-requests', substitutionRequestsRoutes);
 
 // Save / Retrieve Template API
 app.use('/api/templates', templatesRoutes);
