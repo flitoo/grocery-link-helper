@@ -1,0 +1,31 @@
+.order-experience { min-height: 100vh; background: var(--page-bg); }
+.experience-content { max-width: 1100px; margin: auto; padding: 36px 24px; text-align: left; }
+.experience-content h1 { font-size: 32px; margin: 8px 0 12px; }
+.experience-content .app-card { margin: 20px 0; overflow-wrap: anywhere; }
+.experience-content button { padding: 11px 18px; color: var(--brand); border: 1px solid var(--brand); border-radius: 8px; background: white; cursor: pointer; }
+.experience-content button:disabled { cursor: not-allowed; }
+.experience-content .experience-primary { background: var(--brand); color: white; }
+.experience-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.experience-heading h3 { flex: 1; min-width: 180px; }
+.experience-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 16px; margin-top: 20px; }
+.experience-notice { padding: 20px; background: #e8f5e9; color: #205a24; border-left: 4px solid var(--brand); border-radius: 8px; margin: 20px 0; }
+.substitution-form { display: grid; gap: 16px; max-width: 620px; }
+.substitution-form label { display: grid; gap: 8px; font-weight: 600; }
+.substitution-form input, .substitution-form select { min-width: 0; width: 100%; padding: 12px; border: 1px solid #b7c6b8; border-radius: 6px; background: white; }
+.substitution-form p { margin: 0; color: #555; font-size: 14px; }
+.request-badge { padding: 6px 12px; border-radius: 20px; font-weight: 600; font-size: 14px; }
+.request-pending { background: #fff4ce; color: #775500; }
+.request-approved { background: #e8f5e9; color: #205a24; }
+.request-rejected { background: #fff0ef; color: #a82020; }
+.tracking-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
+.tracking-summary h2 { color: var(--brand); }
+.tracking-steps { list-style: none; padding: 0; margin: 24px 0 0; }
+.tracking-steps li { display: flex; gap: 16px; position: relative; padding-bottom: 28px; color: #656565; }
+.tracking-steps li:not(:last-child)::before { content: ''; position: absolute; left: 18px; top: 38px; bottom: 0; width: 2px; background: var(--border); }
+.tracking-steps li[aria-current="step"] { color: #205a24; }
+.tracking-steps p { margin: 4px 0 0; font-size: 14px; }
+.tracking-dot { display: flex; align-items: center; justify-content: center; flex: 0 0 38px; height: 38px; border-radius: 50%; background: #ecefec; }
+.reached .tracking-dot { color: white; background: var(--brand); }
+.tracking-details dt { font-size: 14px; color: #555; margin-top: 24px; }
+.tracking-details dd { margin: 6px 0; font-weight: 600; }
+@media (max-width: 700px) { .tracking-layout { grid-template-columns: 1fr; gap: 0; } .experience-content { padding: 24px 16px; } .experience-content h1 { font-size: 27px; } }

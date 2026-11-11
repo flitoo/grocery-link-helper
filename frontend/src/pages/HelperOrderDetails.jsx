@@ -366,6 +366,7 @@ function HelperOrderDetails() {
               </p>
 
               <div className="order-details-actions">
+                {order.helper_id != null && <Link to={`/helper/orders/${orderId}/substitutions`} className="order-dashboard-button">Substitution Requests</Link>}
                 <Link
                   to={`/helper/orders/${orderId}/status`}
                   className="order-dashboard-button"

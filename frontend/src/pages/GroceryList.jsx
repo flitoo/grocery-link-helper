@@ -241,6 +241,12 @@ function GroceryList() {
               >
                 <div>
                   <h3>{item.name}</h3>
+                  <label className="grocery-substitution-option">
+                    <input type="checkbox" checked={Boolean(item.allowSubstitution)} onChange={event => {
+                      setItems(current => current.map(value => value.id === item.id ? { ...value, allowSubstitution: event.target.checked } : value));
+                    }} />
+                    Allow replacement if unavailable (ask me first)
+                  </label>
 
                   <p>
                     Quantity: {item.quantity}

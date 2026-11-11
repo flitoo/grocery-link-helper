@@ -409,6 +409,8 @@ function OrderDetails() {
 
             {/* Action Buttons */}
             <div className="order-details-actions">
+              <Link to={`/orders/${orderId}/tracking`} className="order-dashboard-button">Track Order</Link>
+              <Link to={`/orders/${orderId}/substitutions`} className="order-dashboard-button">Substitution Requests</Link>
               <Link
                 to="/orders"
                 className="order-dashboard-button"

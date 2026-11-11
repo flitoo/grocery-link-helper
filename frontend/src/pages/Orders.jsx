@@ -182,6 +182,7 @@ function Orders() {
 
                   {/* Action Buttons */}
                   <div className="order-card-actions">
+                    <Link to={`/orders/${id}/tracking`} className="view-details-button">Track Order</Link>
                     {/* View Details */}
                     <Link
                       to={`/order-details/${id}`}
