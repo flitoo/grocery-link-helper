@@ -44,6 +44,8 @@ npm run migrate:up
 ```
 Note: pushing changes under `database/migrations` to `main` automatically runs them against production (Neon). Test migrations on a Neon branch first.
 
+The `items` migration creates the store item catalog (name, brand, category, unit `each`/`lb`/`kg`, unit price, dietary tags) and seeds about 320 sample items across the four seeded stores. Names, brands and prices are illustrative, not live data.
+
 ### 4. Run the app
 Use two terminals.
 
@@ -65,6 +67,17 @@ The frontend calls the API at `http://localhost:8080` by default. To change it, 
 Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+
+### Which endpoints need a login
+Send `Authorization: Bearer <token>` (from register/login). Missing or invalid
+tokens get `401`.
+
+| Endpoint | Who can call it |
+| --- | --- |
+| `POST /api/orders` | Customers only (`403` for helpers). The customer is the logged-in user; a `customer_id` in the body is optional and must match, otherwise `403`. |
+| `GET /api/orders/{id}` | The order's customer, its assigned helper, or any helper while the order is Paid and unclaimed. Anyone else gets `404`. |
+| `POST /api/payments`, `POST /api/payments/{orderId}/confirm-demo` | Only the customer who placed the order (`403` otherwise). |
+| `GET /api/payments/{orderId}` | The order's customer or assigned helper; anyone else gets `404`. |
 
 ### Demo setup
 The payment screen confirms payments through a development-only endpoint, and

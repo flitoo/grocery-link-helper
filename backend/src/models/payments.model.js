@@ -1,10 +1,17 @@
 
 const { pool, withTransaction } = require("../config/db");
 
-async function createPayment({ orderId, transactionRef, paymentMethod }) {
+// Only the customer who placed an order may pay for it.
+function notOrderOwnerError() {
+  const error = new Error("Only the customer who placed this order can pay for it.");
+  error.code = "NOT_ORDER_OWNER";
+  return error;
+}
+
+async function createPayment({ orderId, customerId, transactionRef, paymentMethod }) {
   return withTransaction(async (client) => {
     const orderResult = await client.query(
-      `SELECT total_amount, status
+      `SELECT total_amount, status, customer_id
        FROM orders
        WHERE order_id = $1
        FOR UPDATE`,
@@ -14,6 +21,10 @@ async function createPayment({ orderId, transactionRef, paymentMethod }) {
     const order = orderResult.rows[0];
 
     if (!order) return undefined;
+
+    if (Number(order.customer_id) !== Number(customerId)) {
+      throw notOrderOwnerError();
+    }
 
     if (order.status !== "Pending") {
       const error = new Error("Order is not awaiting payment.");
@@ -33,13 +44,17 @@ async function createPayment({ orderId, transactionRef, paymentMethod }) {
   });
 }
 
-async function getPaymentByOrderId(orderId) {
+// Visible only to the order's customer or its assigned helper; anyone else
+// gets undefined (a 404), the same as an order with no payment.
+async function getPaymentByOrderId(orderId, userId) {
   const result = await pool.query(
-    `SELECT payment_id, order_id, transaction_ref,
-            amount, payment_status, verified_at, payment_method
-     FROM payments
-     WHERE order_id = $1`,
-    [orderId]
+    `SELECT p.payment_id, p.order_id, p.transaction_ref,
+            p.amount, p.payment_status, p.verified_at, p.payment_method
+     FROM payments p
+     JOIN orders o ON o.order_id = p.order_id
+     WHERE p.order_id = $1
+       AND (o.customer_id = $2 OR o.helper_id = $2)`,
+    [orderId, userId]
   );
 
   return result.rows[0];
@@ -47,10 +62,10 @@ async function getPaymentByOrderId(orderId) {
 
 // Development-only simulated payment confirmation.
 // Payment and order are updated in one transaction.
-async function confirmDemoPayment(orderId) {
+async function confirmDemoPayment(orderId, customerId) {
   return withTransaction(async (client) => {
     const orderResult = await client.query(
-      `SELECT order_id, status
+      `SELECT order_id, status, customer_id
        FROM orders
        WHERE order_id = $1
        FOR UPDATE`,
@@ -63,6 +78,10 @@ async function confirmDemoPayment(orderId) {
       const error = new Error("Order not found.");
       error.code = "ORDER_NOT_FOUND";
       throw error;
+    }
+
+    if (Number(order.customer_id) !== Number(customerId)) {
+      throw notOrderOwnerError();
     }
 
     const paymentResult = await client.query(

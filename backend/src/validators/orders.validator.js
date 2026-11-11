@@ -18,10 +18,7 @@ function validateCreateOrderPayload(body) {
     return { valid: false, errors: ['Request body must be a JSON object.'] };
   }
 
-  if (!isPositiveInteger(body.customer_id)) {
-    errors.push('customer_id is required and must be a positive integer.');
-  }
-
+  // customer_id is not validated here: the customer comes from the login token.
   if (!isPositiveInteger(body.store_id)) {
     errors.push('store_id is required and must be a positive integer.');
   }

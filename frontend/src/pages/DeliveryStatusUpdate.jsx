@@ -67,7 +67,9 @@ function DeliveryStatusUpdate() {
   const [message, setMessage] = useState("");
 
   const fetchOrder = useCallback(async (signal) => {
+    const token = localStorage.getItem("token");
     const response = await fetch(`${API_BASE}/api/orders/${orderId}`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
       signal,
       cache: "no-store",
     });
