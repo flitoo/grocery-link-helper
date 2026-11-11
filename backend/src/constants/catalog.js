@@ -26,4 +26,8 @@ const DIETARY_TAGS = [
 
 const UNITS = ['each', 'lb', 'kg'];
 
-module.exports = { CATEGORIES, DIETARY_TAGS, UNITS };
+// Brand used for loose produce that has no real brand; order lines show just
+// the product name for it.
+const UNBRANDED = 'Fresh';
+
+module.exports = { CATEGORIES, DIETARY_TAGS, UNITS, UNBRANDED };

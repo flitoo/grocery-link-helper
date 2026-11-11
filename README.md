@@ -199,6 +199,25 @@ GET /api/items/filters              # { categories: [...], dietary_tags: [...] }
 GET /api/items/{id}/alternatives    # { item, alternatives } - other brands of the same product at the same store
 ```
 
+### Creating an order (items sold by weight)
+```
+POST /api/orders
+Authorization: Bearer <token>
+{ "store_id": 2, "delivery_slot": "2026-11-12T18:00:00.000Z", "delivery_address": "123 Main St",
+  "items": [
+    { "catalog_item_id": 14, "quantity": 1.5, "allow_substitution": true },
+    { "item_name": "Birthday cake", "quantity": 1, "estimated_price": 24.99 }
+  ] }
+```
+Each line is one of two shapes:
+
+- **Catalog line** `{ catalog_item_id, quantity, allow_substitution? }`: the name, unit and price come from the item catalog (`items.item_id`). Any price or name the client sends is ignored. The item must be active at the order's store, otherwise `400`.
+- **Custom line** `{ item_name, quantity, estimated_price, unit?, allow_substitution? }`: `estimated_price` is the price of **one unit**, and `unit` defaults to `each`.
+
+Quantities can have up to 3 decimals (max 100) when the unit is `lb` or `kg` (for example `1.5` lb). Items sold per piece (`each`) need a whole number. The server computes `total_amount` as the sum of `quantity x unit price` per line, rounded to the cent. Responses return each line with `catalog_item_id`, `unit`, a numeric `quantity` and the per-unit `estimated_price`. (`order_items.item_id` is the order line's own id; the catalog link is `catalog_item_id`.)
+
+Repeating an order re-prices catalog lines at today's catalog price. A line whose catalog item is no longer active is repeated as a custom line at its original price.
+
 ### Repeat order (US-06)
 A customer can repeat one of their previous orders. The new order keeps the
 same store, items and address; only the delivery slot (and optionally the
