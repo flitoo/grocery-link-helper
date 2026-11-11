@@ -174,6 +174,31 @@ Send a message with `{"message_text":"Buzz 1204, please."}`. The API derives
 the sender from the token and allows access only to the customer or assigned
 helper for that order.
 
+### Item search
+Search a store's item catalog. All three endpoints need a login token.
+
+```
+GET /api/items?store_id=2&q=greek yogurt&category=Dairy %26 Eggs&tag=vegan&tag=gluten-free&limit=20&offset=0
+Authorization: Bearer <token>
+```
+
+| Param | Notes |
+| --- | --- |
+| `store_id` | Required. Only that store's active items are searched. |
+| `q` | Optional, up to 100 characters / 8 words. Every word must appear in the name or brand (case-insensitive). |
+| `category` | Optional, one of the values from `/api/items/filters`. |
+| `tag` | Optional, repeatable or comma-separated. An item must have all the tags. |
+| `ids` | Optional comma-separated item ids (max 100), e.g. to re-price an imported list. |
+| `limit` / `offset` | Page size 1-50 (default 20) and start position (default 0). |
+
+Returns `{ items: [{ item_id, store_id, name, brand, category, unit, unit_price, dietary_tags }], total }`,
+where `total` counts all matches ignoring paging. Bad params return `400` with `errors`.
+
+```
+GET /api/items/filters              # { categories: [...], dietary_tags: [...] }
+GET /api/items/{id}/alternatives    # { item, alternatives } - other brands of the same product at the same store
+```
+
 ### Repeat order (US-06)
 A customer can repeat one of their previous orders. The new order keeps the
 same store, items and address; only the delivery slot (and optionally the
