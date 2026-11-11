@@ -26,7 +26,7 @@ function CustomerDashboard() {
   const groceryItems = getSavedData("groceryItems", []);
 
   // Get completed orders from localStorage
-  const savedOrders = getSavedData("orders", []);
+  const savedOrders = getSavedData("orders");
   const orders = Array.isArray(savedOrders) ? savedOrders : [];
 
   const groceryItemCount = Array.isArray(groceryItems)
@@ -64,6 +64,11 @@ function CustomerDashboard() {
 
           <Link to="/orders">
             Orders
+          </Link>
+
+          {/* Delivery Notifications */}
+          <Link to="/notifications">
+            🔔 Notifications
           </Link>
 
           <Link to="/helper-dashboard">

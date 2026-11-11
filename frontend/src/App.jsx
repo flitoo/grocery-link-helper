@@ -17,6 +17,8 @@ import HelperDashboard from "./pages/HelperDashboard";
 import HelperOrderDetails from "./pages/HelperOrderDetails";
 import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
 import CustomerChat from "./pages/CustomerChat";
+import DeliveryNotifications from "./pages/DeliveryNotifications";
+import RatingFeedback from "./pages/RatingFeedback";
 
 function App() {
   return (
@@ -71,6 +73,18 @@ function App() {
       <Route
         path="/orders/:orderId/repeat"
         element={<RepeatOrder />}
+      />
+
+      {/* Delivery Notifications */}
+      <Route
+        path="/notifications"
+        element={<DeliveryNotifications />}
+      />
+
+      {/* Rating & Feedback */}
+      <Route
+        path="/orders/:orderId/rate"
+        element={<RatingFeedback />}
       />
 
       {/* Customer Chat */}
