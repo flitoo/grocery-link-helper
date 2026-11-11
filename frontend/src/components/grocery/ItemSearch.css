@@ -1,0 +1,319 @@
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.item-search {
+  text-align: left;
+  margin-bottom: 30px;
+  padding: 20px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Search bar and category */
+
+.item-search-bar {
+  display: flex;
+  gap: 12px;
+}
+
+.item-search-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.item-search-input input,
+.item-search-category select {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #222;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.item-search-category {
+  flex: 0 0 200px;
+}
+
+.item-search-input input:focus,
+.item-search-category select:focus,
+.search-result-controls input:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+/* Dietary filter chips */
+
+.item-search-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.tag-chip {
+  padding: 6px 12px;
+  border: 1px solid #cfe3d0;
+  border-radius: 999px;
+  background: white;
+  color: #2e7d32;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: capitalize;
+  cursor: pointer;
+}
+
+.tag-chip:hover {
+  background: #f1f8f1;
+}
+
+.tag-chip.active {
+  background: #43a047;
+  border-color: #43a047;
+  color: white;
+}
+
+.tag-chip:focus-visible,
+.link-button:focus-visible,
+.search-result-controls button:focus-visible,
+.item-search-more button:focus-visible {
+  outline: 3px solid rgba(67, 160, 71, 0.45);
+  outline-offset: 2px;
+}
+
+/* Status line */
+
+.item-search-status p {
+  margin: 14px 0 0;
+  color: #777;
+  font-size: 14px;
+}
+
+.link-button {
+  margin-left: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #2e7d32;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.item-search-error {
+  margin: 14px 0 0;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff1f1;
+  color: #d32f2f;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.item-search-empty {
+  margin-top: 6px;
+  padding: 18px 10px;
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
+
+.item-search-empty p {
+  margin: 0 0 6px;
+}
+
+.item-search-empty .link-button {
+  margin: 0 0 10px;
+}
+
+/* Results */
+
+.search-results {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+  max-height: 520px;
+  overflow-y: auto;
+  border-top: 1px solid #eee;
+}
+
+.search-results.stale {
+  opacity: 0.5;
+}
+
+.search-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 4px;
+  border-bottom: 1px solid #eee;
+}
+
+.search-result-info {
+  min-width: 0;
+}
+
+.search-result-info h3 {
+  margin: 0 0 3px;
+  color: #333;
+  font-size: 16px;
+}
+
+.search-result-meta {
+  margin: 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.search-result-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 7px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.search-result-tags li {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef6ee;
+  color: #2e7d32;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.search-result-buy {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.search-result-price {
+  color: #2e7d32;
+  font-size: 15px;
+}
+
+.search-result-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-result-controls input {
+  width: 78px;
+  padding: 9px 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  color: #222;
+  font-size: 15px;
+  text-align: center;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.search-result-unit {
+  min-width: 26px;
+  color: #777;
+  font-size: 13px;
+}
+
+.search-result-controls button,
+.item-search-more button {
+  padding: 9px 18px;
+  border: none;
+  border-radius: 8px;
+  background: #43a047;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.search-result-controls button:hover,
+.item-search-more button:hover:not(:disabled) {
+  background: #2e7d32;
+}
+
+.item-search-more {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.item-search-more button:disabled {
+  background: #a5d6a7;
+  cursor: wait;
+}
+
+.search-result-feedback {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.search-result-feedback.ok {
+  color: #2e7d32;
+}
+
+.search-result-feedback.error {
+  color: #d32f2f;
+  max-width: 220px;
+  text-align: right;
+}
+
+/* Phones */
+
+@media (max-width: 640px) {
+  .item-search {
+    padding: 14px;
+  }
+
+  .item-search-bar {
+    flex-direction: column;
+  }
+
+  .item-search-category {
+    flex: none;
+  }
+
+  .search-result {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .search-result-buy {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .search-result-feedback {
+    flex-basis: 100%;
+  }
+
+  .search-result-feedback.error {
+    max-width: none;
+    text-align: left;
+  }
+}

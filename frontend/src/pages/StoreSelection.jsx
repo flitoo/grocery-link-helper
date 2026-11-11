@@ -1,14 +1,30 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  dropOtherStoreItems,
+  removedItemsNotice,
+} from "../utils/groceryList";
 import "./StoreSelection.css";
 
 const API_BASE =
   import.meta.env.VITE_API_URL || "http://localhost:8080";
 
+function readSaved(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "null");
+  } catch {
+    return null;
+  }
+}
+
 function StoreSelection() {
   const navigate = useNavigate();
 
-  const [selectedStore, setSelectedStore] = useState(null);
+  // Start on the store chosen earlier, if any, so it is easy to keep.
+  const [selectedStore, setSelectedStore] = useState(() => {
+    const saved = readSaved("selectedStore");
+    return saved?.id ? saved : null;
+  });
   const [error, setError] = useState("");
 
   const [stores, setStores] = useState([]);
@@ -69,14 +85,26 @@ function StoreSelection() {
       return;
     }
 
-    // Temporarily save the selected store for the next screen.
+    // Catalog items belong to one store, so switching stores removes the
+    // ones the new store doesn't carry. Custom items stay.
+    const savedItems = readSaved("groceryItems");
+    const { items, removedCount } = dropOtherStoreItems(
+      Array.isArray(savedItems) ? savedItems : [],
+      selectedStore.id
+    );
+    if (removedCount > 0) {
+      localStorage.setItem("groceryItems", JSON.stringify(items));
+    }
+
     localStorage.setItem(
       "selectedStore",
       JSON.stringify(selectedStore)
     );
 
-    // Orders screen can be connected later.
-    navigate("/delivery-time");
+    // Next, pick items from this store's catalog.
+    navigate("/grocery-list", {
+      state: { notice: removedItemsNotice(removedCount, selectedStore.name) },
+    });
   };
 
   return (
@@ -161,10 +189,10 @@ function StoreSelection() {
 
         <div className="store-actions">
           <Link
-            to="/grocery-list"
+            to="/dashboard"
             className="back-button"
           >
-            Back to Grocery List
+            Back to Dashboard
           </Link>
 
           <button

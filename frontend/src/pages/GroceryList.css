@@ -153,6 +153,7 @@
 }
 
 .grocery-item {
+  text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -281,5 +282,148 @@
     width: 100%;
     text-align: center;
     box-sizing: border-box;
+  }
+}
+
+/* =========================
+   Store bar, notices, custom item (search-based list)
+========================= */
+
+.grocery-store-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: -10px 0 22px;
+  padding: 12px 16px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  font-size: 14px;
+  color: #666;
+}
+
+.grocery-store-bar strong {
+  color: #2e7d32;
+  font-size: 16px;
+}
+
+.grocery-store-bar a {
+  margin-left: auto;
+  color: #2e7d32;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.grocery-store-bar a:hover {
+  text-decoration: underline;
+}
+
+.grocery-notice {
+  margin: 0 0 18px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #fff8e1;
+  color: #8a6100;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.custom-item-details {
+  margin-bottom: 30px;
+  padding: 14px 18px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
+
+.custom-item-details summary {
+  color: #2e7d32;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.custom-item-hint {
+  margin: 12px 0;
+  color: #888;
+  font-size: 13px;
+}
+
+.custom-item-details .add-item {
+  margin-bottom: 12px;
+}
+
+.custom-item-details .grocery-error {
+  margin: 0 0 6px;
+}
+
+.add-item select {
+  flex: 0 0 110px;
+  padding: 13px 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: white;
+  color: #222;
+  font-size: 15px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.add-item select:focus {
+  border-color: #43a047;
+  box-shadow: 0 0 0 3px rgba(67, 160, 71, 0.1);
+}
+
+.add-item .price-input {
+  flex: 0 0 150px;
+}
+
+.grocery-list-heading {
+  margin: 0 0 14px;
+  color: #333;
+  font-size: 18px;
+}
+
+.grocery-item-side {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.grocery-item-side strong {
+  color: #2e7d32;
+  font-size: 17px;
+}
+
+.grocery-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+  padding: 16px 20px;
+  background: white;
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  color: #555;
+  font-size: 15px;
+}
+
+.grocery-total strong {
+  color: #2e7d32;
+  font-size: 20px;
+}
+
+@media (max-width: 768px) {
+  .grocery-store-bar a {
+    margin-left: 0;
+    flex-basis: 100%;
+  }
+
+  .add-item select,
+  .add-item .price-input {
+    flex: none;
+    width: 100%;
   }
 }

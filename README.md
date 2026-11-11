@@ -68,6 +68,11 @@ Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
+### Building a grocery order (customer flow)
+Dashboard, then **Store Selection**, then **Grocery List**, then **Delivery Time**, then **Order Summary**, then **Payment**.
+
+Pick a store first: the grocery list searches that store's item catalog (name or brand words, category, dietary tags) and shows the brand and price per unit. Items sold by weight (lb or kg) take decimal quantities such as 1.5, and items sold per piece take whole numbers. Anything not in the catalog can be added as a custom item, with its price per piece, lb or kg. Changing the store removes catalog items the new store doesn't carry (custom items stay), and the list tells you how many were removed. The list is kept in `localStorage` (`groceryItems`) until the order is placed. At checkout the server prices catalog items itself and its total is the amount charged.
+
 ### Which endpoints need a login
 Send `Authorization: Bearer <token>` (from register/login). Missing or invalid
 tokens get `401`.
@@ -274,5 +279,6 @@ it); `409` if the store is no longer active; `404` if the order does not exist.
 ### Tests and lint
 ```bash
 cd backend && npm test
+cd frontend && npm test       # unit tests for the grocery list helpers (Node's built-in runner)
 cd frontend && npm run lint
 ```

@@ -288,10 +288,10 @@ function DeliveryTimeSlot() {
 
         <div className="delivery-actions">
           <Link
-            to="/store-selection"
+            to="/grocery-list"
             className="back-button"
           >
-            Back to Store Selection
+            Back to Grocery List
           </Link>
 
           <button

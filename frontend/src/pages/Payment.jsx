@@ -2,6 +2,12 @@ import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 
+import {
+  formatQuantity,
+  formatUnitPrice,
+  listTotal,
+} from "../utils/groceryList";
+
 import "./Payment.css";
 
 const API_BASE =
@@ -124,21 +130,12 @@ function Payment() {
 
   // ==========================================
 
+  // The server's total is what gets charged (it was saved with the order);
+  // fall back to the local list total for orders saved without one.
+  const serverTotal = Number(currentOrder?.total);
+
   const estimatedTotal =
-
-    groceryItems.reduce(
-
-      (total, item) =>
-
-        total +
-
-        Number(item.estimatedPrice || 0) *
-
-          Number(item.quantity || 0),
-
-      0
-
-    );
+    serverTotal > 0 ? serverTotal : listTotal(groceryItems);
 
   // ==========================================
 
@@ -1016,15 +1013,7 @@ function Payment() {
 
                         <strong>
 
-                          {item.quantity} × $
-
-                          {Number(
-
-                            item.estimatedPrice ||
-
-                              0
-
-                          ).toFixed(2)}
+                          {formatQuantity(item)} × {formatUnitPrice(item)}
 
                         </strong>
 

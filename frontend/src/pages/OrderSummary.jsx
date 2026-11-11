@@ -1,5 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import {
+  formatQuantity,
+  formatUnitPrice,
+  lineTotal,
+  listTotal,
+  toOrderLines,
+} from "../utils/groceryList";
 import "./OrderSummary.css";
 
 const API_BASE =
@@ -47,19 +54,7 @@ function OrderSummary() {
   // Estimated Total
   // ==========================================
 
-  const estimatedTotal =
-    groceryItems.reduce(
-      (total, item) => {
-        const price =
-          Number(item.estimatedPrice) || 0;
-
-        const quantity =
-          Number(item.quantity) || 0;
-
-        return total + price * quantity;
-      },
-      0
-    );
+  const estimatedTotal = listTotal(groceryItems);
 
   // ==========================================
   // Format Delivery
@@ -160,16 +155,9 @@ const formatDelivery = (slot) => {
       return;
     }
 
-    // Convert frontend items to backend format
-    const orderItems =
-      groceryItems.map((item) => ({
-        item_name: item.name,
-        quantity: Number(item.quantity),
-        estimated_price:
-          Number(item.estimatedPrice),
-        allow_substitution:
-          Boolean(item.allowSubstitution),
-      }));
+    // Convert frontend items to backend format. Catalog items are sent by id
+    // and priced by the server; custom items carry their own per-unit price.
+    const orderItems = toOrderLines(groceryItems);
 
     const token =
       localStorage.getItem("token");
@@ -262,7 +250,8 @@ const formatDelivery = (slot) => {
         deliveryAddress:
           trimmedAddress,
 
-        total: estimatedTotal,
+        // The server's total is what gets charged.
+        total: Number(data?.total_amount) || estimatedTotal,
 
         status:
           data?.status ||
@@ -366,48 +355,33 @@ const formatDelivery = (slot) => {
             </p>
           ) : (
             <div className="summary-items">
-              {groceryItems.map((item) => {
-                const price =
-                  Number(
-                    item.estimatedPrice
-                  ) || 0;
+              {groceryItems.map((item) => (
+                <div
+                  className="summary-item"
+                  key={item.id}
+                >
+                  <div>
+                    <span>
+                      {item.name}
+                    </span>
 
-                const quantity =
-                  Number(
-                    item.quantity
-                  ) || 0;
+                    <p>
+                      Quantity:{" "}
+                      {formatQuantity(item)}
+                    </p>
 
-                const subtotal =
-                  price * quantity;
-
-                return (
-                  <div
-                    className="summary-item"
-                    key={item.id}
-                  >
-                    <div>
-                      <span>
-                        {item.name}
-                      </span>
-
-                      <p>
-                        Quantity:{" "}
-                        {quantity}
-                      </p>
-
-                      <p>
-                        Estimated Price: $
-                        {price.toFixed(2)}
-                      </p>
-                    </div>
-
-                    <strong>
-                      $
-                      {subtotal.toFixed(2)}
-                    </strong>
+                    <p>
+                      Estimated Price:{" "}
+                      {formatUnitPrice(item)}
+                    </p>
                   </div>
-                );
-              })}
+
+                  <strong>
+                    $
+                    {lineTotal(item).toFixed(2)}
+                  </strong>
+                </div>
+              ))}
 
               <div className="summary-total">
                 <span>
