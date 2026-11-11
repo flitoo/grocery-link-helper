@@ -19,10 +19,12 @@ import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
 import CustomerChat from "./pages/CustomerChat";
 import DeliveryNotifications from "./pages/DeliveryNotifications";
 import RatingFeedback from "./pages/RatingFeedback";
+import Collections from './pages/Collections';
 
 function App() {
   return (
     <Routes>
+      <Route path="/collections" element={<Collections />} />
       {/* Authentication */}
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />

@@ -1,10 +1,11 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./OrderDetails.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function HelperOrderDetails() {
   const { orderId } = useParams();
@@ -32,6 +33,7 @@ function HelperOrderDetails() {
           `${API_BASE}/api/orders/${orderId}`,
           {
             signal: controller.signal,
+            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           }
         );
 
@@ -131,7 +133,8 @@ function HelperOrderDetails() {
 
       // Refresh order details after claiming
       const updatedResponse = await fetch(
-        `${API_BASE}/api/orders/${orderId}`
+        `${API_BASE}/api/orders/${orderId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (updatedResponse.ok) {
@@ -174,15 +177,7 @@ function HelperOrderDetails() {
   return (
     <div className="order-details-page">
       {/* Header */}
-      <header className="order-details-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/helper-dashboard">
-            Helper Dashboard
-          </Link>
-        </nav>
-      </header>
+      <AppHeader helper />
 
       {/* Main Content */}
       <main className="order-details-content">

@@ -200,7 +200,23 @@ async function getAvailableOrders() {
 
   return result.rows;
 }
+async function getCustomerOrders(customerId) {
+  const result = await pool.query(
+    `SELECT ${HELPER_ORDER_COLUMNS},
+       (SELECT COUNT(*)::int FROM order_items i WHERE i.order_id = o.order_id) AS item_count,
+       p.payment_status
+     FROM orders o
+     JOIN stores s ON s.store_id = o.store_id
+     LEFT JOIN payments p ON p.order_id = o.order_id
+     WHERE o.customer_id = $1
+     ORDER BY o.created_at DESC, o.order_id DESC`,
+    [customerId]
+  );
+  return result.rows;
+}
+
 module.exports = {
+  getCustomerOrders,
   findActiveStoreById,
   createOrder,
   getOrderById,

@@ -1,36 +1,63 @@
 
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
 
-const healthRoutes = require('./routes/health.routes');
-const authRoutes = require('./routes/auth.routes');
-const ordersRoutes = require('./routes/orders.routes');
-const paymentsRoutes = require('./routes/payments.routes');
-const storesRoutes = require('./routes/stores.routes');
-const slotsRoutes = require('./routes/slots.routes');
-const deliveriesRoutes = require('./routes/deliveries.routes');
-const ratingsRoutes = require('./routes/ratings.routes');
-const substitutionRequestsRoutes = require('./routes/substitution-requests.routes');
+const healthRoutes = require("./routes/health.routes");
+const authRoutes = require("./routes/auth.routes");
+const ordersRoutes = require("./routes/orders.routes");
+const paymentsRoutes = require("./routes/payments.routes");
+const storesRoutes = require("./routes/stores.routes");
+const slotsRoutes = require("./routes/slots.routes");
+const deliveriesRoutes = require("./routes/deliveries.routes");
+const ratingsRoutes = require("./routes/ratings.routes");
+const substitutionRequestsRoutes = require("./routes/substitution-requests.routes");
 
 // Template routes
-const templatesRoutes = require('./routes/templates.routes');
+const templatesRoutes = require("./routes/templates.routes");
+
+// Collections routes
+const collectionsRoutes = require("./routes/collections.routes");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use('/health', healthRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/orders', ordersRoutes);
-app.use('/api/payments', paymentsRoutes);
-app.use('/api/stores', storesRoutes);
-app.use('/api/slots', slotsRoutes);
-app.use('/api/deliveries', deliveriesRoutes);
-app.use('/api/ratings', ratingsRoutes);
-app.use('/api/substitution-requests', substitutionRequestsRoutes);
+// Health
+app.use("/health", healthRoutes);
 
-// Save / Retrieve Template API
-app.use('/api/templates', templatesRoutes);
+// Authentication
+app.use("/api/auth", authRoutes);
+
+// Orders
+app.use("/api/orders", ordersRoutes);
+
+// Payments
+app.use("/api/payments", paymentsRoutes);
+
+// Stores
+app.use("/api/stores", storesRoutes);
+
+// Delivery slots
+app.use("/api/slots", slotsRoutes);
+
+// Deliveries
+app.use("/api/deliveries", deliveriesRoutes);
+
+// Ratings
+app.use("/api/ratings", ratingsRoutes);
+
+// Substitution requests
+app.use(
+  "/api/substitution-requests",
+  substitutionRequestsRoutes
+);
+
+// Templates
+app.use("/api/templates", templatesRoutes);
+
+// Grocery Collections
+app.use("/api/collections", collectionsRoutes);
+app.use("/api/helpers", require("./routes/helpers.routes"));
 
 module.exports = app;

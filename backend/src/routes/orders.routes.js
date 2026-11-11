@@ -6,6 +6,7 @@ const {
   updateDeliveryStatus,
   getAssignedTasks,
   getAvailableOrders,
+  getCustomerOrders,
 } = require('../controllers/orders.controller');
 
 const {
@@ -22,25 +23,30 @@ const { requireAuth, requireHelper } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
+// Apply authentication once, including creation and order details.
+router.use(requireAuth);
+
+router.get('/', getCustomerOrders);
+
 // Create order
 router.post('/', createOrder);
 
 // Get assigned tasks for logged-in helper
-router.get('/assigned', requireAuth, requireHelper, getAssignedTasks);
+router.get('/assigned', requireHelper, getAssignedTasks);
 
 // Paid, unclaimed orders a helper can claim
-router.get('/available', requireAuth, requireHelper, getAvailableOrders);
+router.get('/available', requireHelper, getAvailableOrders);
 
 // Order messages
-router.get('/:orderId/messages', requireAuth, getOrderMessages);
-router.post('/:orderId/messages', requireAuth, createOrderMessage);
+router.get('/:orderId/messages', getOrderMessages);
+router.post('/:orderId/messages', createOrderMessage);
 
 // Repeat a previous order (US-06): check the slot, then place it
-router.get('/:id/repeat/availability', requireAuth, getRepeatAvailability);
-router.post('/:id/repeat', requireAuth, createRepeatOrder);
+router.get('/:id/repeat/availability', getRepeatAvailability);
+router.post('/:id/repeat', createRepeatOrder);
 
 // Update delivery status
-router.patch('/:id/status', requireAuth, updateDeliveryStatus);
+router.patch('/:id/status', updateDeliveryStatus);
 
 // Get order details
 router.get('/:id', getOrder);

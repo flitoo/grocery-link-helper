@@ -1,10 +1,11 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./DeliveryNotifications.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 // Notification messages for each delivery status
 const MESSAGES = {
@@ -86,17 +87,14 @@ function DeliveryNotifications() {
     }
   );
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(validUser);
   const [error, setError] = useState("");
   const [notFoundCount, setNotFoundCount] = useState(0);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Check order statuses from backend
   useEffect(() => {
-    if (!validUser) {
-      setLoading(false);
-      return;
-    }
+    if (!validUser) return;
 
     const controller = new AbortController();
     let isChecking = false;
@@ -333,23 +331,7 @@ function DeliveryNotifications() {
   return (
     <div className="notifications-page">
       {/* Header */}
-      <header className="notifications-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-
-          <Link to="/notifications">
-            🔔 Notifications
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="notifications-content">
         {/* Page Title */}

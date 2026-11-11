@@ -1,3 +1,5 @@
+import { api } from '../lib/api';
+import AppHeader from '../components/AppHeader';
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -8,73 +10,10 @@ import {
   formatPaymentStatus,
 } from "../constants/orderStatus";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-// Get saved orders from localStorage
-function getSavedOrders() {
-  try {
-    const saved = JSON.parse(
-      localStorage.getItem("orders") || "[]"
-    );
 
-    return Array.isArray(saved) ? saved : [];
-  } catch {
-    return [];
-  }
-}
-
-// Check if an order has a real backend ID
 function hasBackendOrderId(order) {
-  if (order.order_id == null) {
-    return false;
-  }
-
-  const id = Number(order.order_id);
-
-  return Number.isSafeInteger(id) && id > 0;
-}
-
-// Get latest order status from backend
-async function fetchStatus(orderId, signal) {
-  const token = localStorage.getItem("token");
-
-  try {
-    const response = await fetch(
-      `${API_BASE}/api/orders/${encodeURIComponent(orderId)}`,
-      {
-        headers: token
-          ? { Authorization: `Bearer ${token}` }
-          : {},
-        signal,
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) return null;
-
-    const data = await response.json();
-
-    return data.status || null;
-  } catch {
-    return null;
-  }
-}
-
-// Save updated statuses
-function saveStatuses(statuses) {
-  const updated = getSavedOrders().map((order) => {
-    const id = order.order_id ?? order.id;
-
-    return statuses[id]
-      ? { ...order, status: statuses[id] }
-      : order;
-  });
-
-  localStorage.setItem(
-    "orders",
-    JSON.stringify(updated)
-  );
+  return Number.isSafeInteger(Number(order.order_id)) && Number(order.order_id) > 0;
 }
 
 // Format delivery date
@@ -88,6 +27,7 @@ function formatDelivery(slot) {
   }
 
   return date.toLocaleString("en-CA", {
+    timeZone: "America/Toronto",
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -98,49 +38,22 @@ function formatDelivery(slot) {
 }
 
 function Orders() {
-  // Load saved orders
-  const [orders] = useState(() =>
-    getSavedOrders().reverse()
-  );
-
-  const [statuses, setStatuses] = useState({});
-
-  // Fetch latest statuses for real backend orders
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   useEffect(() => {
     const controller = new AbortController();
-
-    const ids = orders
-      .filter(hasBackendOrderId)
-      .map((order) => order.order_id);
-
-    Promise.all(
-      ids.map((id) =>
-        fetchStatus(id, controller.signal)
-      )
-    ).then((results) => {
-      if (controller.signal.aborted) return;
-
-      const fresh = {};
-
-      ids.forEach((id, index) => {
-        if (results[index]) {
-          fresh[id] = results[index];
-        }
-      });
-
-      setStatuses(fresh);
-      saveStatuses(fresh);
-    });
-
+    api('/orders', { signal: controller.signal, cache: 'no-store' })
+      .then(data => { if (!controller.signal.aborted) setOrders(data.orders); })
+      .catch(err => { if (!controller.signal.aborted) setError(err.message); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
-  }, [orders]);
+  }, []);
 
   // Display order status
   function getStatus(order) {
-    const id = order.order_id ?? order.id;
-
     return formatOrderStatus(
-      statuses[id] || order.status,
+      order.status,
       "Order Placed"
     );
   }
@@ -148,27 +61,7 @@ function Orders() {
   return (
     <div className="orders-page">
       {/* Header */}
-      <header className="orders-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-
-          <Link to="/notifications">
-            🔔 Notifications
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="orders-content">
         {/* Page Title */}
@@ -184,7 +77,7 @@ function Orders() {
         </div>
 
         {/* Empty Order History */}
-        {orders.length === 0 ? (
+        {loading ? <p role="status">Loading orders...</p> : error ? <p className="app-error" role="alert">{error}</p> : orders.length === 0 ? (
           <div className="orders-empty">
             <div className="orders-empty-icon">
               📦
@@ -212,7 +105,7 @@ function Orders() {
                 order.order_id ?? order.id;
 
               const currentStatus =
-                statuses[id] || order.status;
+                order.status;
 
               const isDelivered =
                 currentStatus === "Delivered";
@@ -246,7 +139,7 @@ function Orders() {
                       <span>Store</span>
 
                       <strong>
-                        {order.store?.name ||
+                        {order.store_name || order.store?.name ||
                           order.store?.store_name ||
                           "Not available"}
                       </strong>
@@ -257,7 +150,7 @@ function Orders() {
                       <span>Items</span>
 
                       <strong>
-                        {order.items?.length || 0}
+                        {order.item_count ?? order.items?.length ?? 0}
                       </strong>
                     </div>
 
@@ -279,7 +172,7 @@ function Orders() {
 
                       <strong className="paid-status">
                         {formatPaymentStatus(
-                          order.paymentStatus ??
+                          order.payment_status ?? order.paymentStatus ??
                             order.payment
                               ?.payment_status
                         )}

@@ -1,10 +1,11 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE, api } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./RatingFeedback.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function readJSON(key, fallback) {
   try {
@@ -16,12 +17,15 @@ function readJSON(key, fallback) {
 
 function RatingFeedback() {
   const { orderId } = useParams();
+  return <RatingFeedbackContent key={orderId} orderId={orderId} />;
+}
+
+function RatingFeedbackContent({ orderId }) {
 
   const user = readJSON("user", null);
   const userId = Number(user?.id ?? user?.user_id);
   const token = localStorage.getItem("token");
 
-  const feedbackKey = `orderFeedback:${userId}:${orderId}`;
 
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -31,16 +35,11 @@ function RatingFeedback() {
   const [comment, setComment] = useState("");
   const [savedFeedback, setSavedFeedback] = useState(null);
 
+  const [submitting, setSubmitting] = useState(false);
+
   useEffect(() => {
     const controller = new AbortController();
 
-    setSavedFeedback(readJSON(feedbackKey, null));
-    setRating(0);
-    setHover(0);
-    setComment("");
-    setOrder(null);
-    setError("");
-    setLoading(true);
 
     async function loadOrder() {
       if (!Number.isInteger(userId) || userId <= 0 || !token) {
@@ -71,8 +70,14 @@ function RatingFeedback() {
           throw new Error("This order does not belong to your account.");
         }
 
+        const ratingResponse = await fetch(`${API_BASE}/api/ratings/orders/${encodeURIComponent(orderId)}`, {
+          headers: { Authorization: `Bearer ${token}` }, signal: controller.signal,
+        });
+        if (!ratingResponse.ok && ratingResponse.status !== 404) throw new Error('Could not load saved feedback.');
+        const saved = ratingResponse.ok ? await ratingResponse.json() : null;
         if (!controller.signal.aborted) {
           setOrder(data);
+          setSavedFeedback(saved ? { rating: saved.score, comment: saved.comments } : null);
         }
       } catch (err) {
         if (!controller.signal.aborted) {
@@ -88,51 +93,34 @@ function RatingFeedback() {
     loadOrder();
 
     return () => controller.abort();
-  }, [orderId, userId, token, feedbackKey]);
+  }, [orderId, userId, token]);
 
   const canRate =
     order?.status === "Delivered" &&
     order?.helper_id != null;
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     setError("");
 
-    if (!canRate || savedFeedback) return;
+    if (!canRate || savedFeedback || submitting) return;
 
     if (rating < 1 || rating > 5) {
       setError("Please select a rating from 1 to 5 stars.");
       return;
     }
 
-    const feedback = {
-      orderId: Number(orderId),
-      customerId: userId,
-      helperId: order.helper_id,
-      rating,
-      comment: comment.trim(),
-      submittedAt: new Date().toISOString(),
-    };
-
-    localStorage.setItem(
-      feedbackKey,
-      JSON.stringify(feedback)
-    );
-
-    setSavedFeedback(feedback);
+    setSubmitting(true);
+    try {
+      const saved = await api(`/ratings/orders/${orderId}`, { method: 'POST', body: { score: rating, comments: comment.trim() } });
+      setSavedFeedback({ rating: saved.score, comment: saved.comments });
+    } catch (err) { setError(err.message); }
+    finally { setSubmitting(false); }
   }
 
   return (
     <div className="rating-page">
-      <header className="rating-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/orders">Orders</Link>
-          <Link to="/notifications">Notifications</Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="rating-content">
         <div className="rating-title">
@@ -267,8 +255,9 @@ function RatingFeedback() {
                   <button
                     type="submit"
                     className="rating-submit"
+                    disabled={submitting}
                   >
-                    Submit Feedback
+                    {submitting ? 'Submitting...' : 'Submit Feedback'}
                   </button>
                 </div>
               </form>

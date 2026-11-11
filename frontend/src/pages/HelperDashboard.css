@@ -5,6 +5,12 @@
   color: #222;
 }
 
+.helper-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin: 24px 0; }
+.helper-stats .app-card { display: flex; flex-direction: column; gap: 12px; }
+.helper-stats strong { font-size: 28px; color: #2e7d32; }
+.helper-pagination { display: flex; justify-content: center; gap: 16px; align-items: center; margin-top: 24px; }
+.helper-pagination button { padding: 10px 16px; background: white; border: 1px solid #2e7d32; color: #2e7d32; border-radius: 8px; cursor: pointer; }
+
 /* Header */
 .helper-page .helper-header {
   background-color: #ffffff;

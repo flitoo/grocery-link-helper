@@ -41,11 +41,11 @@ function validateCreateOrderPayload(body) {
       if (!item || !isNonEmptyString(item.item_name)) {
         errors.push(`items[${index}].item_name is required.`);
       }
-      if (!isPositiveInteger(item.quantity)) {
+      if (!isPositiveInteger(item?.quantity)) {
         errors.push(`items[${index}].quantity must be a positive integer.`);
       }
       if (
-        typeof item.estimated_price !== 'number' ||
+        typeof item?.estimated_price !== 'number' ||
         Number.isNaN(item.estimated_price) ||
         item.estimated_price < 0
       ) {

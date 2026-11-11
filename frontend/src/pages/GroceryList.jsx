@@ -1,3 +1,4 @@
+import AppHeader from '../components/AppHeader';
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "./GroceryList.css";
@@ -142,19 +143,7 @@ function GroceryList() {
   return (
     <div className="grocery-page">
       {/* Header */}
-      <header className="grocery-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       {/* Main Content */}
       <main className="grocery-content">

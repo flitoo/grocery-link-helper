@@ -1,11 +1,13 @@
+import { useEffect, useState } from 'react';
+import { api } from '../lib/api';
+import AppHeader from '../components/AppHeader';
 
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./CustomerDashboard.css";
 import { formatOrderStatus } from "../constants/orderStatus";
 
 function CustomerDashboard() {
   const customerName = "Customer";
-  const navigate = useNavigate();
 
   const getSavedData = (key, fallback) => {
     try {
@@ -25,9 +27,15 @@ function CustomerDashboard() {
   // Get grocery items from localStorage
   const groceryItems = getSavedData("groceryItems", []);
 
-  // Get completed orders from localStorage
-  const savedOrders = getSavedData("orders");
-  const orders = Array.isArray(savedOrders) ? savedOrders : [];
+  const [orders, setOrders] = useState([]);
+  const [ordersError, setOrdersError] = useState('');
+  useEffect(() => {
+    const controller = new AbortController();
+    api('/orders', { signal: controller.signal })
+      .then(data => { if (!controller.signal.aborted) setOrders(data.orders); })
+      .catch(err => { if (!controller.signal.aborted) setOrdersError(err.message); });
+    return () => controller.abort();
+  }, []);
 
   const groceryItemCount = Array.isArray(groceryItems)
     ? groceryItems.length
@@ -36,56 +44,17 @@ function CustomerDashboard() {
   const recentOrderCount = orders.length;
 
   // Show newest orders first
-  const recentOrders = [...orders]
-    .reverse()
-    .slice(0, 3);
+  const recentOrders = orders.slice(0, 3);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
 
   return (
     <div className="dashboard-page">
       {/* Header */}
-      <header className="dashboard-header">
-        <div className="dashboard-logo">
-          Grocery Link Helper
-        </div>
-
-        <nav className="dashboard-nav">
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-
-          {/* Delivery Notifications */}
-          <Link to="/notifications">
-            🔔 Notifications
-          </Link>
-
-          <Link to="/helper-dashboard">
-            Helper Dashboard
-          </Link>
-
-          <button
-            className="logout-button"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        </nav>
-      </header>
+      <AppHeader />
 
       {/* Main Content */}
       <main className="dashboard-content">
+        {ordersError && <p className="app-error" role="alert">{ordersError}</p>}
         {/* Welcome */}
         <section className="welcome-section">
           <div>
@@ -264,9 +233,9 @@ function CustomerDashboard() {
                       </strong>
 
                       <p>
-                        {order.deliverySlot
+                        {(order.delivery_slot ?? order.deliverySlot)
                           ? String(
-                              order.deliverySlot
+                              order.delivery_slot ?? order.deliverySlot
                             ).replace("T", " ")
                           : ""}
                       </p>

@@ -7,6 +7,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "test": "jest",
+    "test:features:db": "node scripts/verify-features.js",
     "migrate": "node-pg-migrate",
     "migrate:up": "node-pg-migrate up --migrations-dir ../database/migrations",
     "migrate:down": "node-pg-migrate down --migrations-dir ../database/migrations",

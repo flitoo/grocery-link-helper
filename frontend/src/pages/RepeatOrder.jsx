@@ -1,3 +1,5 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import {
@@ -7,8 +9,7 @@ import {
 } from "react-router-dom";
 import "./RepeatOrder.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function getSavedUser() {
   try {
@@ -242,14 +243,7 @@ function RepeatOrder() {
 
   return (
     <div className="repeat-page">
-      <header className="repeat-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/orders">Orders</Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="repeat-content">
         <div className="repeat-title">

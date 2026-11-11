@@ -1,20 +1,17 @@
+import AppHeader from '../components/AppHeader';
+import { api } from '../lib/api';
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./HelperDashboard.css";
 import { formatOrderStatus } from "../constants/orderStatus";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-async function fetchOrders(path, token, signal) {
-  const response = await fetch(`${API_BASE}/api/orders/${path}`, {
-    headers: { Authorization: `Bearer ${token}` },
+
+async function fetchOrders(path, signal) {
+  const data = await api(`/orders/${path}`, {
     signal,
     cache: "no-store",
   });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.errors?.[0] || data.error || `Request failed (${response.status}).`);
-  }
   return Array.isArray(data.orders) ? data.orders : [];
 }
 
@@ -35,9 +32,11 @@ function OrderCard({ order, onOpen }) {
     <div className="helper-order-card">
       <h4>Order #{order.order_id}</h4>
       <p><strong>Store:</strong> {order.store_name || "Not available"}</p>
-      <p><strong>Delivery Address:</strong> {order.delivery_address || "Not available"}</p>
+      {order.delivery_address && <p><strong>Delivery Address:</strong> {order.delivery_address}</p>}
       <p><strong>Delivery Time:</strong> {formatDeliveryTime(order.delivery_slot)}</p>
       <p><strong>Status:</strong> {formatOrderStatus(order.status)}</p>
+      {order.completed_at && <p><strong>Completed:</strong> {formatDeliveryTime(order.completed_at)}</p>}
+      {order.rating != null && <p><strong>Rating:</strong> {order.rating} / 5</p>}
       <button className="helper-details-button" onClick={() => onOpen(order.order_id)}>
         View Details
       </button>
@@ -66,6 +65,10 @@ function HelperDashboard() {
   const navigate = useNavigate();
   const [assigned, setAssigned] = useState([]);
   const [available, setAvailable] = useState([]);
+  const [stats, setStats] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(false);
   const [token] = useState(() => localStorage.getItem("token"));
   const [loading, setLoading] = useState(Boolean(token));
   const [error, setError] = useState(token ? "" : "Please log in as a helper to see orders.");
@@ -79,13 +82,18 @@ function HelperDashboard() {
     const { signal } = controller;
 
     Promise.all([
-      fetchOrders("assigned", token, signal),
-      fetchOrders("available", token, signal),
+      fetchOrders("assigned", signal),
+      fetchOrders("available", signal),
+      api('/helpers/stats', { signal }),
+      api(`/helpers/history?page=${page}`, { signal }),
     ])
-      .then(([mine, open]) => {
+      .then(([mine, open, summary, past]) => {
         if (signal.aborted) return;
         setAssigned(mine);
         setAvailable(open);
+        setStats(summary.stats);
+        setHistory(past.orders);
+        setHasMore(past.has_more);
         setError("");
       })
       .catch((err) => {
@@ -96,7 +104,7 @@ function HelperDashboard() {
       });
 
     return () => controller.abort();
-  }, [token, reloadKey]);
+  }, [token, reloadKey, page]);
 
   function handleRefresh() {
     if (!token) return;
@@ -104,25 +112,12 @@ function HelperDashboard() {
     setReloadKey((key) => key + 1);
   }
 
-  function handleLogout() {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
-  }
 
   const openOrder = (orderId) => navigate(`/helper/orders/${orderId}`);
 
   return (
     <div className="helper-page">
-      <header className="helper-header">
-        <h1>Grocery Helper</h1>
-        <nav>
-          <button onClick={handleRefresh} disabled={loading}>
-            {loading ? "Loading..." : "Refresh"}
-          </button>
-          <button onClick={handleLogout}>Logout</button>
-        </nav>
-      </header>
+      <AppHeader helper><button onClick={handleRefresh} disabled={loading}>{loading ? 'Loading...' : 'Refresh'}</button></AppHeader>
 
       <main className="helper-content">
         <h2>Helper Dashboard</h2>
@@ -138,6 +133,13 @@ function HelperDashboard() {
 
         {!error && (
           <>
+            {loading && <p role="status">Loading dashboard...</p>}
+            {stats && <section className="helper-stats" aria-label="Helper statistics">
+              <div className="app-card"><span>Active orders</span><strong>{stats.active_orders}</strong></div>
+              <div className="app-card"><span>Completed deliveries</span><strong>{stats.completed_orders}</strong></div>
+              <div className="app-card"><span>Cancelled orders</span><strong>{stats.cancelled_orders}</strong></div>
+              <div className="app-card"><span>Average rating</span><strong>{stats.average_rating == null ? 'No ratings' : `${stats.average_rating} / 5`}</strong><small>{stats.rating_count} ratings</small></div>
+            </section>}
             <OrderSection
               title="My Active Order"
               orders={assigned}
@@ -150,6 +152,12 @@ function HelperDashboard() {
               emptyText="No orders are waiting for a helper."
               onOpen={openOrder}
             />
+            <OrderSection title="Delivery History" orders={history} emptyText="No completed or cancelled deliveries yet." onOpen={openOrder} />
+            <div className="helper-pagination" aria-label="History pages">
+              <button disabled={loading || page === 1} onClick={() => { setLoading(true); setPage(value => value - 1); }}>Previous</button>
+              <span>Page {page}</span>
+              <button disabled={loading || !hasMore} onClick={() => { setLoading(true); setPage(value => value + 1); }}>Next</button>
+            </div>
           </>
         )}
       </main>

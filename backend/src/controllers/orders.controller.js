@@ -3,30 +3,31 @@ const ordersModel = require('../models/orders.model');
 const { validateSlot } = require('../services/slots.service');
 const { HELPER_SETTABLE_STATUSES } = require('../constants/order-status');
 const { parseId } = require('../validators/ids.validator');
+const { pool } = require('../config/db');
 
 // Postgres error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 const PG_FOREIGN_KEY_VIOLATION = '23503';
 const PG_CHECK_VIOLATION = '23514';
 
 async function createOrder(req, res) {
-  const { valid, errors } = validateCreateOrderPayload(req.body);
+  const { valid, errors } = validateCreateOrderPayload({ ...req.body, customer_id: req.user.userId });
   if (!valid) {
     return res.status(400).json({ errors });
   }
 
-  const store = await ordersModel.findActiveStoreById(req.body.store_id);
-  if (!store) {
-    return res.status(400).json({ errors: ['store_id does not refer to an active store.'] });
-  }
-
-  const { slot, error: slotError } = validateSlot(req.body.delivery_slot);
-  if (slotError) {
-    return res.status(400).json({ errors: [slotError] });
-  }
-
   try {
+    const store = await ordersModel.findActiveStoreById(req.body.store_id);
+    if (!store) {
+      return res.status(400).json({ errors: ['store_id does not refer to an active store.'] });
+    }
+
+    const { slot, error: slotError } = validateSlot(req.body.delivery_slot);
+    if (slotError) {
+      return res.status(400).json({ errors: [slotError] });
+    }
+
     const order = await ordersModel.createOrder({
-      customerId: req.body.customer_id,
+      customerId: req.user.userId,
       storeId: req.body.store_id,
       deliverySlot: slot.toISOString(),
       deliveryAddress: req.body.delivery_address,
@@ -49,8 +50,8 @@ async function createOrder(req, res) {
 }
 
 async function getOrder(req, res) {
-  const orderId = Number(req.params.id);
-  if (!Number.isInteger(orderId) || orderId <= 0) {
+  const orderId = parseId(req.params.id);
+  if (!orderId) {
     return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
 
@@ -58,6 +59,15 @@ async function getOrder(req, res) {
     const order = await ordersModel.getOrderById(orderId);
     if (!order) {
       return res.status(404).json({ errors: ['Order not found.'] });
+    }
+    if (order.customer_id !== req.user.userId && order.helper_id !== req.user.userId) {
+      // Helpers must be able to inspect paid, unclaimed orders before claiming.
+      const role = order.status === 'Paid' && order.helper_id == null
+        ? await pool.query('SELECT role FROM users WHERE user_id = $1', [req.user.userId])
+        : null;
+      if (String(role?.rows[0]?.role).toLowerCase() !== 'helper') {
+        return res.status(403).json({ errors: ['You cannot view this order.'] });
+      }
     }
     return res.status(200).json(order);
   } catch (err) {
@@ -131,7 +141,18 @@ async function getAvailableOrders(req, res) {
   }
 }
 
+async function getCustomerOrders(req, res) {
+  try {
+    const orders = await ordersModel.getCustomerOrders(req.user.userId);
+    return res.json({ orders });
+  } catch (err) {
+    console.error('Failed to fetch customer orders:', err);
+    return res.status(500).json({ errors: ['Unable to load your orders. Please try again.'] });
+  }
+}
+
 module.exports = {
+  getCustomerOrders,
   createOrder,
   getOrder,
   updateDeliveryStatus,

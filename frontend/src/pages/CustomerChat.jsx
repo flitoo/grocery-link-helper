@@ -1,13 +1,18 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE, api } from '../lib/api';
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./CustomerChat.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function CustomerChat({ isHelper = false }) {
   const { orderId } = useParams();
+  return <CustomerChatContent key={orderId} orderId={orderId} isHelper={isHelper} />;
+}
+
+function CustomerChatContent({ orderId, isHelper }) {
 
   const [messages, setMessages] = useState([]);
   const [orderParticipants, setOrderParticipants] =
@@ -21,68 +26,20 @@ function CustomerChat({ isHelper = false }) {
   const getToken = () => localStorage.getItem("token");
 
   // Load messages from backend
-  async function loadMessages(signal) {
-    const token = getToken();
-
-    if (!token) {
-      setError("Please log in to view messages.");
-      setLoading(false);
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `${API_BASE}/api/orders/${orderId}/messages`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          signal,
-          cache: "no-store",
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.errors?.[0] ||
-            data.error ||
-            data.message ||
-            "Failed to load messages."
-        );
-      }
-
-      const messageList = Array.isArray(data)
-        ? data
-        : data.messages || [];
-
-      if (!signal?.aborted) {
-        setMessages(messageList);
-        setError("");
-      }
-    } catch (err) {
-      if (err.name !== "AbortError") {
-        setError(err.message);
-      }
-    } finally {
-      if (!signal?.aborted) {
-        setLoading(false);
-      }
-    }
-  }
+  const loadMessages = useCallback(async (signal) => {
+    const data = await api(`/orders/${orderId}/messages`, { signal, cache: 'no-store' });
+    return Array.isArray(data) ? data : data.messages || [];
+  }, [orderId]);
 
   // Load conversation when order changes
   useEffect(() => {
     const controller = new AbortController();
 
-    setLoading(true);
-    setMessages([]);
-    setOrderParticipants(null);
-    setError("");
-    setSuccess("");
 
-    loadMessages(controller.signal);
+    loadMessages(controller.signal)
+      .then(data => { if (!controller.signal.aborted) { setMessages(data); setError(''); } })
+      .catch(err => { if (!controller.signal.aborted) setError(err.message); })
+      .finally(() => { if (!controller.signal.aborted) setLoading(false); });
 
     // Load order information for sender labels
     async function loadOrderParticipants() {
@@ -91,6 +48,7 @@ function CustomerChat({ isHelper = false }) {
           `${API_BASE}/api/orders/${orderId}`,
           {
             signal: controller.signal,
+            headers: { Authorization: `Bearer ${getToken()}` },
           }
         );
 
@@ -114,13 +72,15 @@ function CustomerChat({ isHelper = false }) {
     loadOrderParticipants();
 
     return () => controller.abort();
-  }, [orderId]);
+  }, [orderId, loadMessages]);
 
   // Refresh messages
   async function handleRefresh() {
     setLoading(true);
     setSuccess("");
-    await loadMessages();
+    try { setMessages(await loadMessages()); setError(''); }
+    catch (err) { setError(err.message); }
+    finally { setLoading(false); }
   }
 
   // Send message to backend
@@ -172,7 +132,7 @@ function CustomerChat({ isHelper = false }) {
       setSuccess("Message sent successfully.");
 
       // Reload messages after sending
-      await loadMessages();
+      setMessages(await loadMessages());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -224,27 +184,7 @@ function CustomerChat({ isHelper = false }) {
   return (
     <div className="customer-chat-page">
       {/* Header */}
-      <header className="customer-chat-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link
-            to={
-              isHelper
-                ? "/helper-dashboard"
-                : "/dashboard"
-            }
-          >
-            Dashboard
-          </Link>
-
-          {!isHelper && (
-            <Link to="/orders">
-              Orders
-            </Link>
-          )}
-        </nav>
-      </header>
+      <AppHeader helper={isHelper} />
 
       {/* Main Content */}
       <main className="customer-chat-content">
