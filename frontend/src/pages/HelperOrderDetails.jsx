@@ -7,6 +7,12 @@ import "./OrderDetails.css";
 
 
 
+// GET /api/orders/:id requires the logged-in helper's token.
+function authHeaders() {
+  const token = localStorage.getItem("token");
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
+
 function HelperOrderDetails() {
   const { orderId } = useParams();
 
@@ -32,8 +38,8 @@ function HelperOrderDetails() {
         const response = await fetch(
           `${API_BASE}/api/orders/${orderId}`,
           {
+            headers: authHeaders(),
             signal: controller.signal,
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
           }
         );
 
@@ -134,7 +140,7 @@ function HelperOrderDetails() {
       // Refresh order details after claiming
       const updatedResponse = await fetch(
         `${API_BASE}/api/orders/${orderId}`,
-        { headers: { Authorization: `Bearer ${token}` } }
+        { headers: authHeaders() }
       );
 
       if (updatedResponse.ok) {

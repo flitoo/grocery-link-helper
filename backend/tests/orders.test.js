@@ -1,12 +1,21 @@
 jest.mock('../src/models/orders.model');
-jest.mock('../src/config/db', () => ({ pool: { query: jest.fn() } }));
-process.env.JWT_SECRET = 'test-secret';
-const jwt = require('jsonwebtoken');
-const authorization = `Bearer ${jwt.sign({ userId: 1 }, process.env.JWT_SECRET)}`;
+jest.mock('../src/config/db', () => ({
+  pool: { query: jest.fn() },
+  withTransaction: jest.fn(),
+}));
 
+process.env.JWT_SECRET = 'test-secret';
+
+const jwt = require('jsonwebtoken');
 const request = require('supertest');
 const app = require('../src/app');
 const ordersModel = require('../src/models/orders.model');
+const { pool } = require('../src/config/db');
+
+// Logged-in user id 1 is the customer in validPayload.
+function auth(userId = 1) {
+  return { Authorization: `Bearer ${jwt.sign({ userId }, process.env.JWT_SECRET)}` };
+}
 
 // Fixed "now" so slot validation is deterministic. 2026-10-07T18:00Z is
 // 2:00 PM Toronto time, inside operating hours and within the 7-day window.
@@ -25,6 +34,7 @@ const validPayload = {
 
 beforeEach(() => {
   jest.clearAllMocks();
+  pool.query.mockResolvedValue({ rows: [{ role: 'Customer' }] });
   jest.spyOn(Date, 'now').mockReturnValue(NOW);
 });
 
@@ -44,7 +54,7 @@ describe('POST /api/orders', () => {
       items: validPayload.items,
     });
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(validPayload);
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
 
     expect(res.status).toBe(201);
     expect(res.body.order_id).toBe(42);
@@ -56,7 +66,7 @@ describe('POST /api/orders', () => {
 
   it('rejects an empty grocery list with 400 and does not hit the database', async () => {
     const res = await request(app)
-      .post('/api/orders').set('Authorization', authorization)
+      .post('/api/orders').set(auth())
       .send({ ...validPayload, items: [] });
 
     expect(res.status).toBe(400);
@@ -70,7 +80,7 @@ describe('POST /api/orders', () => {
   it('rejects a request missing store_id with 400', async () => {
     const { store_id, ...withoutStore } = validPayload;
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(withoutStore);
+    const res = await request(app).post('/api/orders').set(auth()).send(withoutStore);
 
     expect(res.status).toBe(400);
     expect(res.body.errors).toEqual(
@@ -81,7 +91,7 @@ describe('POST /api/orders', () => {
   it('rejects an order for an inactive/unknown store with 400', async () => {
     ordersModel.findActiveStoreById.mockResolvedValue(undefined);
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(validPayload);
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
 
     expect(res.status).toBe(400);
     expect(res.body.errors).toEqual(
@@ -99,7 +109,7 @@ describe('POST /api/orders', () => {
     ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1, is_active: true });
 
     const res = await request(app)
-      .post('/api/orders').set('Authorization', authorization)
+      .post('/api/orders').set(auth())
       .send({ ...validPayload, delivery_slot: slot });
 
     expect(res.status).toBe(400);
@@ -115,7 +125,7 @@ describe('POST /api/orders', () => {
     fullError.code = 'SLOT_FULL';
     ordersModel.createOrder.mockRejectedValue(fullError);
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(validPayload);
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
 
     expect(res.status).toBe(409);
     expect(res.body.errors).toEqual(
@@ -129,7 +139,7 @@ describe('POST /api/orders', () => {
     fkError.code = '23503';
     ordersModel.createOrder.mockRejectedValue(fkError);
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(validPayload);
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
 
     expect(res.status).toBe(400);
     expect(res.body.errors).toEqual(
@@ -141,80 +151,118 @@ describe('POST /api/orders', () => {
     ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1, is_active: true });
     ordersModel.createOrder.mockRejectedValue(new Error('connection reset'));
 
-    const res = await request(app).post('/api/orders').set('Authorization', authorization).send(validPayload);
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
 
     expect(res.status).toBe(500);
+  });
+
+  it('requires a login token', async () => {
+    const res = await request(app).post('/api/orders').send(validPayload);
+
+    expect(res.status).toBe(401);
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+
+  it('rejects a helper with 403', async () => {
+    pool.query.mockResolvedValue({ rows: [{ role: 'Helper' }] });
+
+    const res = await request(app).post('/api/orders').set(auth()).send(validPayload);
+
+    expect(res.status).toBe(403);
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+
+  it('rejects a customer_id that is not the logged-in user with 403', async () => {
+    const res = await request(app)
+      .post('/api/orders')
+      .set(auth(2))
+      .send(validPayload);
+
+    expect(res.status).toBe(403);
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+
+  it('uses the logged-in user as the customer when customer_id is omitted', async () => {
+    ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1, is_active: true });
+    ordersModel.createOrder.mockResolvedValue({ order_id: 43, status: 'Pending' });
+    const { customer_id, ...withoutCustomer } = validPayload;
+
+    const res = await request(app).post('/api/orders').set(auth(9)).send(withoutCustomer);
+
+    expect(res.status).toBe(201);
+    expect(ordersModel.createOrder).toHaveBeenCalledWith(
+      expect.objectContaining({ customerId: 9 })
+    );
   });
 });
 
 describe('GET /api/orders/:id', () => {
   it('returns the order with its items when found', async () => {
-    ordersModel.getOrderById.mockResolvedValue({
+    ordersModel.getOrderForViewer.mockResolvedValue({
       order_id: 42,
-      customer_id: 1,
       status: 'Pending',
       items: validPayload.items,
     });
 
-    const res = await request(app).get('/api/orders/42').set('Authorization', authorization);
+    const res = await request(app).get('/api/orders/42').set(auth());
 
     expect(res.status).toBe(200);
     expect(res.body.order_id).toBe(42);
-    expect(ordersModel.getOrderById).toHaveBeenCalledWith(42);
+    expect(ordersModel.getOrderForViewer).toHaveBeenCalledWith(42, 1);
   });
 
   it('returns 404 when the order does not exist', async () => {
-    ordersModel.getOrderById.mockResolvedValue(undefined);
+    ordersModel.getOrderForViewer.mockResolvedValue(undefined);
 
-    const res = await request(app).get('/api/orders/999').set('Authorization', authorization);
+    const res = await request(app).get('/api/orders/999').set(auth());
 
     expect(res.status).toBe(404);
   });
 
   it('returns 400 for a non-numeric id', async () => {
-    const res = await request(app).get('/api/orders/not-a-number').set('Authorization', authorization);
+    const res = await request(app).get('/api/orders/not-a-number').set(auth());
 
     expect(res.status).toBe(400);
-    expect(ordersModel.getOrderById).not.toHaveBeenCalled();
+    expect(ordersModel.getOrderForViewer).not.toHaveBeenCalled();
+  });
+
+  it('requires a login token', async () => {
+    const res = await request(app).get('/api/orders/42');
+
+    expect(res.status).toBe(401);
+    expect(ordersModel.getOrderForViewer).not.toHaveBeenCalled();
+  });
+
+  it('returns 404 when the caller may not see the order', async () => {
+    ordersModel.getOrderForViewer.mockResolvedValue(undefined);
+
+    const res = await request(app).get('/api/orders/42').set(auth(5));
+
+    expect(res.status).toBe(404);
+    expect(ordersModel.getOrderForViewer).toHaveBeenCalledWith(42, 5);
   });
 });
 
 
-describe('Order authentication and ownership', () => {
-  it('returns 400 for a null line item instead of crashing', async () => {
-    const res = await request(app).post('/api/orders').set('Authorization', authorization)
-      .send({ ...validPayload, items: [null] });
+describe('Merged order routes', () => {
+  it('rejects a null line item without crashing', async () => {
+    const res = await request(app).post('/api/orders').set(auth()).send({ ...validPayload, items: [null] });
     expect(res.status).toBe(400);
     expect(ordersModel.createOrder).not.toHaveBeenCalled();
   });
-  it.each(['get', 'post'])('requires login for %s /api/orders', async method => {
-    const res = await request(app)[method]('/api/orders').send(validPayload);
-    expect(res.status).toBe(401);
-    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  it('requires login for the customer order list', async () => {
+    expect((await request(app).get('/api/orders')).status).toBe(401);
+    expect(ordersModel.getCustomerOrders).not.toHaveBeenCalled();
   });
-  it('requires login for details', async () => {
-    expect((await request(app).get('/api/orders/42')).status).toBe(401);
-    expect(ordersModel.getOrderById).not.toHaveBeenCalled();
+  it('lists orders only for the token owner', async () => {
+    ordersModel.getCustomerOrders.mockResolvedValue([{ order_id: 42 }]);
+    const res = await request(app).get('/api/orders?customer_id=99').set(auth());
+    expect(res.status).toBe(200);
+    expect(res.body.orders).toEqual([{ order_id: 42 }]);
+    expect(ordersModel.getCustomerOrders).toHaveBeenCalledWith(1);
   });
-  it('uses the token customer instead of a supplied id', async () => {
-    ordersModel.findActiveStoreById.mockResolvedValue({ store_id: 1 });
-    ordersModel.createOrder.mockResolvedValue({ order_id: 42 });
-    const res = await request(app).post('/api/orders').set('Authorization', authorization)
-      .send({ ...validPayload, customer_id: 999 });
-    expect(res.status).toBe(201);
-    expect(ordersModel.createOrder).toHaveBeenCalledWith(expect.objectContaining({ customerId: 1 }));
-  });
-  it('denies details to an unrelated customer', async () => {
-    ordersModel.getOrderById.mockResolvedValue({ order_id: 42, customer_id: 2, helper_id: 3 });
-    expect((await request(app).get('/api/orders/42').set('Authorization', authorization)).status).toBe(403);
-  });
-  it('allows the assigned helper to view details', async () => {
-    ordersModel.getOrderById.mockResolvedValue({ order_id: 42, customer_id: 2, helper_id: 1 });
-    expect((await request(app).get('/api/orders/42').set('Authorization', authorization)).status).toBe(200);
-  });
-  it('allows helpers to inspect paid, unclaimed orders', async () => {
-    require('../src/config/db').pool.query.mockResolvedValue({ rows: [{ role: 'Helper' }] });
-    ordersModel.getOrderById.mockResolvedValue({ order_id: 42, customer_id: 2, helper_id: null, status: 'Paid' });
-    expect((await request(app).get('/api/orders/42').set('Authorization', authorization)).status).toBe(200);
+  it.each(['1e3', '0x10', '2147483648'])('rejects malformed order id %s', async id => {
+    expect((await request(app).get('/api/orders/'+id).set(auth())).status).toBe(400);
+    expect(ordersModel.getOrderForViewer).not.toHaveBeenCalled();
   });
 });

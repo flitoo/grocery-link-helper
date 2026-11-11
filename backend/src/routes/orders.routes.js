@@ -19,7 +19,11 @@ const {
   createRepeatOrder,
 } = require('../controllers/repeat-orders.controller');
 
-const { requireAuth, requireHelper } = require('../middleware/auth.middleware');
+const {
+  requireAuth,
+  requireHelper,
+  requireCustomer,
+} = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
@@ -29,7 +33,7 @@ router.use(requireAuth);
 router.get('/', getCustomerOrders);
 
 // Create order
-router.post('/', createOrder);
+router.post('/', requireCustomer, createOrder);
 
 // Get assigned tasks for logged-in helper
 router.get('/assigned', requireHelper, getAssignedTasks);
@@ -48,7 +52,7 @@ router.post('/:id/repeat', createRepeatOrder);
 // Update delivery status
 router.patch('/:id/status', updateDeliveryStatus);
 
-// Get order details
+// Get order details (its customer, its helper, or a helper previewing a claimable order)
 router.get('/:id', getOrder);
 
 module.exports = router;

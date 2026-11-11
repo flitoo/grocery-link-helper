@@ -94,6 +94,28 @@ async function getOrderById(orderId) {
 }
 
 /**
+ * Fetches an order only if `userId` may see it: the customer who placed it,
+ * its assigned helper, or any helper while it is Paid and unclaimed (the
+ * preview before claiming). Returns undefined otherwise.
+ */
+async function getOrderForViewer(orderId, userId) {
+  const order = await getOrderById(orderId);
+  if (!order) {
+    return undefined;
+  }
+  if (Number(order.customer_id) === userId || Number(order.helper_id) === userId) {
+    return order;
+  }
+  if (order.status === 'Paid' && order.helper_id == null) {
+    const roleResult = await pool.query('SELECT role FROM users WHERE user_id = $1', [userId]);
+    if (String(roleResult.rows[0]?.role).toLowerCase() === 'helper') {
+      return order;
+    }
+  }
+  return undefined;
+}
+
+/**
  * Loads what a repeat order copies from a previous order: its owner, store,
  * address, slot and line items. Returns undefined if the order doesn't exist.
  *
@@ -220,6 +242,7 @@ module.exports = {
   findActiveStoreById,
   createOrder,
   getOrderById,
+  getOrderForViewer,
   getRepeatSource,
   updateDeliveryStatus,
   getAssignedTasks,

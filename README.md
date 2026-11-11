@@ -44,6 +44,8 @@ npm run migrate:up
 ```
 Note: pushing changes under `database/migrations` to `main` automatically runs them against production (Neon). Test migrations on a Neon branch first.
 
+The `items` migration creates the store item catalog (name, brand, category, unit `each`/`lb`/`kg`, unit price, dietary tags) and seeds about 320 sample items across the four seeded stores. Names, brands and prices are illustrative, not live data.
+
 ### 4. Run the app
 Use two terminals.
 
@@ -65,6 +67,17 @@ The frontend calls the API at `http://localhost:8080` by default. To change it, 
 Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
+
+### Which endpoints need a login
+Send `Authorization: Bearer <token>` (from register/login). Missing or invalid
+tokens get `401`.
+
+| Endpoint | Who can call it |
+| --- | --- |
+| `POST /api/orders` | Customers only (`403` for helpers). The customer is the logged-in user; a `customer_id` in the body is optional and must match, otherwise `403`. |
+| `GET /api/orders/{id}` | The order's customer, its assigned helper, or any helper while the order is Paid and unclaimed. Anyone else gets `404`. |
+| `POST /api/payments`, `POST /api/payments/{orderId}/confirm-demo` | Only the customer who placed the order (`403` otherwise). |
+| `GET /api/payments/{orderId}` | The order's customer or assigned helper; anyone else gets `404`. |
 
 ### Demo setup
 The payment screen confirms payments through a development-only endpoint, and
@@ -160,6 +173,31 @@ Content-Type: application/json
 Send a message with `{"message_text":"Buzz 1204, please."}`. The API derives
 the sender from the token and allows access only to the customer or assigned
 helper for that order.
+
+### Item search
+Search a store's item catalog. All three endpoints need a login token.
+
+```
+GET /api/items?store_id=2&q=greek yogurt&category=Dairy %26 Eggs&tag=vegan&tag=gluten-free&limit=20&offset=0
+Authorization: Bearer <token>
+```
+
+| Param | Notes |
+| --- | --- |
+| `store_id` | Required. Only that store's active items are searched. |
+| `q` | Optional, up to 100 characters / 8 words. Every word must appear in the name or brand (case-insensitive). |
+| `category` | Optional, one of the values from `/api/items/filters`. |
+| `tag` | Optional, repeatable or comma-separated. An item must have all the tags. |
+| `ids` | Optional comma-separated item ids (max 100), e.g. to re-price an imported list. |
+| `limit` / `offset` | Page size 1-50 (default 20) and start position (default 0). |
+
+Returns `{ items: [{ item_id, store_id, name, brand, category, unit, unit_price, dietary_tags }], total }`,
+where `total` counts all matches ignoring paging. Bad params return `400` with `errors`.
+
+```
+GET /api/items/filters              # { categories: [...], dietary_tags: [...] }
+GET /api/items/{id}/alternatives    # { item, alternatives } - other brands of the same product at the same store
+```
 
 ### Repeat order (US-06)
 A customer can repeat one of their previous orders. The new order keeps the

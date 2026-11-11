@@ -47,8 +47,8 @@ function CustomerChatContent({ orderId, isHelper }) {
         const response = await fetch(
           `${API_BASE}/api/orders/${orderId}`,
           {
-            signal: controller.signal,
             headers: { Authorization: `Bearer ${getToken()}` },
+            signal: controller.signal,
           }
         );
 

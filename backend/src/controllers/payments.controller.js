@@ -25,6 +25,7 @@ async function createPayment(req, res) {
   try {
     const payment = await paymentsModel.createPayment({
       orderId: req.body.order_id,
+      customerId: req.user.userId,
       transactionRef: req.body.transaction_ref.trim(),
       paymentMethod: paymentMethod,
     });
@@ -37,6 +38,12 @@ async function createPayment(req, res) {
 
     return res.status(201).json(payment);
   } catch (err) {
+    if (err.code === "NOT_ORDER_OWNER") {
+      return res.status(403).json({
+        errors: [err.message],
+      });
+    }
+
     if (err.code === "ORDER_NOT_PAYABLE") {
       return res.status(409).json({
         errors: ["Order is not awaiting payment."],
@@ -70,7 +77,10 @@ async function getPayment(req, res) {
 
   try {
     const payment =
-      await paymentsModel.getPaymentByOrderId(orderId);
+      await paymentsModel.getPaymentByOrderId(
+        orderId,
+        req.user.userId
+      );
 
     if (!payment) {
       return res.status(404).json({
@@ -109,10 +119,19 @@ async function confirmDemoPayment(req, res) {
 
   try {
     const result =
-      await paymentsModel.confirmDemoPayment(orderId);
+      await paymentsModel.confirmDemoPayment(
+        orderId,
+        req.user.userId
+      );
 
     return res.status(200).json(result);
   } catch (err) {
+    if (err.code === "NOT_ORDER_OWNER") {
+      return res.status(403).json({
+        errors: [err.message],
+      });
+    }
+
     if (
       err.code === "ORDER_NOT_FOUND" ||
       err.code === "PAYMENT_NOT_FOUND"

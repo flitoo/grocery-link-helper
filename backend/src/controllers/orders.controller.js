@@ -3,14 +3,21 @@ const ordersModel = require('../models/orders.model');
 const { validateSlot } = require('../services/slots.service');
 const { HELPER_SETTABLE_STATUSES } = require('../constants/order-status');
 const { parseId } = require('../validators/ids.validator');
-const { pool } = require('../config/db');
 
 // Postgres error codes: https://www.postgresql.org/docs/current/errcodes-appendix.html
 const PG_FOREIGN_KEY_VIOLATION = '23503';
 const PG_CHECK_VIOLATION = '23514';
 
 async function createOrder(req, res) {
-  const { valid, errors } = validateCreateOrderPayload({ ...req.body, customer_id: req.user.userId });
+  // The customer is always the logged-in user. A body customer_id is optional
+  // but must match, so one customer can't place orders for another.
+  const customerId = req.user.userId;
+  const bodyCustomerId = req.body?.customer_id;
+  if (bodyCustomerId !== undefined && Number(bodyCustomerId) !== customerId) {
+    return res.status(403).json({ errors: ['You can only place orders for your own account.'] });
+  }
+
+  const { valid, errors } = validateCreateOrderPayload(req.body);
   if (!valid) {
     return res.status(400).json({ errors });
   }
@@ -27,7 +34,7 @@ async function createOrder(req, res) {
     }
 
     const order = await ordersModel.createOrder({
-      customerId: req.user.userId,
+      customerId,
       storeId: req.body.store_id,
       deliverySlot: slot.toISOString(),
       deliveryAddress: req.body.delivery_address,
@@ -56,18 +63,10 @@ async function getOrder(req, res) {
   }
 
   try {
-    const order = await ordersModel.getOrderById(orderId);
+    // Orders the caller may not see look the same as missing ones (404).
+    const order = await ordersModel.getOrderForViewer(orderId, req.user.userId);
     if (!order) {
       return res.status(404).json({ errors: ['Order not found.'] });
-    }
-    if (order.customer_id !== req.user.userId && order.helper_id !== req.user.userId) {
-      // Helpers must be able to inspect paid, unclaimed orders before claiming.
-      const role = order.status === 'Paid' && order.helper_id == null
-        ? await pool.query('SELECT role FROM users WHERE user_id = $1', [req.user.userId])
-        : null;
-      if (String(role?.rows[0]?.role).toLowerCase() !== 'helper') {
-        return res.status(403).json({ errors: ['You cannot view this order.'] });
-      }
     }
     return res.status(200).json(order);
   } catch (err) {
