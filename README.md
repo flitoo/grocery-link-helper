@@ -44,6 +44,8 @@ npm run migrate:up
 ```
 Note: pushing changes under `database/migrations` to `main` automatically runs them against production (Neon). Test migrations on a Neon branch first.
 
+The `items` migration creates the store item catalog (name, brand, category, unit `each`/`lb`/`kg`, unit price, dietary tags) and seeds about 320 sample items across the four seeded stores. Names, brands and prices are illustrative, not live data.
+
 ### 4. Run the app
 Use two terminals.
 
