@@ -70,4 +70,36 @@ async function requireHelper(req, res, next) {
   }
 }
 
-module.exports = { requireAuth, requireHelper };
+// Only users with the Customer role can place orders.
+async function requireCustomer(req, res, next) {
+  try {
+    const result = await pool.query(
+      'SELECT role FROM users WHERE user_id = $1',
+      [req.user.userId]
+    );
+
+    const user = result.rows[0];
+
+    if (!user) {
+      return res.status(401).json({
+        errors: ['User account not found.'],
+      });
+    }
+
+    if (String(user.role).toLowerCase() !== 'customer') {
+      return res.status(403).json({
+        errors: ['Only customers can place orders.'],
+      });
+    }
+
+    return next();
+  } catch (err) {
+    console.error('Failed to verify customer role:', err);
+
+    return res.status(500).json({
+      errors: ['Unexpected error verifying customer role.'],
+    });
+  }
+}
+
+module.exports = { requireAuth, requireHelper, requireCustomer };
