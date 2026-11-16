@@ -12,6 +12,8 @@ import {
   listTotal,
   removeFromList,
   removedItemsNotice,
+  swapBrand,
+  updateItem,
 } from "../utils/groceryList";
 import "./GroceryList.css";
 
@@ -40,21 +42,28 @@ function GroceryListContent({ store }) {
     return dropOtherStoreItems(Array.isArray(saved) ? saved : [], store.id);
   });
   const [items, setItems] = useState(initial.items);
-  const [replaceNotice, setReplaceNotice] = useState("");
+  const [listNotice, setListNotice] = useState("");
 
   // Save grocery items whenever the list changes
   useEffect(() => {
     localStorage.setItem("groceryItems", JSON.stringify(items));
   }, [items]);
 
-  // After the list is replaced, only the notice about that is still relevant.
-  const notices = replaceNotice
-    ? [replaceNotice]
+  // Once the list has been replaced or edited with a notice, only that one is
+  // still relevant.
+  const notices = listNotice
+    ? [listNotice]
     : [location.state?.notice, removedItemsNotice(initial.removedCount, store.name)].filter(Boolean);
 
   function handleReplaceList(newItems, notice) {
     setItems(newItems);
-    setReplaceNotice(notice);
+    setListNotice(notice);
+  }
+
+  function handleSwapBrand(id, alternative) {
+    const result = swapBrand(items, id, alternative);
+    setItems(result.items);
+    if (result.note) setListNotice(result.note);
   }
 
   // Both add handlers return { error } or { merged } for the form that called.
@@ -76,10 +85,8 @@ function GroceryListContent({ store }) {
     setItems((current) => removeFromList(current, id));
   };
 
-  const handleToggleSubstitution = (id, allowSubstitution) => {
-    setItems((current) =>
-      current.map((item) => (item.id === id ? { ...item, allowSubstitution } : item))
-    );
+  const handleUpdateItem = (id, changes) => {
+    setItems((current) => updateItem(current, id, changes));
   };
 
   return (
@@ -141,7 +148,8 @@ function GroceryListContent({ store }) {
                 key={item.id}
                 item={item}
                 onRemove={handleRemoveItem}
-                onToggleSubstitution={handleToggleSubstitution}
+                onUpdate={handleUpdateItem}
+                onSwap={handleSwapBrand}
               />
             ))
           )}

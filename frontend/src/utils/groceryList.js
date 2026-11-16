@@ -138,12 +138,9 @@ export function buildCustomItem({ name, quantity, unit, price }, id) {
     return { error: parsed.error };
   }
 
-  const parsedPrice = Number(price);
-  if (String(price ?? "").trim() === "" || !Number.isFinite(parsedPrice) || parsedPrice <= 0) {
-    return { error: "Estimated price must be greater than $0." };
-  }
-  if (parsedPrice > MAX_PRICE) {
-    return { error: `Estimated price can't be more than $${MAX_PRICE}.` };
+  const parsedPrice = parsePrice(price);
+  if (parsedPrice.error) {
+    return { error: parsedPrice.error };
   }
 
   return {
@@ -152,10 +149,23 @@ export function buildCustomItem({ name, quantity, unit, price }, id) {
       name: trimmed,
       unit: itemUnit,
       quantity: parsed.quantity,
-      estimatedPrice: parsedPrice,
+      estimatedPrice: parsedPrice.price,
       allowSubstitution: false,
     },
   };
+}
+
+/** Checks a price typed into a box. Returns { price } (to the cent) or { error }. */
+export function parsePrice(value) {
+  const text = String(value ?? "").trim();
+  const price = Number(text);
+  if (text === "" || !Number.isFinite(price) || price <= 0) {
+    return { error: "Estimated price must be greater than $0." };
+  }
+  if (price > MAX_PRICE) {
+    return { error: `Estimated price can't be more than $${MAX_PRICE}.` };
+  }
+  return { price: Math.round(price * 100) / 100 };
 }
 
 // ---------- Changing the list ----------
@@ -191,6 +201,68 @@ export function addToList(items, newItem) {
 
 export function removeFromList(items, id) {
   return items.filter((item) => item.id !== id);
+}
+
+/** Merges `changes` (quantity, estimatedPrice, allowSubstitution) into one line. */
+export function updateItem(items, id, changes) {
+  return items.map((item) => (item.id === id ? { ...item, ...changes } : item));
+}
+
+const KG_PER_LB = 0.45359237;
+
+/**
+ * Carries a quantity over to another unit when a brand is swapped.
+ * lb and kg convert; between pieces and weight there is no sensible
+ * conversion, so the quantity becomes 1. Returns { quantity, note }.
+ */
+export function convertQuantity(quantity, fromUnit, toUnit) {
+  if (fromUnit === toUnit) {
+    return { quantity, note: "" };
+  }
+  const weights = { lb: 1, kg: 1 / KG_PER_LB };
+  if (weights[fromUnit] && weights[toUnit]) {
+    const raw = (quantity * weights[fromUnit]) / weights[toUnit];
+    const converted = Math.min(Math.max(roundQuantity(raw), 0.001), MAX_QUANTITY);
+    return { quantity: converted, note: `${quantity} ${fromUnit} was converted to ${converted} ${toUnit}.` };
+  }
+  const unitName = toUnit === "each" ? "piece" : toUnit;
+  return { quantity: 1, note: `The quantity was set to 1 ${unitName}. Please check it.` };
+}
+
+/**
+ * Replaces a catalog line with another brand (from GET /api/items/:id/alternatives),
+ * keeping its place, quantity and substitution choice. If that brand is already
+ * in the list, the two lines are merged. Returns { items, note }; note says
+ * what happened to the quantity, or is "".
+ */
+export function swapBrand(items, id, alternative) {
+  const index = items.findIndex((item) => item.id === id);
+  if (index === -1) {
+    return { items, note: "" };
+  }
+  const old = items[index];
+  const { quantity, note } = convertQuantity(Number(old.quantity), unitOf(old), alternative.unit);
+  const swapped = {
+    ...catalogToListItem(alternative, quantity),
+    allowSubstitution: Boolean(old.allowSubstitution),
+  };
+
+  const rest = items.filter((_, i) => i !== index);
+  const existing = rest.findIndex((item) => item.catalogItemId === swapped.catalogItemId);
+  if (existing !== -1) {
+    const total = Math.min(roundQuantity(Number(rest[existing].quantity) + quantity), MAX_QUANTITY);
+    return {
+      items: updateItem(rest, rest[existing].id, { quantity: total }),
+      note: `${displayName(swapped)} was already in your list, so the quantities were added together.`,
+    };
+  }
+  return { items: items.map((item, i) => (i === index ? swapped : item)), note };
+}
+
+/** "No Name Atlantic Salmon Fillet", or just the name for unbranded items. */
+export function displayName(item) {
+  const brand = displayBrand(item.brand);
+  return brand ? `${brand} ${item.name}` : item.name;
 }
 
 /**
