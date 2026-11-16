@@ -1,3 +1,5 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -6,8 +8,7 @@ import {
 } from "../utils/groceryList";
 import "./StoreSelection.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function readSaved(key) {
   try {
@@ -109,14 +110,7 @@ function StoreSelection() {
 
   return (
     <div className="store-page">
-      <header className="store-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="store-content">
         <div className="store-title">

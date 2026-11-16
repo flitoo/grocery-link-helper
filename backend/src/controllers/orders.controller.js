@@ -22,17 +22,17 @@ async function createOrder(req, res) {
     return res.status(400).json({ errors });
   }
 
-  const store = await ordersModel.findActiveStoreById(req.body.store_id);
-  if (!store) {
-    return res.status(400).json({ errors: ['store_id does not refer to an active store.'] });
-  }
-
-  const { slot, error: slotError } = validateSlot(req.body.delivery_slot);
-  if (slotError) {
-    return res.status(400).json({ errors: [slotError] });
-  }
-
   try {
+    const store = await ordersModel.findActiveStoreById(req.body.store_id);
+    if (!store) {
+      return res.status(400).json({ errors: ['store_id does not refer to an active store.'] });
+    }
+
+    const { slot, error: slotError } = validateSlot(req.body.delivery_slot);
+    if (slotError) {
+      return res.status(400).json({ errors: [slotError] });
+    }
+
     const order = await ordersModel.createOrder({
       customerId,
       storeId: req.body.store_id,
@@ -60,8 +60,8 @@ async function createOrder(req, res) {
 }
 
 async function getOrder(req, res) {
-  const orderId = Number(req.params.id);
-  if (!Number.isInteger(orderId) || orderId <= 0) {
+  const orderId = parseId(req.params.id);
+  if (!orderId) {
     return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
 
@@ -143,7 +143,18 @@ async function getAvailableOrders(req, res) {
   }
 }
 
+async function getCustomerOrders(req, res) {
+  try {
+    const orders = await ordersModel.getCustomerOrders(req.user.userId);
+    return res.json({ orders });
+  } catch (err) {
+    console.error('Failed to fetch customer orders:', err);
+    return res.status(500).json({ errors: ['Unable to load your orders. Please try again.'] });
+  }
+}
+
 module.exports = {
+  getCustomerOrders,
   createOrder,
   getOrder,
   updateDeliveryStatus,

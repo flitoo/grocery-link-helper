@@ -78,6 +78,39 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+describe('Repeat order regression cases', () => {
+  it('ignores body overrides of ownership, store, items, price and payment state', async () => {
+    const snapshot = JSON.parse(JSON.stringify(source));
+    ordersModel.createOrder.mockResolvedValue({ order_id: 99, status: 'Pending', helper_id: null });
+    const res = await repeatOrder(42, { delivery_slot: RECURRING, customer_id: 999, helper_id: 999,
+      store_id: 999, items: [{ item_name: 'Tampered', quantity: 1 }], total_amount: 0, status: 'Paid' });
+    expect(res.status).toBe(201);
+    expect(ordersModel.createOrder).toHaveBeenCalledWith({ customerId: CUSTOMER_ID, storeId: source.store_id,
+      deliverySlot: RECURRING, deliveryAddress: source.delivery_address, items: source.items });
+    expect(res.body).toMatchObject({ order_id: 99, status: 'Pending', helper_id: null, repeated_from: 42 });
+    expect(source).toEqual(snapshot);
+  });
+  it('does not trust an earlier availability result if the slot fills before booking', async () => {
+    expect((await checkAvailability(42)).body.available).toBe(true);
+    ordersModel.createOrder.mockRejectedValue(Object.assign(new Error('full'), { code: 'SLOT_FULL' }));
+    const res = await repeatOrder(42, { delivery_slot: RECURRING });
+    expect(res.status).toBe(409);
+    expect(res.body).not.toHaveProperty('order_id');
+  });
+  it('still validates the store after a successful availability check', async () => {
+    expect((await checkAvailability(42)).body.available).toBe(true);
+    ordersModel.findActiveStoreById.mockResolvedValue(undefined);
+    const res = await repeatOrder(42, { delivery_slot: RECURRING });
+    expect(res.status).toBe(409);
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+  it('rejects an expired token before loading the source', async () => {
+    const expired = jwt.sign({ userId: CUSTOMER_ID }, process.env.JWT_SECRET, { expiresIn: -1 });
+    expect((await repeatOrder(42, { delivery_slot: RECURRING }, expired)).status).toBe(401);
+    expect(ordersModel.getRepeatSource).not.toHaveBeenCalled();
+  });
+});
+
 describe('findRecurringSlot', () => {
   const grid = buildSlotGrid({ at: NOW, settings });
 

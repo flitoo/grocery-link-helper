@@ -1,3 +1,5 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -9,8 +11,7 @@ import {
 } from "../utils/groceryList";
 import "./OrderSummary.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 function OrderSummary() {
   const navigate = useNavigate();
@@ -306,25 +307,7 @@ const formatDelivery = (slot) => {
   return (
     <div className="summary-page">
       {/* Header */}
-      <header className="summary-header">
-        <h1>
-          Grocery Link Helper
-        </h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">
-            Orders
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="summary-content">
         {/* Title */}

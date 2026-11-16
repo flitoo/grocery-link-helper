@@ -1,11 +1,12 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { formatQuantity } from "../utils/groceryList";
 import "./OrderDetails.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 // GET /api/orders/:id requires the logged-in helper's token.
 function authHeaders() {
@@ -183,15 +184,7 @@ function HelperOrderDetails() {
   return (
     <div className="order-details-page">
       {/* Header */}
-      <header className="order-details-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/helper-dashboard">
-            Helper Dashboard
-          </Link>
-        </nav>
-      </header>
+      <AppHeader helper />
 
       {/* Main Content */}
       <main className="order-details-content">
@@ -374,6 +367,7 @@ function HelperOrderDetails() {
               </p>
 
               <div className="order-details-actions">
+                {order.helper_id != null && <Link to={`/helper/orders/${orderId}/substitutions`} className="order-dashboard-button">Substitution Requests</Link>}
                 <Link
                   to={`/helper/orders/${orderId}/status`}
                   className="order-dashboard-button"

@@ -4,6 +4,7 @@ const {
 } = require("../validators/payments.validator");
 
 const paymentsModel = require("../models/payments.model");
+const { parseId } = require("../validators/ids.validator");
 
 async function createPayment(req, res) {
   const { valid, errors } =
@@ -67,9 +68,9 @@ async function createPayment(req, res) {
 }
 
 async function getPayment(req, res) {
-  const orderId = Number(req.params.orderId);
+  const orderId = parseId(req.params.orderId);
 
-  if (!Number.isInteger(orderId) || orderId <= 0) {
+  if (!orderId) {
     return res.status(400).json({
       errors: ["Order id must be a positive integer."],
     });
@@ -109,9 +110,9 @@ async function confirmDemoPayment(req, res) {
     });
   }
 
-  const orderId = Number(req.params.orderId);
+  const orderId = parseId(req.params.orderId);
 
-  if (!Number.isInteger(orderId) || orderId <= 0) {
+  if (!orderId) {
     return res.status(400).json({
       errors: ["Order id must be a positive integer."],
     });

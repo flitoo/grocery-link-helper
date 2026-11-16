@@ -1,5 +1,8 @@
+const { MAX_INT4 } = require("./ids.validator");
+
+// orders.order_id is an int4; larger values would make Postgres throw (500).
 function isPositiveInteger(value) {
-  return Number.isInteger(value) && value > 0;
+  return Number.isInteger(value) && value > 0 && value <= MAX_INT4;
 }
 
 function validateCreatePaymentPayload(body) {

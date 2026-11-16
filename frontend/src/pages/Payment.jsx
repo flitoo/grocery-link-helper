@@ -1,3 +1,5 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 import { useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
@@ -10,9 +12,7 @@ import {
 
 import "./Payment.css";
 
-const API_BASE =
 
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
 
 function Payment() {
 
@@ -479,7 +479,7 @@ function Payment() {
 
     const transactionRef =
 
-      `TXN-${orderId}-${Date.now()}`;
+      `TXN-${orderId}-${crypto.randomUUID()}`;
 
     try {
 
@@ -795,37 +795,7 @@ function Payment() {
 
       ============================== */}
 
-      <header className="payment-header">
-
-        <h1>
-
-          Grocery Link Helper
-
-        </h1>
-
-        <nav>
-
-          <Link to="/dashboard">
-
-            Dashboard
-
-          </Link>
-
-          <Link to="/grocery-list">
-
-            Grocery List
-
-          </Link>
-
-          <Link to="/orders">
-
-            Orders
-
-          </Link>
-
-        </nav>
-
-      </header>
+      <AppHeader />
 
       <main className="payment-content">
 

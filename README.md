@@ -42,6 +42,13 @@ From `backend/`, apply the migrations in `database/migrations`:
 ```bash
 npm run migrate:up
 ```
+To preview pending changes from `backend/`, run `node scripts/migrate-up.js --dry-run`.
+The runner keeps a database migration lock and applies pending SQL in one
+transaction. It permits one known history exception: the independent Collections
+compatibility migration was merged after Items had already been deployed. It
+executes that migration if missing and preserves its original filename/history;
+unrelated missing, reordered, unknown or duplicate migrations still stop the run.
+
 Note: pushing changes under `database/migrations` to `main` automatically runs them against production (Neon). Test migrations on a Neon branch first.
 
 The `items` migration creates the store item catalog (name, brand, category, unit `each`/`lb`/`kg`, unit price, dietary tags) and seeds about 320 sample items across the four seeded stores. Names, brands and prices are illustrative, not live data.
@@ -277,8 +284,21 @@ enforced inside the order transaction, so the check alone does not reserve
 it); `409` if the store is no longer active; `404` if the order does not exist.
 
 ### Tests and lint
+
+Substitution and tracking QA now includes frontend component/polling tests
+(`npm test` from `frontend`) and real PostgreSQL/API flow checks
+(`npm run test:substitution-tracking:db` from `backend`). See the
+[QA report](docs/substitution-tracking-qa.md) for cases, fixes and test boundaries.
+
+Delivery delays trigger in-app notifications 15 minutes after the selected
+delivery time for paid active orders. See [notification rules, API and QA checks](docs/delay-notifications-qa.md)
+for setup, automated coverage and the browser acceptance walkthrough.
+
 ```bash
 cd backend && npm test
 cd frontend && npm test       # unit tests for the grocery list helpers (Node's built-in runner)
 cd frontend && npm run lint
 ```
+
+From `backend`, run `npm run test:notifications:db` for transaction-isolated
+PostgreSQL/API checks of delay notifications and ratings (all fixtures roll back).

@@ -1,8 +1,10 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 import { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./DeliveryStatusUpdate.css";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 const ORDER_STEPS = [
   "Pending",
@@ -59,6 +61,10 @@ function formatDate(value) {
 
 function DeliveryStatusUpdate() {
   const { orderId } = useParams();
+  return <DeliveryStatusUpdateContent key={orderId} orderId={orderId} />;
+}
+
+function DeliveryStatusUpdateContent({ orderId }) {
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -78,10 +84,6 @@ function DeliveryStatusUpdate() {
 
   useEffect(() => {
     const controller = new AbortController();
-    setLoading(true);
-    setOrder(null);
-    setError("");
-    setMessage("");
 
     fetchOrder(controller.signal)
       .then((data) => {
@@ -153,10 +155,7 @@ function DeliveryStatusUpdate() {
 
   return (
     <div className="delivery-status-page">
-      <header className="delivery-status-header">
-        <h1>Grocery Link Helper</h1>
-        <nav><Link to="/helper-dashboard">Helper Dashboard</Link></nav>
-      </header>
+      <AppHeader helper />
 
       <main className="delivery-status-content">
         <div className="delivery-status-title">

@@ -1,11 +1,12 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { formatQuantity, formatUnitPrice } from "../utils/groceryList";
 import "./OrderDetails.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 // Read data from localStorage
 function readJSON(key, fallback) {
@@ -224,19 +225,7 @@ function OrderDetails() {
   return (
     <div className="order-details-page">
       {/* Header */}
-      <header className="order-details-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-
-          <Link to="/orders">Orders</Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="order-details-content">
         {/* Page Title */}
@@ -426,6 +415,8 @@ function OrderDetails() {
 
             {/* Action Buttons */}
             <div className="order-details-actions">
+              <Link to={`/orders/${orderId}/tracking`} className="order-dashboard-button">Track Order</Link>
+              <Link to={`/orders/${orderId}/substitutions`} className="order-dashboard-button">Substitution Requests</Link>
               <Link
                 to="/orders"
                 className="order-dashboard-button"

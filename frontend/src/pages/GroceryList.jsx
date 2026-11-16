@@ -1,3 +1,4 @@
+import AppHeader from '../components/AppHeader';
 import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import CustomItemForm from "../components/grocery/CustomItemForm";
@@ -68,17 +69,16 @@ function GroceryListContent({ store }) {
     setItems((current) => removeFromList(current, id));
   };
 
+  const handleToggleSubstitution = (id, allowSubstitution) => {
+    setItems((current) =>
+      current.map((item) => (item.id === id ? { ...item, allowSubstitution } : item))
+    );
+  };
+
   return (
     <div className="grocery-page">
       {/* Header */}
-      <header className="grocery-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">Dashboard</Link>
-          <Link to="/grocery-list">Grocery List</Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       {/* Main Content */}
       <main className="grocery-content">
@@ -124,7 +124,12 @@ function GroceryListContent({ store }) {
             </div>
           ) : (
             items.map((item) => (
-              <ListItemRow key={item.id} item={item} onRemove={handleRemoveItem} />
+              <ListItemRow
+                key={item.id}
+                item={item}
+                onRemove={handleRemoveItem}
+                onToggleSubstitution={handleToggleSubstitution}
+              />
             ))
           )}
         </div>

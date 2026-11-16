@@ -1,9 +1,10 @@
+import AppHeader from '../components/AppHeader';
+import { API_BASE } from '../lib/api';
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./DeliveryTimeSlot.css";
 
-const API_BASE =
-  import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 
 // Matches the backend default (SLOT_TIMEZONE); /api/slots does not return it
 const TIME_ZONE = "America/Toronto";
@@ -249,19 +250,7 @@ function DeliveryTimeSlot() {
 
   return (
     <div className="delivery-page">
-      <header className="delivery-header">
-        <h1>Grocery Link Helper</h1>
-
-        <nav>
-          <Link to="/dashboard">
-            Dashboard
-          </Link>
-
-          <Link to="/grocery-list">
-            Grocery List
-          </Link>
-        </nav>
-      </header>
+      <AppHeader />
 
       <main className="delivery-content">
         <div className="delivery-title">

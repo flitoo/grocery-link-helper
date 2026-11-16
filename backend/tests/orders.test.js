@@ -242,3 +242,27 @@ describe('GET /api/orders/:id', () => {
     expect(ordersModel.getOrderForViewer).toHaveBeenCalledWith(42, 5);
   });
 });
+
+
+describe('Merged order routes', () => {
+  it('rejects a null line item without crashing', async () => {
+    const res = await request(app).post('/api/orders').set(auth()).send({ ...validPayload, items: [null] });
+    expect(res.status).toBe(400);
+    expect(ordersModel.createOrder).not.toHaveBeenCalled();
+  });
+  it('requires login for the customer order list', async () => {
+    expect((await request(app).get('/api/orders')).status).toBe(401);
+    expect(ordersModel.getCustomerOrders).not.toHaveBeenCalled();
+  });
+  it('lists orders only for the token owner', async () => {
+    ordersModel.getCustomerOrders.mockResolvedValue([{ order_id: 42 }]);
+    const res = await request(app).get('/api/orders?customer_id=99').set(auth());
+    expect(res.status).toBe(200);
+    expect(res.body.orders).toEqual([{ order_id: 42 }]);
+    expect(ordersModel.getCustomerOrders).toHaveBeenCalledWith(1);
+  });
+  it.each(['1e3', '0x10', '2147483648'])('rejects malformed order id %s', async id => {
+    expect((await request(app).get('/api/orders/'+id).set(auth())).status).toBe(400);
+    expect(ordersModel.getOrderForViewer).not.toHaveBeenCalled();
+  });
+});

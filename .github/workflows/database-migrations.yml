@@ -8,6 +8,8 @@ on:
       - "database/migrations/**"
       - "backend/package.json"
       - "backend/package-lock.json"
+      - "backend/scripts/migrate-up.js"
+      - "backend/scripts/migration-order.js"
       - ".github/workflows/database-migrations.yml"
 
   workflow_dispatch:

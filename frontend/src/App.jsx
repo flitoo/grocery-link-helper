@@ -19,10 +19,17 @@ import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
 import CustomerChat from "./pages/CustomerChat";
 import DeliveryNotifications from "./pages/DeliveryNotifications";
 import RatingFeedback from "./pages/RatingFeedback";
+import Collections from './pages/Collections';
+import SubstitutionRequests from './pages/SubstitutionRequests';
+import OrderTracking from './pages/OrderTracking';
 
 function App() {
   return (
     <Routes>
+      <Route path="/orders/:orderId/tracking" element={<OrderTracking />} />
+      <Route path="/orders/:orderId/substitutions" element={<SubstitutionRequests />} />
+      <Route path="/helper/orders/:orderId/substitutions" element={<SubstitutionRequests helper />} />
+      <Route path="/collections" element={<Collections />} />
       {/* Authentication */}
       <Route path="/" element={<Login />} />
       <Route path="/register" element={<Register />} />
