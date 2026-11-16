@@ -10,7 +10,7 @@
     "test:features:db": "node scripts/verify-features.js",
     "test:notifications:db": "node scripts/verify-notifications.js",
     "migrate": "node-pg-migrate",
-    "migrate:up": "node-pg-migrate up --migrations-dir ../database/migrations",
+    "migrate:up": "node scripts/migrate-up.js",
     "migrate:down": "node-pg-migrate down --migrations-dir ../database/migrations",
     "migrate:create": "node-pg-migrate create --migrations-dir ../database/migrations --migration-file-language sql"
   },

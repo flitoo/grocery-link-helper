@@ -42,6 +42,13 @@ From `backend/`, apply the migrations in `database/migrations`:
 ```bash
 npm run migrate:up
 ```
+To preview pending changes from `backend/`, run `node scripts/migrate-up.js --dry-run`.
+The runner keeps a database migration lock and applies pending SQL in one
+transaction. It permits one known history exception: the independent Collections
+compatibility migration was merged after Items had already been deployed. It
+executes that migration if missing and preserves its original filename/history;
+unrelated missing, reordered, unknown or duplicate migrations still stop the run.
+
 Note: pushing changes under `database/migrations` to `main` automatically runs them against production (Neon). Test migrations on a Neon branch first.
 
 The `items` migration creates the store item catalog (name, brand, category, unit `each`/`lb`/`kg`, unit price, dietary tags) and seeds about 320 sample items across the four seeded stores. Names, brands and prices are illustrative, not live data.
