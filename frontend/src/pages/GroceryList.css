@@ -428,5 +428,6 @@
   }
 }
 
+.grocery-item-note { color: #8a6100; font-size: 13px; }
 .grocery-substitution-option { display: flex; align-items: center; gap: 8px; margin: 12px 0; font-size: 14px; }
 .grocery-substitution-option input { width: auto; accent-color: #2e7d32; }

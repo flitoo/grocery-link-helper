@@ -215,6 +215,80 @@ export function removedItemsNotice(removedCount, storeName) {
   } sold at ${storeName}.`;
 }
 
+// ---------- Importing a past order ----------
+
+/** The catalog ids a past order's lines point to, without repeats. */
+export function catalogIdsOfOrder(orderItems) {
+  const ids = orderItems.map((line) => Number(line.catalog_item_id)).filter((id) => id > 0);
+  return [...new Set(ids)];
+}
+
+function importedLine(line, catalogById, orderId) {
+  const row = catalogById.get(Number(line.catalog_item_id));
+  const allowSubstitution = Boolean(line.allow_substitution);
+  // Same unit only: a per-piece line can't become a by-weight one or back.
+  if (row && row.unit === unitOf(line)) {
+    return { ...catalogToListItem(row, Number(line.quantity)), allowSubstitution };
+  }
+  return {
+    id: `import-${orderId}-${line.item_id}`,
+    name: String(line.item_name),
+    unit: unitOf(line),
+    quantity: Number(line.quantity),
+    estimatedPrice: Number(line.estimated_price),
+    allowSubstitution,
+    notInCatalog: true,
+  };
+}
+
+function importKey(item) {
+  return item.catalogItemId
+    ? `catalog:${item.catalogItemId}`
+    : `custom:${item.name.trim().toLowerCase()}|${item.unit}`;
+}
+
+/**
+ * Builds a new list from a past order's lines (GET /api/orders/:id items).
+ * `catalogRows` are the current store's active items for those lines
+ * (GET /api/items?ids=…): a line found there comes in at today's price, any
+ * other line comes in as a custom item at the price it was ordered at, marked
+ * notInCatalog. Repeated lines are merged by adding their quantities.
+ * Returns { items, notInCatalogCount }.
+ */
+export function listFromPastOrder(orderId, orderItems, catalogRows) {
+  const catalogById = new Map(catalogRows.map((row) => [Number(row.item_id), row]));
+  const byKey = new Map();
+
+  for (const line of orderItems) {
+    const item = importedLine(line, catalogById, orderId);
+    const key = importKey(item);
+    const existing = byKey.get(key);
+    if (existing) {
+      const total = roundQuantity(Number(existing.quantity) + item.quantity);
+      existing.quantity = Math.min(total, MAX_QUANTITY);
+      existing.allowSubstitution = existing.allowSubstitution || item.allowSubstitution;
+    } else {
+      byKey.set(key, item);
+    }
+  }
+
+  const items = [...byKey.values()];
+  return { items, notInCatalogCount: items.filter((item) => item.notInCatalog).length };
+}
+
+/** One sentence after an import, e.g. "Imported 5 items from order #12." */
+export function importNotice(orderId, { items, notInCatalogCount }) {
+  const noun = items.length === 1 ? "item" : "items";
+  const base = `Imported ${items.length} ${noun} from order #${orderId}.`;
+  if (notInCatalogCount === 0) {
+    return base;
+  }
+  const which = notInCatalogCount === 1 ? "1 isn't" : `${notInCatalogCount} aren't`;
+  return `${base} ${which} in this store's catalog, so ${
+    notInCatalogCount === 1 ? "it keeps its" : "they keep their"
+  } old price.`;
+}
+
 // ---------- Sending the order ----------
 
 /**

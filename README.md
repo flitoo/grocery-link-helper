@@ -78,7 +78,9 @@ Open http://localhost:5173, register an account, then log in. Auth endpoints:
 ### Building a grocery order (customer flow)
 Dashboard, then **Store Selection**, then **Grocery List**, then **Delivery Time**, then **Order Summary**, then **Payment**.
 
-Pick a store first: the grocery list searches that store's item catalog (name or brand words, category, dietary tags) and shows the brand and price per unit. Items sold by weight (lb or kg) take decimal quantities such as 1.5, and items sold per piece take whole numbers. Anything not in the catalog can be added as a custom item, with its price per piece, lb or kg. Changing the store removes catalog items the new store doesn't carry (custom items stay), and the list tells you how many were removed. The list is kept in `localStorage` (`groceryItems`) until the order is placed. At checkout the server prices catalog items itself and its total is the amount charged.
+Pick a store first: the grocery list searches that store's item catalog (name or brand words, category, dietary tags) and shows the brand and price per unit. Items sold by weight (lb or kg) take decimal quantities such as 1.5, and items sold per piece take whole numbers. Anything not in the catalog can be added as a custom item, with its price per piece, lb or kg. Changing the store removes catalog items the new store doesn't carry (custom items stay), and the list tells you how many were removed. The list is kept in `localStorage` (`groceryItems`) until the order is placed.
+
+An empty list offers to **import a past order** (from `GET /api/orders`). A list that has items shows **Start a new list**, which can clear the list (**Start fresh**) or replace it with a past order; both ask first. On import, lines whose catalog item is still sold at the current store come in at today's price. Other lines, including everything when the past order was at a different store, come in as custom items at the price paid then, marked "Not in this store's catalog". Repeated lines are merged. At checkout the server prices catalog items itself and its total is the amount charged.
 
 ### Which endpoints need a login
 Send `Authorization: Bearer <token>` (from register/login). Missing or invalid
@@ -296,7 +298,7 @@ for setup, automated coverage and the browser acceptance walkthrough.
 
 ```bash
 cd backend && npm test
-cd frontend && npm test       # unit tests for the grocery list helpers (Node's built-in runner)
+cd frontend && npm test       # Vitest: grocery list helpers and component tests
 cd frontend && npm run lint
 ```
 

@@ -14,6 +14,9 @@ function ListItemRow({ item, onRemove, onToggleSubstitution }) {
       <div>
         <h3>{item.name}</h3>
         {brand && <p>{brand}</p>}
+        {item.notInCatalog && (
+          <p className="grocery-item-note">Not in this store's catalog · price from your past order</p>
+        )}
         <label className="grocery-substitution-option">
           <input
             type="checkbox"

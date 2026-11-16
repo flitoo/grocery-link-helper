@@ -2,6 +2,7 @@ import AppHeader from '../components/AppHeader';
 import { useEffect, useState } from "react";
 import { Link, Navigate, useLocation } from "react-router-dom";
 import CustomItemForm from "../components/grocery/CustomItemForm";
+import ImportPanel from "../components/grocery/ImportPanel";
 import ItemSearch from "../components/grocery/ItemSearch";
 import ListItemRow from "../components/grocery/ListItemRow";
 import {
@@ -39,16 +40,22 @@ function GroceryListContent({ store }) {
     return dropOtherStoreItems(Array.isArray(saved) ? saved : [], store.id);
   });
   const [items, setItems] = useState(initial.items);
+  const [replaceNotice, setReplaceNotice] = useState("");
 
   // Save grocery items whenever the list changes
   useEffect(() => {
     localStorage.setItem("groceryItems", JSON.stringify(items));
   }, [items]);
 
-  const notices = [
-    location.state?.notice,
-    removedItemsNotice(initial.removedCount, store.name),
-  ].filter(Boolean);
+  // After the list is replaced, only the notice about that is still relevant.
+  const notices = replaceNotice
+    ? [replaceNotice]
+    : [location.state?.notice, removedItemsNotice(initial.removedCount, store.name)].filter(Boolean);
+
+  function handleReplaceList(newItems, notice) {
+    setItems(newItems);
+    setReplaceNotice(notice);
+  }
 
   // Both add handlers return { error } or { merged } for the form that called.
   function handleAddCatalogItem(catalogItem, quantity) {
@@ -98,6 +105,12 @@ function GroceryListContent({ store }) {
             {text}
           </p>
         ))}
+
+        <ImportPanel
+          storeId={store.id}
+          itemCount={items.length}
+          onReplace={handleReplaceList}
+        />
 
         <ItemSearch storeId={store.id} onAdd={handleAddCatalogItem} />
 
