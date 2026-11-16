@@ -9,6 +9,7 @@
     "test": "jest",
     "test:features:db": "node scripts/verify-features.js",
     "test:notifications:db": "node scripts/verify-notifications.js",
+    "test:substitution-tracking:db": "node scripts/verify-substitution-tracking.js",
     "migrate": "node-pg-migrate",
     "migrate:up": "node scripts/migrate-up.js",
     "migrate:down": "node-pg-migrate down --migrations-dir ../database/migrations",

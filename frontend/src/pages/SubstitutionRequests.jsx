@@ -101,7 +101,7 @@ function SubstitutionContent({ orderId, helper }) {
               <div className="experience-heading"><h3>{original?.item_name || `Item #${request.original_item_id}`} → {request.suggested_item_name}</h3>
                 <span className={`request-badge request-${request.status.toLowerCase()}`}>{request.status}</span></div>
               <p>Price difference: <strong>{price === 0 ? 'No change' : `${price > 0 ? '+' : '−'}$${Math.abs(price).toFixed(2)} CAD`}</strong></p>
-              {isCustomer && request.status === 'Pending' && <div className="experience-actions">
+              {isCustomer && !['Delivered', 'Cancelled'].includes(order.status) && request.status === 'Pending' && <div className="experience-actions">
                 <button className="experience-primary" disabled={busy || loading} onClick={() => respond(request.substitution_id, 'Approved')}>Approve {request.suggested_item_name}</button>
                 <button disabled={busy || loading} onClick={() => respond(request.substitution_id, 'Rejected')}>Reject {request.suggested_item_name}</button>
               </div>}

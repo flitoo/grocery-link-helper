@@ -1,5 +1,8 @@
 # Substitution requests and order tracking
 
+Automated QA coverage, fixes and re-run commands:
+[Substitution and tracking QA](substitution-tracking-qa.md).
+
 - Customer: open Orders → Track Order, or Order Details → Substitution Requests.
 - Helper: open a claimed order → Substitution Requests.
 - Before checkout, customers can enable “Allow replacement if unavailable”
@@ -15,10 +18,10 @@
 
 ## Verification
 
-Frontend lint and build pass. The 42 relevant backend tests pass.
-Browser checks use an isolated in-memory API fixture, without real database
-writes: helper eligibility and submission, customer approval, removal of the
-pending notification, and automatic progress updates.
+Frontend lint/build, 31 component and polling tests, and the full 356-test
+backend suite pass. Real PostgreSQL/API checks cover helper assignment,
+replacement proposals and decisions, access control, and tracking through
+delivery. Fixtures are rolled back. See the QA report above for test boundaries.
 
 The existing substitution API records decisions; approving a request does not
 change the stored item or charge a price difference. These screens preserve

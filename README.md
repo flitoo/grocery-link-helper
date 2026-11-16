@@ -261,6 +261,11 @@ it); `409` if the store is no longer active; `404` if the order does not exist.
 
 ### Tests and lint
 
+Substitution and tracking QA now includes frontend component/polling tests
+(`npm test` from `frontend`) and real PostgreSQL/API flow checks
+(`npm run test:substitution-tracking:db` from `backend`). See the
+[QA report](docs/substitution-tracking-qa.md) for cases, fixes and test boundaries.
+
 Delivery delays trigger in-app notifications 15 minutes after the selected
 delivery time for paid active orders. See [notification rules, API and QA checks](docs/delay-notifications-qa.md)
 for setup, automated coverage and the browser acceptance walkthrough.

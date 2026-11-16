@@ -59,9 +59,10 @@ async function createSubstitutionRequest(req, res) {
     typeof priceDifference !== 'number'
     || !Number.isFinite(priceDifference)
     || Math.abs(priceDifference) > 99999999.99
+    || Math.abs(priceDifference * 100 - Math.round(priceDifference * 100)) > 0.000001
   ) {
     return res.status(400).json({
-      errors: ['price_difference must be a finite number within the supported range.'],
+      errors: ['price_difference must be a finite number within the supported range with at most two decimal places.'],
     });
   }
 
@@ -80,6 +81,9 @@ async function createSubstitutionRequest(req, res) {
     }
     return res.status(201).json(request);
   } catch (err) {
+    if (err.code === 'SUBSTITUTION_EXISTS') {
+      return res.status(409).json({ errors: ['This item already has a pending or approved replacement.'] });
+    }
     console.error('Failed to create substitution request:', err);
     return res.status(500).json({ errors: ['Unexpected error creating substitution request.'] });
   }

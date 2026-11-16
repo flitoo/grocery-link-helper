@@ -28,7 +28,8 @@ function TrackingContent({ orderId }) {
   const { data, error, loading, refresh } = useOrderFeed(orderId);
   const order = data?.order;
   const current = steps.indexOf(order?.status);
-  const pending = data?.requests.filter(request => request.status === 'Pending').length || 0;
+  const pending = ['Delivered', 'Cancelled'].includes(order?.status) ? 0 :
+    data?.requests.filter(request => request.status === 'Pending').length || 0;
   return <div className="order-experience"><AppHeader />
     <main className="experience-content">
       <div className="experience-heading"><div><p>Order #{orderId}</p><h1>Track Your Order</h1><p>Updates automatically every 15 seconds.</p></div>
