@@ -61,5 +61,6 @@ app.use("/api/templates", templatesRoutes);
 // Grocery Collections
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/helpers", require("./routes/helpers.routes"));
+app.use("/api/notifications", require("./routes/notifications.routes"));
 
 module.exports = app;

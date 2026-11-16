@@ -1,5 +1,5 @@
 import AppHeader from '../components/AppHeader';
-import { API_BASE } from '../lib/api';
+import { api } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -37,38 +37,6 @@ function readJSON(key, fallback) {
   }
 }
 
-// Get only real backend order IDs
-function getOrderIds(userId) {
-  const saved = readJSON("orders", []);
-  const current = readJSON("currentOrder", null);
-
-  const orders = [
-    ...(Array.isArray(saved) ? saved : []),
-    ...(current ? [current] : []),
-  ];
-
-  return [
-    ...new Set(
-      orders
-        .filter((order) => {
-          const customerId =
-            order?.customer_id ?? order?.customerId;
-
-          return (
-            customerId == null ||
-            Number(customerId) === userId
-          );
-        })
-        // Only use order_id from backend
-        .map((order) => Number(order?.order_id))
-        .filter(
-          (id) =>
-            Number.isSafeInteger(id) && id > 0
-        )
-    ),
-  ];
-}
-
 function DeliveryNotifications() {
   const user = readJSON("user", null);
   const userId = Number(user?.id ?? user?.user_id);
@@ -89,7 +57,7 @@ function DeliveryNotifications() {
 
   const [loading, setLoading] = useState(validUser);
   const [error, setError] = useState("");
-  const [notFoundCount, setNotFoundCount] = useState(0);
+  const [updating, setUpdating] = useState(false);
   const [refreshKey, setRefreshKey] = useState(0);
 
   // Check order statuses from backend
@@ -105,78 +73,21 @@ function DeliveryNotifications() {
       isChecking = true;
 
       try {
-        const ids = getOrderIds(userId);
-        const token = localStorage.getItem("token");
-
-        if (ids.length === 0) {
-          setError("");
-          setNotFoundCount(0);
-          return;
-        }
-
-        const results = await Promise.all(
-          ids.map(async (id) => {
-            try {
-              const response = await fetch(
-                `${API_BASE}/api/orders/${id}`,
-                {
-                  headers: token
-                    ? {
-                        Authorization: `Bearer ${token}`,
-                      }
-                    : {},
-                  signal: controller.signal,
-                  cache: "no-store",
-                }
-              );
-
-              if (response.status === 404) {
-                return {
-                  type: "not-found",
-                  id,
-                };
-              }
-
-              if (!response.ok) {
-                return {
-                  type: "error",
-                  id,
-                  status: response.status,
-                };
-              }
-
-              const order = await response.json();
-
-              return {
-                type: "success",
-                order,
-              };
-            } catch {
-              return {
-                type: "network-error",
-                id,
-              };
-            }
-          })
-        );
-
+        const [ordersData, alertsData] = await Promise.all([
+          api('/orders', { signal: controller.signal, cache: 'no-store' }),
+          api('/notifications', { signal: controller.signal, cache: 'no-store' }),
+        ]);
         if (controller.signal.aborted) return;
 
         // Load existing notifications
         const existing = readJSON(storageKey, []);
 
         const updated = Array.isArray(existing)
-          ? [...existing]
+          ? existing.filter(item => !item.notificationId)
           : [];
 
         // Create notifications for current statuses
-        for (const result of results) {
-          if (result.type !== "success") {
-            continue;
-          }
-
-          const order = result.order;
-
+        for (const order of ordersData.orders) {
           // Only show orders belonging to this customer
           if (Number(order.customer_id) !== userId) {
             continue;
@@ -205,6 +116,18 @@ function DeliveryNotifications() {
           }
         }
 
+        for (const alert of alertsData.notifications) {
+          updated.push({
+            id: `delay:${alert.notification_id}`,
+            notificationId: alert.notification_id,
+            orderId: alert.order_id,
+            title: 'Delivery Delayed',
+            message: 'Your delivery is taking longer than scheduled. Open tracking for the latest update.',
+            detectedAt: alert.created_at,
+            read: Boolean(alert.read_at),
+          });
+        }
+
         // Show newest notifications first
         updated.sort(
           (a, b) =>
@@ -220,50 +143,9 @@ function DeliveryNotifications() {
 
         setNotifications(updated);
 
-        // Count orders missing from backend
-        const missing = results.filter(
-          (result) => result.type === "not-found"
-        );
-
-        setNotFoundCount(missing.length);
-
-        // Check actual request errors
-        const failed = results.filter(
-          (result) =>
-            result.type === "error" ||
-            result.type === "network-error"
-        );
-
-        if (failed.length > 0) {
-          const unauthorized = failed.some(
-            (result) =>
-              result.status === 401 ||
-              result.status === 403
-          );
-
-          const networkProblem = failed.some(
-            (result) =>
-              result.type === "network-error"
-          );
-
-          let message =
-            `Could not check ${failed.length} order(s).`;
-
-          if (unauthorized) {
-            message +=
-              " Please check your login session.";
-          } else if (networkProblem) {
-            message +=
-              " Please check the backend connection.";
-          } else {
-            message +=
-              " Please check the server response.";
-          }
-
-          setError(message);
-        } else {
-          setError("");
-        }
+        setError('');
+      } catch (err) {
+        if (!controller.signal.aborted) setError(err.message);
       } finally {
         if (!controller.signal.aborted) {
           setLoading(false);
@@ -302,25 +184,29 @@ function DeliveryNotifications() {
     });
   }
 
-  // Mark one notification as read
-  function markAsRead(id) {
-    saveNotifications((previous) =>
-      previous.map((item) =>
-        item.id === id
-          ? { ...item, read: true }
-          : item
-      )
-    );
+  async function markAsRead(id) {
+    if (updating) return;
+    setUpdating(true);
+    try {
+      const notification = notifications.find(item => item.id === id);
+      if (notification?.notificationId) await api(`/notifications/${notification.notificationId}/read`, { method: 'PATCH' });
+      saveNotifications(previous => previous.map(item => item.id === id ? { ...item, read: true } : item));
+      setRefreshKey(previous => previous + 1);
+      setError('');
+    } catch (err) { setError(err.message); }
+    finally { setUpdating(false); }
   }
 
-  // Mark all notifications as read
-  function markAllAsRead() {
-    saveNotifications((previous) =>
-      previous.map((item) => ({
-        ...item,
-        read: true,
-      }))
-    );
+  async function markAllAsRead() {
+    if (updating) return;
+    setUpdating(true);
+    try {
+      await api('/notifications/read-all', { method: 'PATCH' });
+      saveNotifications(previous => previous.map(item => ({ ...item, read: true })));
+      setRefreshKey(previous => previous + 1);
+      setError('');
+    } catch (err) { setError(err.message); }
+    finally { setUpdating(false); }
   }
 
   // Count unread notifications
@@ -364,7 +250,7 @@ function DeliveryNotifications() {
             <button
               type="button"
               onClick={markAllAsRead}
-              disabled={unreadCount === 0}
+              disabled={updating || unreadCount === 0}
             >
               Mark All as Read
             </button>
@@ -389,14 +275,6 @@ function DeliveryNotifications() {
                 role="alert"
               >
                 {error}
-              </p>
-            )}
-
-            {/* Orders not found */}
-            {notFoundCount > 0 && (
-              <p className="notifications-info">
-                {notFoundCount} saved order(s) were
-                not found in the backend.
               </p>
             )}
 
@@ -438,7 +316,7 @@ function DeliveryNotifications() {
 
                       <small>
                         Order #{item.orderId} ·
-                        First seen{" "}
+                        Detected{" "}
                         {new Date(
                           item.detectedAt
                         ).toLocaleString("en-CA")}
@@ -447,14 +325,15 @@ function DeliveryNotifications() {
                       {/* Notification Actions */}
                       <div className="notification-actions">
                         <Link
-                          to={`/order-details/${item.orderId}`}
+                          to={`/orders/${item.orderId}/tracking`}
                         >
-                          View Order
+                          Track Order
                         </Link>
 
                         {!item.read && (
                           <button
                             type="button"
+                            disabled={updating}
                             onClick={() =>
                               markAsRead(item.id)
                             }

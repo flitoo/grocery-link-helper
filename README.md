@@ -253,7 +253,15 @@ enforced inside the order transaction, so the check alone does not reserve
 it); `409` if the store is no longer active; `404` if the order does not exist.
 
 ### Tests and lint
+
+Delivery delays trigger in-app notifications 15 minutes after the selected
+delivery time for paid active orders. See [notification rules, API and QA checks](docs/delay-notifications-qa.md)
+for setup, automated coverage and the browser acceptance walkthrough.
+
 ```bash
 cd backend && npm test
 cd frontend && npm run lint
 ```
+
+From `backend`, run `npm run test:notifications:db` for transaction-isolated
+PostgreSQL/API checks of delay notifications and ratings (all fixtures roll back).
