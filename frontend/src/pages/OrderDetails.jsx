@@ -3,6 +3,7 @@ import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { formatQuantity, formatUnitPrice } from "../utils/groceryList";
 import "./OrderDetails.css";
 
 
@@ -311,12 +312,17 @@ function OrderDetails() {
                     </span>
 
                     <strong>
-                      Quantity: {item.quantity ?? 1}
+                      Quantity:{" "}
+                      {formatQuantity({
+                        quantity: item.quantity ?? 1,
+                        unit: item.unit,
+                      })}
 
                       {item.estimated_price != null
-                        ? ` · $${Number(
-                            item.estimated_price
-                          ).toFixed(2)} each`
+                        ? ` · ${formatUnitPrice({
+                            estimatedPrice: item.estimated_price,
+                            unit: item.unit,
+                          })}`
                         : ""}
                     </strong>
                   </div>

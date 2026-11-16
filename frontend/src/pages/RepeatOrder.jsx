@@ -7,6 +7,12 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import {
+  listTotal,
+  parseQuantity,
+  quantityStep,
+  unitOf,
+} from "../utils/groceryList";
 import "./RepeatOrder.css";
 
 
@@ -100,6 +106,7 @@ function RepeatOrder() {
             name:
               item.item_name ?? item.name ?? "",
             quantity: String(item.quantity ?? 1),
+            unit: unitOf(item),
             estimatedPrice: String(
               item.estimated_price ??
                 item.estimatedPrice ??
@@ -158,22 +165,7 @@ function RepeatOrder() {
   }
 
   // Calculate estimated total
-  const estimatedTotal = items.reduce(
-    (sum, item) => {
-      const quantity = Number(item.quantity);
-      const price = Number(item.estimatedPrice);
-
-      if (
-        !Number.isFinite(quantity) ||
-        !Number.isFinite(price)
-      ) {
-        return sum;
-      }
-
-      return sum + quantity * price;
-    },
-    0
-  );
+  const estimatedTotal = listTotal(items);
 
   // Continue to new order checkout
   function handleContinue() {
@@ -184,22 +176,22 @@ function RepeatOrder() {
 
     for (const item of items) {
       const name = item.name.trim();
-      const quantity = Number(item.quantity);
       const price = Number(item.estimatedPrice);
 
-      if (name.length < 2 || name.length > 50) {
+      // Names from catalog orders include the brand, so allow up to the
+      // 150 characters the server accepts.
+      if (name.length < 2 || name.length > 150) {
         setError("An item has an invalid name.");
         return;
       }
 
-      if (
-        item.quantity.trim() === "" ||
-        !Number.isSafeInteger(quantity) ||
-        quantity < 1
-      ) {
-        setError(
-          `Enter a valid quantity for ${item.name}.`
-        );
+      const parsedQuantity = parseQuantity(
+        item.quantity,
+        item.unit
+      );
+
+      if (parsedQuantity.error) {
+        setError(`${item.name}: ${parsedQuantity.error}`);
         return;
       }
 
@@ -219,7 +211,8 @@ function RepeatOrder() {
     const newItems = items.map((item, index) => ({
       id: Date.now() + index,
       name: item.name.trim(),
-      quantity: Number(item.quantity),
+      unit: item.unit,
+      quantity: parseQuantity(item.quantity, item.unit).quantity,
       estimatedPrice: Number(item.estimatedPrice),
       allowSubstitution: item.allowSubstitution,
     }));
@@ -313,11 +306,13 @@ function RepeatOrder() {
                       </strong>
 
                       <label>
-                        Quantity
+                        {item.unit === "each"
+                          ? "Quantity"
+                          : `Quantity (${item.unit})`}
                         <input
                           type="number"
-                          min="1"
-                          step="1"
+                          min={quantityStep(item.unit)}
+                          step={quantityStep(item.unit)}
                           value={item.quantity}
                           onChange={(e) =>
                             updateItem(
@@ -330,7 +325,9 @@ function RepeatOrder() {
                       </label>
 
                       <label>
-                        Estimated Price ($)
+                        {item.unit === "each"
+                          ? "Estimated Price ($)"
+                          : `Estimated Price per ${item.unit} ($)`}
                         <input
                           type="number"
                           min="0.01"

@@ -75,6 +75,15 @@ Open http://localhost:5173, register an account, then log in. Auth endpoints:
 - `POST /api/auth/register`
 - `POST /api/auth/login`
 
+### Building a grocery order (customer flow)
+Dashboard, then **Store Selection**, then **Grocery List**, then **Delivery Time**, then **Order Summary**, then **Payment**.
+
+Pick a store first: the grocery list searches that store's item catalog (name or brand words, category, dietary tags) and shows the brand and price per unit. Items sold by weight (lb or kg) take decimal quantities such as 1.5, and items sold per piece take whole numbers. Anything not in the catalog can be added as a custom item, with its price per piece, lb or kg. Changing the store removes catalog items the new store doesn't carry (custom items stay), and the list tells you how many were removed. The list is kept in `localStorage` (`groceryItems`) until the order is placed.
+
+An empty list offers to **import a past order** (from `GET /api/orders`). A list that has items shows **Start a new list**, which can clear the list (**Start fresh**) or replace it with a past order; both ask first. On import, lines whose catalog item is still sold at the current store come in at today's price. Other lines, including everything when the past order was at a different store, come in as custom items at the price paid then, marked "Not in this store's catalog". Repeated lines are merged.
+
+Every line in the list, imported or not, can be edited in place: change the quantity (Enter or leaving the box saves it; whole numbers for per-piece items), remove it, or allow a replacement. Catalog lines can **Swap brand** to another brand of the same item at the store (`GET /api/items/:id/alternatives`); the quantity is kept, converted between lb and kg, or set to 1 when switching between pieces and weight. If the new brand is already in the list, the two lines are merged. Custom lines can change their price. The total updates as you edit. At checkout the server prices catalog items itself and its total is the amount charged.
+
 ### Which endpoints need a login
 Send `Authorization: Bearer <token>` (from register/login). Missing or invalid
 tokens get `401`.
@@ -206,6 +215,25 @@ GET /api/items/filters              # { categories: [...], dietary_tags: [...] }
 GET /api/items/{id}/alternatives    # { item, alternatives } - other brands of the same product at the same store
 ```
 
+### Creating an order (items sold by weight)
+```
+POST /api/orders
+Authorization: Bearer <token>
+{ "store_id": 2, "delivery_slot": "2026-11-12T18:00:00.000Z", "delivery_address": "123 Main St",
+  "items": [
+    { "catalog_item_id": 14, "quantity": 1.5, "allow_substitution": true },
+    { "item_name": "Birthday cake", "quantity": 1, "estimated_price": 24.99 }
+  ] }
+```
+Each line is one of two shapes:
+
+- **Catalog line** `{ catalog_item_id, quantity, allow_substitution? }`: the name, unit and price come from the item catalog (`items.item_id`). Any price or name the client sends is ignored. The item must be active at the order's store, otherwise `400`.
+- **Custom line** `{ item_name, quantity, estimated_price, unit?, allow_substitution? }`: `estimated_price` is the price of **one unit**, and `unit` defaults to `each`.
+
+Quantities can have up to 3 decimals (max 100) when the unit is `lb` or `kg` (for example `1.5` lb). Items sold per piece (`each`) need a whole number. The server computes `total_amount` as the sum of `quantity x unit price` per line, rounded to the cent. Responses return each line with `catalog_item_id`, `unit`, a numeric `quantity` and the per-unit `estimated_price`. (`order_items.item_id` is the order line's own id; the catalog link is `catalog_item_id`.)
+
+Repeating an order re-prices catalog lines at today's catalog price. A line whose catalog item is no longer active is repeated as a custom line at its original price.
+
 ### Repeat order (US-06)
 A customer can repeat one of their previous orders. The new order keeps the
 same store, items and address; only the delivery slot (and optionally the
@@ -272,6 +300,7 @@ for setup, automated coverage and the browser acceptance walkthrough.
 
 ```bash
 cd backend && npm test
+cd frontend && npm test       # Vitest: grocery list helpers and component tests
 cd frontend && npm run lint
 ```
 

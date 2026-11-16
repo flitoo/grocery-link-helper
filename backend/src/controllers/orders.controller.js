@@ -45,6 +45,9 @@ async function createOrder(req, res) {
     if (err.code === 'SLOT_FULL') {
       return res.status(409).json({ errors: ['That delivery slot is full. Please choose another.'] });
     }
+    if (err.code === 'ITEM_NOT_IN_STORE' || err.code === 'INVALID_QUANTITY') {
+      return res.status(400).json({ errors: [err.message] });
+    }
     if (err.code === PG_FOREIGN_KEY_VIOLATION) {
       return res.status(400).json({ errors: ['customer_id does not refer to an existing user.'] });
     }

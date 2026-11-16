@@ -3,6 +3,7 @@ import { API_BASE } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { formatQuantity } from "../utils/groceryList";
 import "./OrderDetails.css";
 
 
@@ -269,7 +270,7 @@ function HelperOrderDetails() {
                     </span>
 
                     <strong>
-                      Quantity: {item.quantity}
+                      Quantity: {formatQuantity(item)}
                     </strong>
                   </div>
                 ))
