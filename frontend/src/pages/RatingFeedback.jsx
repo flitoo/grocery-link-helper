@@ -165,10 +165,6 @@ function RatingFeedbackContent({ orderId }) {
                   </p>
                 )}
 
-                <p className="rating-note">
-                  Feedback saved in this browser (demo).
-                </p>
-
                 <Link to="/orders" className="rating-back">
                   Back to Orders
                 </Link>

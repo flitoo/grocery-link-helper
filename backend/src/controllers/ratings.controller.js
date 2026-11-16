@@ -1,6 +1,9 @@
 const ratingsModel = require('../models/ratings.model');
 const { parseId } = require('../validators/ids.validator');
 
+// Matches the maxLength on the rating screen's feedback box.
+const MAX_COMMENT_LENGTH = 500;
+
 async function createRating(req, res) {
   const orderId = parseId(req.params.orderId);
   const { score, comments } = req.body || {};
@@ -12,6 +15,9 @@ async function createRating(req, res) {
   }
   if (comments !== undefined && typeof comments !== 'string') {
     return res.status(400).json({ errors: ['comments must be a string.'] });
+  }
+  if (typeof comments === 'string' && comments.trim().length > MAX_COMMENT_LENGTH) {
+    return res.status(400).json({ errors: [`comments must be ${MAX_COMMENT_LENGTH} characters or fewer.`] });
   }
 
   try {

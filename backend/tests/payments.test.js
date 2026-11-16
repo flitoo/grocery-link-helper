@@ -104,6 +104,29 @@ describe('GET /api/payments/:orderId', () => {
     expect(res.status).toBe(400);
     expect(paymentsModel.getPaymentByOrderId).not.toHaveBeenCalled();
   });
+
+  // Out-of-range ids would otherwise reach Postgres and fail as a 500.
+  it.each(['1e2', '1.5', '0', '2147483648'])('rejects order id %s without querying', async (id) => {
+    process.env.ENABLE_DEMO_PAYMENTS = 'true';
+    try {
+      expect((await request(app).post(`/api/payments/${id}/confirm-demo`).set(auth())).status).toBe(400);
+    } finally {
+      delete process.env.ENABLE_DEMO_PAYMENTS;
+    }
+    expect((await request(app).get(`/api/payments/${id}`).set(auth())).status).toBe(400);
+    expect(paymentsModel.getPaymentByOrderId).not.toHaveBeenCalled();
+    expect(paymentsModel.confirmDemoPayment).not.toHaveBeenCalled();
+  });
+
+  it('rejects an order_id above int4 when creating a payment', async () => {
+    const res = await request(app)
+      .post('/api/payments')
+      .set(auth())
+      .send({ order_id: 2147483648, transaction_ref: 'ref', payment_method: 'credit' });
+
+    expect(res.status).toBe(400);
+    expect(paymentsModel.createPayment).not.toHaveBeenCalled();
+  });
 });
 
 describe('payment endpoints require a login', () => {

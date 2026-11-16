@@ -119,6 +119,14 @@ describe('Rating validation and access boundaries', () => {
     expect((await request(app).post('/api/ratings/orders/42').set('Authorization', `Bearer ${token()}`).send({ score: 5, comments })).status).toBe(400);
     expect(ratingsModel.createRating).not.toHaveBeenCalled();
   });
+  it('rejects comments over 500 characters but accepts exactly 500', async () => {
+    const post = comments => request(app).post('/api/ratings/orders/42')
+      .set('Authorization', `Bearer ${token()}`).send({ score: 5, comments });
+    expect((await post('x'.repeat(501))).status).toBe(400);
+    expect(ratingsModel.createRating).not.toHaveBeenCalled();
+    ratingsModel.createRating.mockResolvedValue({ rating_id: 1, score: 5 });
+    expect((await post('x'.repeat(500))).status).toBe(201);
+  });
   it.each([1, 5])('accepts boundary score %s without letting the body choose the customer or helper', async score => {
     ratingsModel.createRating.mockResolvedValue({ rating_id: 1, score });
     const res = await request(app).post('/api/ratings/orders/42').set('Authorization', `Bearer ${token()}`)
