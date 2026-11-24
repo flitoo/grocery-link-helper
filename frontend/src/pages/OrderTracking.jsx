@@ -31,7 +31,7 @@ function TrackingContent({ orderId }) {
   const pending = ['Delivered', 'Cancelled'].includes(order?.status) ? 0 :
     data?.requests.filter(request => request.status === 'Pending').length || 0;
   return <div className="order-experience"><AppHeader />
-    <main className="experience-content">
+    <main id="main-content" tabIndex={-1} className="experience-content">
       <div className="experience-heading"><div><p>Order #{orderId}</p><h1>Track Your Order</h1><p>Updates automatically every 15 seconds.</p></div>
         <button disabled={loading} onClick={refresh}>{loading ? 'Loading...' : 'Refresh'}</button></div>
       {error && <p className="app-error" role="alert">{error}</p>}

@@ -309,16 +309,16 @@ const formatDelivery = (slot) => {
       {/* Header */}
       <AppHeader />
 
-      <main className="summary-content">
+      <main id="main-content" tabIndex={-1} className="summary-content">
         {/* Title */}
         <div className="summary-title">
           <p>
             Review Order
           </p>
 
-          <h2>
+          <h1>
             Order Summary
-          </h2>
+          </h1>
 
           <span>
             Review your grocery order before
@@ -328,9 +328,9 @@ const formatDelivery = (slot) => {
 
         {/* Grocery Items */}
         <section className="summary-card">
-          <h3>
+          <h2>
             Grocery Items
-          </h3>
+          </h2>
 
           {groceryItems.length === 0 ? (
             <p className="summary-empty">
@@ -382,9 +382,9 @@ const formatDelivery = (slot) => {
 
         {/* Store */}
         <section className="summary-card">
-          <h3>
+          <h2>
             Selected Store
-          </h3>
+          </h2>
 
           {selectedStore ? (
             <div className="summary-detail">
@@ -408,9 +408,9 @@ const formatDelivery = (slot) => {
 
         {/* Delivery */}
         <section className="summary-card">
-          <h3>
+          <h2>
             Delivery
-          </h3>
+          </h2>
 
           {deliverySlot ? (
             <div className="summary-detail">

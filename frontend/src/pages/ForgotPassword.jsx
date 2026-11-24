@@ -17,7 +17,7 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="login-page">
+    <main id="main-content" tabIndex={-1} className="login-page">
       <div className="login-card">
         <h1>Grocery Link Helper</h1>
         <h2>Forgot Password</h2>
@@ -30,6 +30,7 @@ function ForgotPassword() {
 
             <input
               id="email"
+              autoComplete="email"
               type="email"
               placeholder="Enter your email"
               value={email}
@@ -38,14 +39,14 @@ function ForgotPassword() {
           </div>
 
           <button type="submit">Reset Password</button>
-          {message && <p className="error-message">{message}</p>}
+          {message && <p className="error-message" role="status">{message}</p>}
 
           <Link to="/" className="forgot-password">
             Back to Login
           </Link>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
 

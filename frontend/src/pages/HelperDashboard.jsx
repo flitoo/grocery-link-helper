@@ -30,7 +30,7 @@ function formatDeliveryTime(value) {
 function OrderCard({ order, onOpen }) {
   return (
     <div className="helper-order-card">
-      <h4>Order #{order.order_id}</h4>
+      <h3>Order #{order.order_id}</h3>
       <p><strong>Store:</strong> {order.store_name || "Not available"}</p>
       {order.delivery_address && <p><strong>Delivery Address:</strong> {order.delivery_address}</p>}
       <p><strong>Delivery Time:</strong> {formatDeliveryTime(order.delivery_slot)}</p>
@@ -47,7 +47,7 @@ function OrderCard({ order, onOpen }) {
 function OrderSection({ title, orders, emptyText, onOpen }) {
   return (
     <section className="helper-orders">
-      <h3>{title}</h3>
+      <h2>{title}</h2>
       {orders.length === 0 ? (
         <div className="helper-order-card">
           <p>{emptyText}</p>
@@ -119,8 +119,8 @@ function HelperDashboard() {
     <div className="helper-page">
       <AppHeader helper><button onClick={handleRefresh} disabled={loading}>{loading ? 'Loading...' : 'Refresh'}</button></AppHeader>
 
-      <main className="helper-content">
-        <h2>Helper Dashboard</h2>
+      <main id="main-content" tabIndex={-1} className="helper-content">
+        <h1>Helper Dashboard</h1>
         <p>Claim a paid order, then update its status as you shop and deliver.</p>
 
         {error && (
@@ -153,11 +153,11 @@ function HelperDashboard() {
               onOpen={openOrder}
             />
             <OrderSection title="Delivery History" orders={history} emptyText="No completed or cancelled deliveries yet." onOpen={openOrder} />
-            <div className="helper-pagination" aria-label="History pages">
+            <nav className="helper-pagination" aria-label="History pages">
               <button disabled={loading || page === 1} onClick={() => { setLoading(true); setPage(value => value - 1); }}>Previous</button>
               <span>Page {page}</span>
               <button disabled={loading || !hasMore} onClick={() => { setLoading(true); setPage(value => value + 1); }}>Next</button>
-            </div>
+            </nav>
           </>
         )}
       </main>

@@ -74,7 +74,7 @@ function Register() {
   };
 
   return (
-    <div className="register-page">
+    <main id="main-content" tabIndex={-1} className="register-page">
       <div className="register-card">
         <h1>Grocery Link Helper</h1>
         <h2>Register</h2>
@@ -91,6 +91,7 @@ function Register() {
             <label htmlFor="name">Name</label>
             <input
               id="name"
+              autoComplete="name"
               type="text"
               placeholder="Enter your name"
               value={name}
@@ -102,6 +103,7 @@ function Register() {
             <label htmlFor="email">Email</label>
             <input
               id="email"
+              autoComplete="email"
               type="email"
               placeholder="Enter your email"
               value={email}
@@ -113,6 +115,7 @@ function Register() {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              autoComplete="new-password"
               type="password"
               placeholder="Enter your password"
               value={password}
@@ -124,6 +127,7 @@ function Register() {
             <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               id="confirmPassword"
+              autoComplete="new-password"
               type="password"
               placeholder="Confirm your password"
               value={confirmPassword}
@@ -131,7 +135,7 @@ function Register() {
             />
           </div>
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message" role="alert">{error}</p>}
 
           <button type="submit" disabled={loading}>
             {loading ? "Creating account..." : "Register"}
@@ -143,7 +147,7 @@ function Register() {
           </p>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
 

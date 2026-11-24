@@ -65,12 +65,12 @@
 
 .orders-title p {
   margin: 0 0 5px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
 
-.orders-page .orders-title h2 {
+.orders-page .orders-title h1 {
   margin: 0 0 8px;
   color: #222;
   font-size: 32px;
@@ -78,7 +78,7 @@
 }
 
 .orders-title span {
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -118,11 +118,11 @@
 }
 
 .order-card-header span {
-  color: #777;
+  color: #626b64;
   font-size: 13px;
 }
 
-.order-card-header h3 {
+.order-card-header :is(h2, h3) {
   margin: 4px 0 0;
   color: #222;
   font-size: 20px;
@@ -160,7 +160,7 @@
 }
 
 .order-information span {
-  color: #888;
+  color: #626b64;
   font-size: 13px;
 }
 
@@ -192,7 +192,7 @@
   display: inline-block;
   padding: 12px 22px;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   text-decoration: none;
   font-size: 14px;
@@ -243,14 +243,14 @@
   font-size: 45px;
 }
 
-.orders-empty h3 {
+.orders-empty :is(h2, h3) {
   margin: 0 0 8px;
   color: #222;
 }
 
 .orders-empty p {
   margin: 0 0 25px;
-  color: #777;
+  color: #626b64;
 }
 
 .orders-page .orders-start-button,
@@ -258,7 +258,7 @@
   display: inline-block;
   padding: 12px 22px;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   text-decoration: none;
   font-size: 14px;
@@ -291,7 +291,7 @@
     padding: 30px 20px;
   }
 
-  .orders-page .orders-title h2 {
+  .orders-page .orders-title h1 {
     font-size: 28px;
   }
 

@@ -238,11 +238,11 @@ function RepeatOrder() {
     <div className="repeat-page">
       <AppHeader />
 
-      <main className="repeat-content">
+      <main id="main-content" tabIndex={-1} className="repeat-content">
         <div className="repeat-title">
           <p>Order History</p>
 
-          <h2>Repeat Order #{orderId}</h2>
+          <h1>Repeat Order #{orderId}</h1>
 
           <span>
             Review items before starting a new order.
@@ -266,10 +266,10 @@ function RepeatOrder() {
         ) : (
           <>
             <section className="repeat-card">
-              <h3>
+              <h2>
                 Original Order #
                 {originalOrder.order_id ?? orderId}
-              </h3>
+              </h2>
 
               <p className="repeat-muted">
                 Original status:{" "}
@@ -285,7 +285,7 @@ function RepeatOrder() {
             </section>
 
             <section className="repeat-card">
-              <h3>Grocery Items</h3>
+              <h2>Grocery Items</h2>
 
               <p className="repeat-muted">
                 Update quantities and prices,

@@ -21,6 +21,7 @@
 }
 
 /* Search bar and category */
+.item-search-heading { margin: 0 0 16px; font-size: 20px; color: #263238; }
 
 .item-search-bar {
   display: flex;
@@ -82,7 +83,7 @@
 }
 
 .tag-chip.active {
-  background: #43a047;
+  background: #2e7d32;
   border-color: #43a047;
   color: white;
 }
@@ -99,7 +100,7 @@
 
 .item-search-status p {
   margin: 14px 0 0;
-  color: #777;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -129,7 +130,7 @@
   margin-top: 6px;
   padding: 18px 10px;
   text-align: center;
-  color: #777;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -177,7 +178,7 @@
 
 .search-result-meta {
   margin: 0;
-  color: #888;
+  color: #626b64;
   font-size: 13px;
 }
 
@@ -233,7 +234,7 @@
 
 .search-result-unit {
   min-width: 26px;
-  color: #777;
+  color: #626b64;
   font-size: 13px;
 }
 
@@ -242,7 +243,7 @@
   padding: 9px 18px;
   border: none;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-size: 14px;
   font-weight: 600;

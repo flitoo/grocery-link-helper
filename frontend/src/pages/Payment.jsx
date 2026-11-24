@@ -797,7 +797,7 @@ function Payment() {
 
       <AppHeader />
 
-      <main className="payment-content">
+      <main id="main-content" tabIndex={-1} className="payment-content">
 
         {/* ==============================
 
@@ -809,7 +809,7 @@ function Payment() {
 
           <p>Checkout</p>
 
-          <h2>Payment</h2>
+          <h1>Payment</h1>
 
           <span>
 
@@ -835,11 +835,11 @@ function Payment() {
 
             </div>
 
-            <h3>
+            <h2>
 
               Demo Payment Confirmed!
 
-            </h3>
+            </h2>
 
             <p>
 
@@ -913,11 +913,11 @@ function Payment() {
 
             <section className="payment-card">
 
-              <h3>
+              <h2>
 
                 Order Details
 
-              </h3>
+              </h2>
 
               {/* Order ID */}
 
@@ -947,11 +947,11 @@ function Payment() {
 
               <div className="payment-summary-section">
 
-                <h4>
+                <h3>
 
                   Grocery Items
 
-                </h4>
+                </h3>
 
                 {groceryItems.length === 0 ? (
 
@@ -1095,11 +1095,11 @@ function Payment() {
 
             <section className="payment-card">
 
-              <h3>
+              <h2>
 
                 Payment Method
 
-              </h3>
+              </h2>
 
               <div className="payment-methods">
 

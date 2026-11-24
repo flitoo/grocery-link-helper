@@ -217,6 +217,7 @@ function ItemSearch({ storeId, onAdd }) {
 
   return (
     <section className="item-search" aria-label="Find items">
+      <h2 className="item-search-heading">Find groceries</h2>
       <div className="item-search-bar">
         <label className="item-search-input">
           <span className="visually-hidden">Search items by name or brand</span>

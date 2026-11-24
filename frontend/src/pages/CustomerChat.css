@@ -43,17 +43,17 @@
 }
 
 .customer-chat-title p {
-  color: #43a047;
+  color: #2e7d32;
   font-weight: 600;
 }
 
-.customer-chat-title h2 {
+.customer-chat-title h1 {
   font-size: 34px;
   margin: 8px 0;
 }
 
 .customer-chat-title span {
-  color: #777;
+  color: #626b64;
 }
 
 .customer-chat-card {
@@ -74,13 +74,13 @@
   border-bottom: 1px solid #eee;
 }
 
-.customer-chat-card-header h3 {
+.customer-chat-card-header :is(h2, h3) {
   margin: 0 0 5px;
 }
 
 .customer-chat-card-header p {
   margin: 0;
-  color: #888;
+  color: #626b64;
 }
 
 .customer-chat-card-header button {
@@ -102,7 +102,7 @@
 
 .customer-chat-empty {
   text-align: center;
-  color: #888;
+  color: #626b64;
   margin-top: 100px;
 }
 
@@ -127,7 +127,7 @@
 }
 
 .customer-chat-message-top small {
-  color: #999;
+  color: #626b64;
 }
 
 .customer-chat-message p {
@@ -164,7 +164,7 @@
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-weight: 600;
   cursor: pointer;

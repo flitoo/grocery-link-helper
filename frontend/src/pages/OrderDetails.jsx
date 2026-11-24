@@ -227,12 +227,12 @@ function OrderDetails() {
       {/* Header */}
       <AppHeader />
 
-      <main className="order-details-content">
+      <main id="main-content" tabIndex={-1} className="order-details-content">
         {/* Page Title */}
         <div className="order-details-title">
           <p>Order #{orderId}</p>
 
-          <h2>Order Details</h2>
+          <h1>Order Details</h1>
 
           <span>
             View your order information and
@@ -246,7 +246,7 @@ function OrderDetails() {
           </section>
         ) : error ? (
           <section className="order-details-card">
-            <h3>Unable to load order</h3>
+            <h2>Unable to load order</h2>
 
             <p role="alert">{error}</p>
 
@@ -262,9 +262,9 @@ function OrderDetails() {
                 <div>
                   <span>Order Number</span>
 
-                  <h3>
+                  <h2>
                     #{order.order_id ?? orderId}
-                  </h3>
+                  </h2>
                 </div>
 
                 <div className="order-status">
@@ -297,7 +297,7 @@ function OrderDetails() {
 
             {/* Grocery Items */}
             <section className="order-details-card">
-              <h3>Grocery Items</h3>
+              <h2>Grocery Items</h2>
 
               {items.length > 0 ? (
                 items.map((item, index) => (
@@ -345,7 +345,7 @@ function OrderDetails() {
 
             {/* Store */}
             <section className="order-details-card">
-              <h3>Store</h3>
+              <h2>Store</h2>
 
               <div className="order-info-row">
                 <span>Selected Store</span>
@@ -364,7 +364,7 @@ function OrderDetails() {
 
             {/* Delivery */}
             <section className="order-details-card">
-              <h3>Delivery</h3>
+              <h2>Delivery</h2>
 
               <div className="order-info-row">
                 <span>
@@ -388,7 +388,7 @@ function OrderDetails() {
 
             {/* Payment */}
             <section className="order-details-card">
-              <h3>Payment</h3>
+              <h2>Payment</h2>
 
               <div className="order-info-row">
                 <span>Payment Status</span>

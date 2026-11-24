@@ -112,10 +112,10 @@ function StoreSelection() {
     <div className="store-page">
       <AppHeader />
 
-      <main className="store-content">
+      <main id="main-content" tabIndex={-1} className="store-content">
         <div className="store-title">
           <p>Store Selection</p>
-          <h2>Select a Store</h2>
+          <h1>Select a Store</h1>
           <span>
             Choose where you would like your groceries purchased.
           </span>
@@ -155,7 +155,7 @@ function StoreSelection() {
               </div>
 
               <div className="store-info">
-                <h3>{store.name}</h3>
+                <h2>{store.name}</h2>
                 <p>{store.address}</p>
               </div>
 

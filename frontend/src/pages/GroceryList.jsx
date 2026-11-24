@@ -95,10 +95,10 @@ function GroceryListContent({ store }) {
       <AppHeader />
 
       {/* Main Content */}
-      <main className="grocery-content">
+      <main id="main-content" tabIndex={-1} className="grocery-content">
         <div className="grocery-title">
           <p>My Grocery List</p>
-          <h2>Grocery List</h2>
+          <h1>Grocery List</h1>
         </div>
 
         <div className="grocery-store-bar">
@@ -131,9 +131,9 @@ function GroceryListContent({ store }) {
         </details>
 
         {/* Grocery List */}
-        <h3 className="grocery-list-heading">
+        <h2 className="grocery-list-heading">
           Your list{items.length > 0 ? ` (${items.length})` : ""}
-        </h3>
+        </h2>
 
         <div className="grocery-list">
           {items.length === 0 ? (

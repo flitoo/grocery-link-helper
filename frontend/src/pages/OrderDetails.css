@@ -66,12 +66,12 @@
 
 .order-details-title p {
   margin: 0 0 8px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
 
-.order-details-title h2 {
+.order-details-title h1 {
   margin: 0 0 10px;
   color: #222;
   font-size: 32px;
@@ -79,7 +79,7 @@
 }
 
 .order-details-title span {
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -96,7 +96,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.order-details-card h3 {
+.order-details-card :is(h2, h3) {
   margin: 0 0 20px;
   color: #333;
   font-size: 20px;
@@ -116,11 +116,11 @@
 }
 
 .order-top span {
-  color: #777;
+  color: #626b64;
   font-size: 14px;
 }
 
-.order-top h3 {
+.order-top :is(h2, h3) {
   margin: 5px 0 0;
   color: #222;
   font-size: 24px;
@@ -251,7 +251,7 @@
   text-align: center;
 }
 
-.no-order h3 {
+.no-order :is(h2, h3) {
   margin: 0 0 10px;
   color: #333;
   font-size: 22px;
@@ -259,7 +259,7 @@
 
 .no-order p {
   margin: 0 0 25px;
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -284,7 +284,7 @@
     padding: 30px 20px;
   }
 
-  .order-details-title h2 {
+  .order-details-title h1 {
     font-size: 28px;
   }
 

@@ -157,10 +157,10 @@ function DeliveryStatusUpdateContent({ orderId }) {
     <div className="delivery-status-page">
       <AppHeader helper />
 
-      <main className="delivery-status-content">
+      <main id="main-content" tabIndex={-1} className="delivery-status-content">
         <div className="delivery-status-title">
           <p>Delivery Management</p>
-          <h2>Delivery Status Update</h2>
+          <h1>Delivery Status Update</h1>
           <span>Order #{orderId}</span>
         </div>
 
@@ -187,7 +187,7 @@ function DeliveryStatusUpdateContent({ orderId }) {
             <section className="delivery-status-card">
               <div className="delivery-status-card-top">
                 <div>
-                  <h3>Order #{order.order_id}</h3>
+                  <h2>Order #{order.order_id}</h2>
                   <p>Current delivery information</p>
                 </div>
                 <button
@@ -219,7 +219,7 @@ function DeliveryStatusUpdateContent({ orderId }) {
             </section>
 
             <section className="delivery-status-card">
-              <h3>Delivery Progress</h3>
+              <h2>Delivery Progress</h2>
               {isCancelled ? (
                 <p className="delivery-status-error">This order has been cancelled.</p>
               ) : (
@@ -247,7 +247,7 @@ function DeliveryStatusUpdateContent({ orderId }) {
             </section>
 
             <section className="delivery-status-card">
-              <h3>Update Delivery Status</h3>
+              <h2>Update Delivery Status</h2>
               {!isAssigned ? (
                 <p className="delivery-status-note">
                   A helper must claim this order before updating its delivery status.

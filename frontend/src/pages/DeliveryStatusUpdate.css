@@ -37,11 +37,11 @@
 }
 
 .delivery-status-title p {
-  color: #2e7d32;
+  color: #256829;
   font-weight: 600;
 }
 
-.delivery-status-title h2 {
+.delivery-status-title h1 {
   color: #263238;
   font-size: 28px;
   margin: 8px 0;
@@ -59,7 +59,7 @@
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.06);
 }
 
-.delivery-status-card h3 {
+.delivery-status-card :is(h2, h3) {
   margin-top: 0;
   color: #263238;
 }
@@ -97,7 +97,7 @@
   align-items: center;
   gap: 16px;
   padding: 14px 0;
-  color: #7c8580;
+  color: #59645d;
 }
 
 .delivery-step-circle {
@@ -115,12 +115,12 @@
 .delivery-progress-step.completed
   .delivery-step-circle {
   background: #2e7d32;
-  border-color: #2e7d32;
+  border-color: #256829;
   color: white;
 }
 
 .delivery-progress-step.active strong {
-  color: #2e7d32;
+  color: #256829;
 }
 
 .delivery-progress-step p {
@@ -159,7 +159,7 @@
   background: #e8f3e9;
   border: none;
   border-radius: 8px;
-  color: #2e7d32;
+  color: #256829;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;

@@ -65,7 +65,7 @@ function SubstitutionContent({ orderId, helper }) {
   }
 
   return <div className="order-experience"><AppHeader helper={helper} />
-    <main className="experience-content">
+    <main id="main-content" tabIndex={-1} className="experience-content">
       <div className="experience-heading"><div><p>Order #{orderId}</p><h1>Substitution Requests</h1>
         <p>{helper ? 'Suggest a replacement for an unavailable item.' : 'Review replacements suggested by your helper.'}</p></div>
         <button onClick={refresh} disabled={loading || busy}>{loading ? 'Loading...' : 'Refresh'}</button>

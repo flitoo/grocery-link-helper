@@ -84,7 +84,7 @@ export default function Collections() {
   }
 
   return <div className="collections-page"><AppHeader />
-    <main className="collections-content">
+    <main id="main-content" tabIndex={-1} className="collections-content">
       <h1>My Collections</h1><p>Save grocery lists to use again.</p>
       {error && <p className="app-error" role="alert">{error}</p>}
       {message && <p role="status">{message}</p>}

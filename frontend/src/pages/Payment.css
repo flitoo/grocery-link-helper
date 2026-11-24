@@ -56,19 +56,19 @@
 
 .payment-title p {
   margin: 0 0 5px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
 
-.payment-title h2 {
+.payment-title h1 {
   margin: 0 0 8px;
   color: #222;
   font-size: 32px;
 }
 
 .payment-title span {
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -85,13 +85,13 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.payment-card h3 {
+.payment-card :is(h2, h3) {
   margin: 0 0 25px;
   color: #333;
   font-size: 20px;
 }
 
-.payment-card h4 {
+.payment-card :is(h3, h4) {
   margin: 0 0 15px;
   color: #333;
   font-size: 16px;
@@ -134,7 +134,7 @@
   padding: 15px;
   background: #f5f8f5;
   border-radius: 8px;
-  color: #777;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -227,7 +227,7 @@
 }
 
 .payment-form-group small {
-  color: #888;
+  color: #626b64;
   font-size: 13px;
 }
 
@@ -240,7 +240,7 @@
   padding: 12px 15px;
   background: #f5f8f5;
   border-radius: 8px;
-  color: #777;
+  color: #626b64;
   font-size: 13px;
   text-align: center;
 }
@@ -277,7 +277,7 @@
 }
 
 .payment-order span {
-  color: #777;
+  color: #626b64;
 }
 
 .payment-order strong {
@@ -347,7 +347,7 @@
 
 .payment-button {
   border: none;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   cursor: pointer;
 }
@@ -382,14 +382,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   border-radius: 50%;
   font-size: 30px;
   font-weight: bold;
 }
 
-.payment-success-box h3 {
+.payment-success-box :is(h2, h3) {
   margin: 0 0 10px;
   color: #2e7d32;
   font-size: 24px;
@@ -397,7 +397,7 @@
 
 .payment-success-box p {
   margin: 0;
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -419,7 +419,7 @@
 
 .view-order-button {
   border: none;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
 }
 
@@ -458,7 +458,7 @@
     padding: 30px 20px;
   }
 
-  .payment-title h2 {
+  .payment-title h1 {
     font-size: 28px;
   }
 

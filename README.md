@@ -289,6 +289,11 @@ it); `409` if the store is no longer active; `404` if the order does not exist.
 
 ### Tests and lint
 
+Run `npm run audit:accessibility` and `npm run audit:performance` from `frontend`,
+and `npm run test:performance` from `backend` for repeatable audit reports.
+See [performance and accessibility QA](docs/performance-accessibility-qa.md)
+for setup, measurements, fixes and coverage limits.
+
 Substitution and tracking QA now includes frontend component/polling tests
 (`npm test` from `frontend`) and real PostgreSQL/API flow checks
 (`npm run test:substitution-tracking:db` from `backend`). See the

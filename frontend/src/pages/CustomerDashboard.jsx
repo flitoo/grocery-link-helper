@@ -53,7 +53,7 @@ function CustomerDashboard() {
       <AppHeader />
 
       {/* Main Content */}
-      <main className="dashboard-content">
+      <main id="main-content" tabIndex={-1} className="dashboard-content">
         {ordersError && <p className="app-error" role="alert">{ordersError}</p>}
         {/* Welcome */}
         <section className="welcome-section">

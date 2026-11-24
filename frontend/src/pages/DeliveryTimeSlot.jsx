@@ -180,9 +180,9 @@ function DeliveryTimeSlot() {
 
     return (
       <>
-        <h3 className="slot-heading" id="slot-day-label">
+        <h2 className="slot-heading" id="slot-day-label">
           Day
-        </h3>
+        </h2>
 
         <div
           className="slot-days"
@@ -206,9 +206,9 @@ function DeliveryTimeSlot() {
           ))}
         </div>
 
-        <h3 className="slot-heading" id="slot-time-label">
+        <h2 className="slot-heading" id="slot-time-label">
           Time
-        </h3>
+        </h2>
 
         <div
           className="slot-times"
@@ -252,11 +252,11 @@ function DeliveryTimeSlot() {
     <div className="delivery-page">
       <AppHeader />
 
-      <main className="delivery-content">
+      <main id="main-content" tabIndex={-1} className="delivery-content">
         <div className="delivery-title">
           <p>Schedule Delivery</p>
 
-          <h2>Choose Delivery Time</h2>
+          <h1>Choose Delivery Time</h1>
 
           <span>
             Pick a one-hour window in the next 7 days. Times that

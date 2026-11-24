@@ -69,7 +69,7 @@
 
 .welcome-label {
   margin: 0 0 8px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 15px;
   font-weight: 600;
 }
@@ -82,7 +82,7 @@
 
 .welcome-text {
   margin-top: 10px;
-  color: #777;
+  color: #626b64;
   font-size: 16px;
 }
 
@@ -90,7 +90,7 @@
   padding: 13px 22px;
   border: none;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -142,7 +142,7 @@
 }
 
 .card-content span {
-  color: #999;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -182,7 +182,7 @@
 
 .section-heading p {
   margin: 0 0 5px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
@@ -230,7 +230,7 @@
 
 .action-card p {
   margin: 0;
-  color: #888;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -255,7 +255,7 @@
 
 .empty-orders p {
   margin: 8px 0 0;
-  color: #888;
+  color: #626b64;
 }
 
 /* Responsive */

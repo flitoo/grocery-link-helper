@@ -219,12 +219,12 @@ function DeliveryNotifications() {
       {/* Header */}
       <AppHeader />
 
-      <main className="notifications-content">
+      <main id="main-content" tabIndex={-1} className="notifications-content">
         {/* Page Title */}
         <div className="notifications-title">
           <p>Delivery Updates</p>
 
-          <h2>Notifications</h2>
+          <h1>Notifications</h1>
 
           <span>
             Stay updated on your grocery deliveries.
@@ -285,7 +285,7 @@ function DeliveryNotifications() {
                   🔔
                 </div>
 
-                <h3>No notifications yet</h3>
+                <h2>No notifications yet</h2>
 
                 <p>
                   Delivery updates will appear
@@ -310,7 +310,7 @@ function DeliveryNotifications() {
 
                     {/* Notification Content */}
                     <div className="notification-body">
-                      <h3>{item.title}</h3>
+                      <h2>{item.title}</h2>
 
                       <p>{item.message}</p>
 

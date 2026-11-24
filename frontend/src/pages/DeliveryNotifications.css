@@ -53,7 +53,7 @@
   margin-bottom: 10px;
 }
 
-.notifications-title h2 {
+.notifications-title h1 {
   color: #172033;
   font-size: 34px;
   font-weight: 700;
@@ -130,7 +130,7 @@
   text-align: center;
 }
 
-.notifications-empty h3 {
+.notifications-empty :is(h2, h3) {
   color: #172033;
 }
 
@@ -172,7 +172,7 @@
   flex: 1;
 }
 
-.notification-body h3 {
+.notification-body :is(h2, h3) {
   margin: 0 0 8px;
   font-size: 19px;
   color: #172033;
@@ -184,7 +184,7 @@
 }
 
 .notification-body small {
-  color: #777777;
+  color: #626b64;
 }
 
 .notification-actions {
@@ -223,7 +223,7 @@
     padding: 30px 16px;
   }
 
-  .notifications-title h2 {
+  .notifications-title h1 {
     font-size: 28px;
   }
 

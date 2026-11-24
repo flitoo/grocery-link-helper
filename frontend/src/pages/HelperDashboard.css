@@ -57,7 +57,7 @@
   text-align: left;
 }
 
-.helper-page .helper-content > h2 {
+.helper-page .helper-content > h1 {
   margin: 0 0 12px;
   color: #222;
   font-size: 32px;
@@ -75,7 +75,7 @@
   margin-top: 24px;
 }
 
-.helper-page .helper-orders > h3 {
+.helper-page .helper-orders > :is(h2, h3) {
   color: #2e7d32;
   font-size: 22px;
   margin-bottom: 20px;
@@ -92,7 +92,7 @@
   text-align: left;
 }
 
-.helper-page .helper-order-card h4 {
+.helper-page .helper-order-card :is(h3, h4) {
   margin: 0 0 20px;
   color: #2e7d32;
   font-size: 21px;
@@ -144,7 +144,7 @@
     padding: 28px 16px;
   }
 
-  .helper-page .helper-content > h2 {
+  .helper-page .helper-content > h1 {
     font-size: 26px;
   }
 

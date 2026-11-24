@@ -63,7 +63,7 @@
 }
 
 .form-group input::placeholder {
-  color: #999;
+  color: #626b64;
 }
 
 .form-group input:focus {
@@ -84,7 +84,7 @@
   height: 48px;
   border: none;
   border-radius: 8px;
-  background-color: #43a047;
+  background-color: #2e7d32;
   color: white;
   font-size: 16px;
   font-weight: 600;

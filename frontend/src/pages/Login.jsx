@@ -59,7 +59,7 @@ function Login() {
   };
 
   return (
-    <div className="login-page">
+    <main id="main-content" tabIndex={-1} className="login-page">
       <div className="login-card">
         <h1>Grocery Link Helper</h1>
         <h2>Login</h2>
@@ -69,6 +69,7 @@ function Login() {
             <label htmlFor="email">Email</label>
             <input
               id="email"
+              autoComplete="email"
               type="email"
               placeholder="Enter your email"
               value={email}
@@ -80,6 +81,7 @@ function Login() {
             <label htmlFor="password">Password</label>
             <input
               id="password"
+              autoComplete="current-password"
               type="password"
               placeholder="Enter your password"
               value={password}
@@ -87,7 +89,7 @@ function Login() {
             />
           </div>
 
-          {error && <p className="error-message">{error}</p>}
+          {error && <p className="error-message" role="alert">{error}</p>}
 
           <button type="submit" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
@@ -103,7 +105,7 @@ function Login() {
           </p>
         </form>
       </div>
-    </div>
+    </main>
   );
 }
 

@@ -187,9 +187,9 @@ function HelperOrderDetails() {
       <AppHeader helper />
 
       {/* Main Content */}
-      <main className="order-details-content">
+      <main id="main-content" tabIndex={-1} className="order-details-content">
         <div className="order-details-title">
-          <h2>Helper Order Details</h2>
+          <h1>Helper Order Details</h1>
 
           <span>
             View and manage delivery information.
@@ -230,7 +230,7 @@ function HelperOrderDetails() {
                 <div>
                   <span>Order Number</span>
 
-                  <h3>#{order.order_id}</h3>
+                  <h2>#{order.order_id}</h2>
                 </div>
 
                 <div className="order-status">
@@ -257,7 +257,7 @@ function HelperOrderDetails() {
 
             {/* Grocery Items */}
             <section className="order-details-card">
-              <h3>Grocery Items</h3>
+              <h2>Grocery Items</h2>
 
               {order.items?.length > 0 ? (
                 order.items.map((item, index) => (
@@ -283,7 +283,7 @@ function HelperOrderDetails() {
 
             {/* Store Information */}
             <section className="order-details-card">
-              <h3>Store</h3>
+              <h2>Store</h2>
 
               <div className="order-info-row">
                 <span>Store Name</span>
@@ -297,7 +297,7 @@ function HelperOrderDetails() {
 
             {/* Delivery Information */}
             <section className="order-details-card">
-              <h3>Delivery</h3>
+              <h2>Delivery</h2>
 
               <div className="order-info-row">
                 <span>Delivery Address</span>
@@ -319,7 +319,7 @@ function HelperOrderDetails() {
 
             {/* Order Total */}
             <section className="order-details-card">
-              <h3>Order Total</h3>
+              <h2>Order Total</h2>
 
               <div className="order-info-row">
                 <span>Total Amount</span>
@@ -337,7 +337,7 @@ function HelperOrderDetails() {
             {order.status === "Paid" &&
               order.helper_id == null && (
                 <section className="order-details-card">
-                  <h3>Available Delivery</h3>
+                  <h2>Available Delivery</h2>
 
                   <p>
                     This order is available for a
@@ -359,7 +359,7 @@ function HelperOrderDetails() {
 
             {/* Delivery Management */}
             <section className="order-details-card">
-              <h3>Delivery Management</h3>
+              <h2>Delivery Management</h2>
 
               <p>
                 View the delivery progress and

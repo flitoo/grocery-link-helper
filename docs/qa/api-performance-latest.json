@@ -1,0 +1,64 @@
+{
+  "generatedAt": "2026-11-24T20:20:22.011Z",
+  "node": "v22.15.0",
+  "mode": "Local Express HTTP + configured database; read-only; 3 concurrent requests; 30 samples per endpoint",
+  "budget": {
+    "p95Ms": 1000,
+    "errors": 0
+  },
+  "results": [
+    {
+      "route": "/health",
+      "requests": 30,
+      "coldMs": 21,
+      "coldStatus": 200,
+      "p50Ms": 8,
+      "p95Ms": 20,
+      "maxMs": 20,
+      "requestsPerSecond": 271.5,
+      "errors": 0,
+      "averageBytes": 15,
+      "passed": true
+    },
+    {
+      "route": "/api/stores",
+      "requests": 30,
+      "coldMs": 33,
+      "coldStatus": 200,
+      "p50Ms": 38,
+      "p95Ms": 45,
+      "maxMs": 64,
+      "requestsPerSecond": 70.6,
+      "errors": 0,
+      "averageBytes": 415,
+      "passed": true
+    },
+    {
+      "route": "/api/items?store_id=1&limit=20",
+      "requests": 30,
+      "coldMs": 95,
+      "coldStatus": 200,
+      "p50Ms": 74,
+      "p95Ms": 209,
+      "maxMs": 225,
+      "requestsPerSecond": 28.8,
+      "errors": 0,
+      "averageBytes": 4023,
+      "passed": true
+    },
+    {
+      "route": "/api/slots",
+      "requests": 30,
+      "coldMs": 586,
+      "coldStatus": 200,
+      "p50Ms": 528,
+      "p95Ms": 640,
+      "maxMs": 640,
+      "requestsPerSecond": 5.5,
+      "errors": 0,
+      "averageBytes": 8835,
+      "passed": true
+    }
+  ],
+  "initialDatabaseReadMs": 1236
+}

@@ -60,12 +60,12 @@
 
 .grocery-title p {
   margin: 0 0 5px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
 
-.grocery-title h2 {
+.grocery-title h1 {
   margin: 0;
   font-size: 32px;
   color: #222;
@@ -94,7 +94,7 @@
 }
 
 .add-item input::placeholder {
-  color: #999;
+  color: #626b64;
   opacity: 1;
 }
 
@@ -116,7 +116,7 @@
   padding: 13px 22px;
   border: none;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -164,7 +164,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.grocery-item h3 {
+.grocery-item :is(h2, h3) {
   margin: 0 0 5px;
   color: #333;
   font-size: 17px;
@@ -172,7 +172,7 @@
 
 .grocery-item p {
   margin: 0;
-  color: #888;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -181,7 +181,7 @@
   border: 1px solid #d9534f;
   border-radius: 7px;
   background: white;
-  color: #d9534f;
+  color: #b92c28;
   font-weight: 600;
   cursor: pointer;
 }
@@ -202,14 +202,14 @@
   border-radius: 12px;
 }
 
-.empty-list h3 {
+.empty-list :is(h2, h3) {
   margin: 0 0 8px;
   color: #333;
 }
 
 .empty-list p {
   margin: 0;
-  color: #888;
+  color: #626b64;
 }
 
 /* =========================
@@ -226,7 +226,7 @@
   display: inline-block;
   padding: 13px 22px;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-size: 15px;
   font-weight: 600;
@@ -346,7 +346,7 @@
 
 .custom-item-hint {
   margin: 12px 0;
-  color: #888;
+  color: #626b64;
   font-size: 13px;
 }
 

@@ -46,7 +46,7 @@
   font-weight: 600;
 }
 
-.rating-title h2 {
+.rating-title h1 {
   font-size: 34px;
   margin: 10px 0;
   color: #172033;
@@ -54,7 +54,7 @@
 }
 
 .rating-title span {
-  color: #777;
+  color: #626b64;
 }
 
 .rating-card {
@@ -74,7 +74,7 @@
   margin-bottom: 25px;
 }
 
-.rating-order-info h3 {
+.rating-order-info :is(h2, h3) {
   margin: 0;
 }
 
@@ -89,10 +89,10 @@
 }
 
 .rating-helper span {
-  color: #777;
+  color: #626b64;
 }
 
-.rating-helper h3 {
+.rating-helper :is(h2, h3) {
   margin-top: 8px;
 }
 
@@ -100,12 +100,12 @@
   text-align: center;
 }
 
-.rating-question h3 {
+.rating-question :is(h2, h3) {
   margin-bottom: 8px;
 }
 
 .rating-question p {
-  color: #777;
+  color: #626b64;
 }
 
 .rating-stars {
@@ -113,7 +113,7 @@
   justify-content: center;
   gap: 8px;
   margin: 20px 0 30px;
-  color: #f5b301;
+  color: #946800;
   font-size: 38px;
 }
 
@@ -121,13 +121,13 @@
   background: transparent;
   border: none;
   font-size: 42px;
-  color: #d1d5db;
+  color: #626b64;
   cursor: pointer;
   padding: 0 3px;
 }
 
 .star.active {
-  color: #f5b301;
+  color: #946800;
 }
 
 .rating-comment label {
@@ -154,7 +154,7 @@
 .rating-comment small {
   display: block;
   text-align: right;
-  color: #777;
+  color: #626b64;
   margin-top: 6px;
 }
 
@@ -194,7 +194,7 @@
   padding: 20px 0;
 }
 
-.rating-success h3 {
+.rating-success :is(h2, h3) {
   color: #188038;
 }
 
@@ -208,7 +208,7 @@
 }
 
 .rating-note {
-  color: #777;
+  color: #626b64;
   font-size: 13px;
 }
 

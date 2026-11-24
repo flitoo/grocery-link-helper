@@ -1,31 +1,33 @@
+import { lazy, Suspense } from 'react';
 
 import { Routes, Route } from "react-router-dom";
+import PageAccessibility from './components/PageAccessibility';
 
 import Login from "./pages/Login";
-import ForgotPassword from "./pages/ForgotPassword";
-import CustomerDashboard from "./pages/CustomerDashboard";
-import Register from "./pages/Register";
-import GroceryList from "./pages/GroceryList";
-import StoreSelection from "./pages/StoreSelection";
-import DeliveryTimeSlot from "./pages/DeliveryTimeSlot";
-import OrderSummary from "./pages/OrderSummary";
-import Payment from "./pages/Payment";
-import Orders from "./pages/Orders";
-import OrderDetails from "./pages/OrderDetails";
-import RepeatOrder from "./pages/RepeatOrder";
-import HelperDashboard from "./pages/HelperDashboard";
-import HelperOrderDetails from "./pages/HelperOrderDetails";
-import DeliveryStatusUpdate from "./pages/DeliveryStatusUpdate";
-import CustomerChat from "./pages/CustomerChat";
-import DeliveryNotifications from "./pages/DeliveryNotifications";
-import RatingFeedback from "./pages/RatingFeedback";
-import Collections from './pages/Collections';
-import SubstitutionRequests from './pages/SubstitutionRequests';
-import OrderTracking from './pages/OrderTracking';
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const CustomerDashboard = lazy(() => import('./pages/CustomerDashboard'));
+const Register = lazy(() => import('./pages/Register'));
+const GroceryList = lazy(() => import('./pages/GroceryList'));
+const StoreSelection = lazy(() => import('./pages/StoreSelection'));
+const DeliveryTimeSlot = lazy(() => import('./pages/DeliveryTimeSlot'));
+const OrderSummary = lazy(() => import('./pages/OrderSummary'));
+const Payment = lazy(() => import('./pages/Payment'));
+const Orders = lazy(() => import('./pages/Orders'));
+const OrderDetails = lazy(() => import('./pages/OrderDetails'));
+const RepeatOrder = lazy(() => import('./pages/RepeatOrder'));
+const HelperDashboard = lazy(() => import('./pages/HelperDashboard'));
+const HelperOrderDetails = lazy(() => import('./pages/HelperOrderDetails'));
+const DeliveryStatusUpdate = lazy(() => import('./pages/DeliveryStatusUpdate'));
+const CustomerChat = lazy(() => import('./pages/CustomerChat'));
+const DeliveryNotifications = lazy(() => import('./pages/DeliveryNotifications'));
+const RatingFeedback = lazy(() => import('./pages/RatingFeedback'));
+const Collections = lazy(() => import('./pages/Collections'));
+const SubstitutionRequests = lazy(() => import('./pages/SubstitutionRequests'));
+const OrderTracking = lazy(() => import('./pages/OrderTracking'));
 
 function App() {
   return (
-    <Routes>
+    <><PageAccessibility /><Suspense fallback={<main id="main-content" tabIndex={-1} data-loading="true" role="status">Loading page...</main>}><Routes>
       <Route path="/orders/:orderId/tracking" element={<OrderTracking />} />
       <Route path="/orders/:orderId/substitutions" element={<SubstitutionRequests />} />
       <Route path="/helper/orders/:orderId/substitutions" element={<SubstitutionRequests helper />} />
@@ -123,7 +125,7 @@ function App() {
         path="/helper/orders/:orderId/chat"
         element={<CustomerChat isHelper={true} />}
       />
-    </Routes>
+    </Routes></Suspense></>
   );
 }
 

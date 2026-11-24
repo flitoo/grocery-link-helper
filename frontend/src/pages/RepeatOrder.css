@@ -42,18 +42,18 @@
 }
 
 .repeat-title p {
-  color: #43a047;
+  color: #2e7d32;
   font-weight: 600;
 }
 
-.repeat-title h2 {
+.repeat-title h1 {
   font-size: 32px;
   margin: 8px 0;
 }
 
 .repeat-muted,
 .repeat-title span {
-  color: #777;
+  color: #626b64;
   line-height: 1.6;
 }
 
@@ -66,7 +66,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.repeat-card h3 {
+.repeat-card :is(h2, h3) {
   margin: 0 0 16px;
   font-size: 20px;
 }
@@ -159,7 +159,7 @@
 
 .repeat-continue {
   padding: 14px 22px;
-  background: #43a047;
+  background: #2e7d32;
   border: none;
   border-radius: 8px;
   color: white;

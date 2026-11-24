@@ -60,19 +60,19 @@
 
 .summary-title p {
   margin: 0 0 5px;
-  color: #43a047;
+  color: #2e7d32;
   font-size: 14px;
   font-weight: 600;
 }
 
-.summary-title h2 {
+.summary-title h1 {
   margin: 0 0 8px;
   color: #222;
   font-size: 32px;
 }
 
 .summary-title span {
-  color: #777;
+  color: #626b64;
   font-size: 15px;
 }
 
@@ -89,7 +89,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
-.summary-card h3 {
+.summary-card :is(h2, h3) {
   margin: 0 0 20px;
   color: #333;
   font-size: 18px;
@@ -131,7 +131,7 @@
 
 .summary-item p {
   margin: 0;
-  color: #777;
+  color: #626b64;
   font-size: 13px;
 }
 
@@ -177,13 +177,13 @@
 
 .summary-detail p {
   margin: 6px 0 0;
-  color: #777;
+  color: #626b64;
   font-size: 14px;
 }
 
 .summary-empty {
   margin: 0;
-  color: #888;
+  color: #626b64;
   font-size: 14px;
 }
 
@@ -273,7 +273,7 @@
   padding: 13px 28px;
   border: none;
   border-radius: 8px;
-  background: #43a047;
+  background: #2e7d32;
   color: white;
   font-size: 15px;
   font-weight: 600;

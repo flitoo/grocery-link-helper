@@ -122,10 +122,10 @@ function RatingFeedbackContent({ orderId }) {
     <div className="rating-page">
       <AppHeader />
 
-      <main className="rating-content">
+      <main id="main-content" tabIndex={-1} className="rating-content">
         <div className="rating-title">
           <p>Delivery Experience</p>
-          <h2>Rating & Feedback</h2>
+          <h1>Rating & Feedback</h1>
           <span>Share your experience with your helper.</span>
         </div>
 
@@ -141,13 +141,13 @@ function RatingFeedbackContent({ orderId }) {
         ) : (
           <div className="rating-card">
             <div className="rating-order-info">
-              <h3>Order #{orderId}</h3>
+              <h2>Order #{orderId}</h2>
               <span>Status: {order.status}</span>
             </div>
 
             {savedFeedback ? (
               <div className="rating-success">
-                <h3>Thank you for your feedback!</h3>
+                <h2>Thank you for your feedback!</h2>
 
                 <div className="rating-stars">
                   {"★".repeat(savedFeedback.rating)}
@@ -171,7 +171,7 @@ function RatingFeedbackContent({ orderId }) {
               </div>
             ) : !canRate ? (
               <div className="rating-message">
-                <h3>Rating is not available yet</h3>
+                <h2>Rating is not available yet</h2>
 
                 <p>
                   You can rate your helper after your
@@ -187,11 +187,11 @@ function RatingFeedbackContent({ orderId }) {
               <form onSubmit={handleSubmit}>
                 <div className="rating-helper">
                   <span>Delivery Helper</span>
-                  <h3>Helper #{order.helper_id}</h3>
+                  <h2>Helper #{order.helper_id}</h2>
                 </div>
 
                 <div className="rating-question">
-                  <h3>How was your delivery?</h3>
+                  <h2>How was your delivery?</h2>
                   <p>Select a rating from 1 to 5 stars.</p>
                 </div>
 
@@ -213,7 +213,7 @@ function RatingFeedbackContent({ orderId }) {
                       aria-label={`Rate ${star} stars`}
                       aria-pressed={rating === star}
                     >
-                      ★
+                      <span aria-hidden="true">{star <= (hover || rating) ? '★' : '☆'}</span>
                     </button>
                   ))}
                 </div>

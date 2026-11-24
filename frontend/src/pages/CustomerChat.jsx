@@ -187,15 +187,15 @@ function CustomerChatContent({ orderId, isHelper }) {
       <AppHeader helper={isHelper} />
 
       {/* Main Content */}
-      <main className="customer-chat-content">
+      <main id="main-content" tabIndex={-1} className="customer-chat-content">
         <div className="customer-chat-title">
           <p>Order Conversation</p>
 
-          <h2>
+          <h1>
             {isHelper
               ? "Chat with Customer"
               : "Chat with Helper"}
-          </h2>
+          </h1>
 
           <span>Order #{orderId}</span>
         </div>
@@ -204,7 +204,7 @@ function CustomerChatContent({ orderId, isHelper }) {
         <section className="customer-chat-card">
           <div className="customer-chat-card-header">
             <div>
-              <h3>Order #{orderId}</h3>
+              <h2>Order #{orderId}</h2>
               <p>
                 {isHelper
                   ? "Customer conversation"

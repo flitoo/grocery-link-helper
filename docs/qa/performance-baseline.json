@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-11-24T20:14:18.928Z",
+  "browser": "Chrome/158.0.8127.37",
+  "mode": "Production build; synthetic authenticated fixtures; local gzip static server",
+  "results": [
+    {
+      "route": "/",
+      "score": 97,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1684.4390000000003,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 1684.4390000000003,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 152,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1684.4390000000003,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 118923,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 744,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      }
+    },
+    {
+      "route": "/grocery-list",
+      "score": 81,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1599.2283,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2120.2282999999998,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 692.5,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1599.2283,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 117604,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 656.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      }
+    },
+    {
+      "route": "/orders/42/tracking",
+      "score": 93,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1676.0208,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2189.0208000000002,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 239,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1676.0208,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 117990,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 726.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      }
+    }
+  ]
+}

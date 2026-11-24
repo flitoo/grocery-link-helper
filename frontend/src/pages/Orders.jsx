@@ -63,12 +63,12 @@ function Orders() {
       {/* Header */}
       <AppHeader />
 
-      <main className="orders-content">
+      <main id="main-content" tabIndex={-1} className="orders-content">
         {/* Page Title */}
         <div className="orders-title">
           <p>Order History</p>
 
-          <h2>My Orders</h2>
+          <h1>My Orders</h1>
 
           <span>
             View your previous grocery orders,
@@ -83,7 +83,7 @@ function Orders() {
               📦
             </div>
 
-            <h3>No orders yet</h3>
+            <h2>No orders yet</h2>
 
             <p>
               Your completed orders will appear
@@ -124,7 +124,7 @@ function Orders() {
                     <div>
                       <span>Order</span>
 
-                      <h3>#{id}</h3>
+                      <h2>#{id}</h2>
                     </div>
 
                     <span className="order-status">

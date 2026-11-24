@@ -1,0 +1,779 @@
+{
+  "generatedAt": "2026-11-24T20:28:28.512Z",
+  "browser": "Chrome/158.0.8127.37",
+  "mode": "Production build; synthetic authenticated fixtures; local gzip static server",
+  "results": [
+    {
+      "route": "/",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/",
+      "state": "validation-error",
+      "viewport": "desktop",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/register",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/forgot-password",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [],
+      "clientNavigationPassed": true
+    },
+    {
+      "route": "/store-selection",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/grocery-list",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/grocery-list",
+      "state": "expanded-form",
+      "viewport": "desktop",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/delivery-time",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/order-summary",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/payment",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/order-details/42",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/repeat",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/collections",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/collections",
+      "state": "expanded-form",
+      "viewport": "desktop",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/notifications",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/rate",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 5
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "route": "/orders/42/chat",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/tracking",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "route": "/orders/42/substitutions",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper-dashboard",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42/status",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "route": "/helper/orders/42/chat",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42/substitutions",
+      "viewport": "desktop",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/",
+      "state": "validation-error",
+      "viewport": "mobile",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/register",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/forgot-password",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/dashboard",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [],
+      "clientNavigationPassed": true
+    },
+    {
+      "route": "/store-selection",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/grocery-list",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/grocery-list",
+      "state": "expanded-form",
+      "viewport": "mobile",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/delivery-time",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/order-summary",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/payment",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/order-details/42",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/repeat",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/collections",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/collections",
+      "state": "expanded-form",
+      "viewport": "mobile",
+      "failures": [],
+      "violations": []
+    },
+    {
+      "route": "/notifications",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/rate",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 5
+        },
+        {
+          "id": "label-content-name-mismatch",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "route": "/orders/42/chat",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/orders/42/tracking",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "route": "/orders/42/substitutions",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper-dashboard",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42/status",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": [
+        {
+          "id": "color-contrast",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "route": "/helper/orders/42/chat",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    },
+    {
+      "route": "/helper/orders/42/substitutions",
+      "viewport": "mobile",
+      "horizontalOverflow": false,
+      "mainCount": 1,
+      "h1Count": 1,
+      "keyboard": {
+        "skipFirst": true,
+        "skipTargetsMain": true,
+        "visibleFocus": true
+      },
+      "failures": [],
+      "violations": [],
+      "needsReview": []
+    }
+  ]
+}

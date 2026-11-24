@@ -177,7 +177,7 @@ function ImportPanel({ storeId, itemCount, onReplace }) {
 
   return (
     <section className="import-panel" aria-label="Start a new list">
-      <h3>{itemCount === 0 ? "Start your list" : "Start a new list"}</h3>
+      <h2>{itemCount === 0 ? "Start your list" : "Start a new list"}</h2>
       <p className="import-hint">
         {itemCount === 0
           ? "Search for items below, or bring in everything from a past order."
