@@ -1,29 +1,30 @@
-import { lazy, Suspense } from 'react';
+import { Suspense } from 'react';
+import { lazyRoute } from './lib/routeLoading';
 
 import { Routes, Route } from "react-router-dom";
 import PageAccessibility from './components/PageAccessibility';
 
 import Login from "./pages/Login";
-const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
-const CustomerDashboard = lazy(() => import('./pages/CustomerDashboard'));
-const Register = lazy(() => import('./pages/Register'));
-const GroceryList = lazy(() => import('./pages/GroceryList'));
-const StoreSelection = lazy(() => import('./pages/StoreSelection'));
-const DeliveryTimeSlot = lazy(() => import('./pages/DeliveryTimeSlot'));
-const OrderSummary = lazy(() => import('./pages/OrderSummary'));
-const Payment = lazy(() => import('./pages/Payment'));
-const Orders = lazy(() => import('./pages/Orders'));
-const OrderDetails = lazy(() => import('./pages/OrderDetails'));
-const RepeatOrder = lazy(() => import('./pages/RepeatOrder'));
-const HelperDashboard = lazy(() => import('./pages/HelperDashboard'));
-const HelperOrderDetails = lazy(() => import('./pages/HelperOrderDetails'));
-const DeliveryStatusUpdate = lazy(() => import('./pages/DeliveryStatusUpdate'));
-const CustomerChat = lazy(() => import('./pages/CustomerChat'));
-const DeliveryNotifications = lazy(() => import('./pages/DeliveryNotifications'));
-const RatingFeedback = lazy(() => import('./pages/RatingFeedback'));
-const Collections = lazy(() => import('./pages/Collections'));
-const SubstitutionRequests = lazy(() => import('./pages/SubstitutionRequests'));
-const OrderTracking = lazy(() => import('./pages/OrderTracking'));
+const ForgotPassword = lazyRoute("/forgot-password", () => import('./pages/ForgotPassword'));
+const CustomerDashboard = lazyRoute("/dashboard", () => import('./pages/CustomerDashboard'));
+const Register = lazyRoute("/register", () => import('./pages/Register'));
+const GroceryList = lazyRoute("/grocery-list", () => import('./pages/GroceryList'));
+const StoreSelection = lazyRoute("/store-selection", () => import('./pages/StoreSelection'));
+const DeliveryTimeSlot = lazyRoute("/delivery-time", () => import('./pages/DeliveryTimeSlot'));
+const OrderSummary = lazyRoute("/order-summary", () => import('./pages/OrderSummary'));
+const Payment = lazyRoute("/payment", () => import('./pages/Payment'));
+const Orders = lazyRoute("/orders", () => import('./pages/Orders'));
+const OrderDetails = lazyRoute("/order-details/:orderId", () => import('./pages/OrderDetails'));
+const RepeatOrder = lazyRoute("/orders/:orderId/repeat", () => import('./pages/RepeatOrder'));
+const HelperDashboard = lazyRoute("/helper-dashboard", () => import('./pages/HelperDashboard'));
+const HelperOrderDetails = lazyRoute("/helper/orders/:orderId", () => import('./pages/HelperOrderDetails'));
+const DeliveryStatusUpdate = lazyRoute("/helper/orders/:orderId/status", () => import('./pages/DeliveryStatusUpdate'));
+const CustomerChat = lazyRoute(["/orders/:orderId/chat","/helper/orders/:orderId/chat"], () => import('./pages/CustomerChat'));
+const DeliveryNotifications = lazyRoute("/notifications", () => import('./pages/DeliveryNotifications'));
+const RatingFeedback = lazyRoute("/orders/:orderId/rate", () => import('./pages/RatingFeedback'));
+const Collections = lazyRoute("/collections", () => import('./pages/Collections'));
+const SubstitutionRequests = lazyRoute(["/orders/:orderId/substitutions","/helper/orders/:orderId/substitutions"], () => import('./pages/SubstitutionRequests'));
+const OrderTracking = lazyRoute("/orders/:orderId/tracking", () => import('./pages/OrderTracking'));
 
 function App() {
   return (

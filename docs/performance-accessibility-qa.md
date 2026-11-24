@@ -58,7 +58,7 @@ capacity under many concurrent users or cover authenticated order mutations.
 
 Evidence: [API measurements](qa/api-performance-latest.json).
 
-## Frontend performance
+## Frontend performance: original audit
 
 Lighthouse uses the production build with gzip, simulated mobile networking
 (150 ms RTT, 1,638.4 Kbps) and 4x CPU slowdown. The API fixtures eliminate actual
@@ -75,21 +75,72 @@ These are Vite build sizes in decimal KB, not total session transfer sizes.
 | Grocery list | 81 | 82 | 71 | 2,471 ms | 1,411 ms | 0.040 |
 | Order tracking | 93 | 71 | 73 | 2,591 ms | 1,158 ms | 0.024 |
 
-**Finding remains open:** main-thread blocking is high in both post-change
+**Original finding (follow-up below):** main-thread blocking was high in both post-change
 runs. Smaller bundles did not establish an overall performance improvement.
 Post-change scores are lower on login and tracking; CPU benchmark indices also
 changed (baseline 657-744 versus approximately 479-545 after changes), so the
 cause cannot be assigned to application code or machine load from these samples
 alone. Lazy route loading introduces additional requests and small layout
 shifts. Profile the long tasks and compare repeated runs on a controlled machine
-before declaring frontend performance accepted. No frontend score gate is
-enforced by the script; its successful exit means the measurement completed
+before declaring frontend performance accepted. At that point no frontend score
+gate was enforced by the script; its successful exit meant the measurement completed
 without page/fixture failures, not that a performance target passed.
 
 Evidence: [baseline](qa/performance-baseline.json),
 [post-change run 1](qa/performance-postchange-run1.json), and
-[post-change run 2](qa/performance-latest.json). These are individual lab
+[post-change run 2](qa/performance-postchange-run2.json). These are individual lab
 observations, not medians or field Core Web Vitals measurements.
+
+## Frontend loading follow-up
+
+Profiling the unchanged committed build again produced scores of 100 / 97 / 97
+and TBT of 46 / 20 / 25 ms for login / grocery / tracking. The earlier CPU spike
+did not consistently reproduce; the earlier 71-80 scores must not be used to
+claim that the code changes alone caused the later high scores.
+
+The network timeline did identify a reproducible loading delay: route code and
+CSS finished downloading but initial Suspense rendering delayed mounting the
+grocery and tracking pages. Their first data requests started around 536 ms and
+460 ms after navigation in the new before sample.
+
+The application now imports just the matching initial route before mounting
+React and renders the resolved component directly. Other routes remain lazy,
+imports are shared rather than downloaded twice, and each mounted page keeps
+the same component type to preserve input state on parent rerenders. The first
+after sample started those requests around 190 ms and 156 ms respectively.
+These local timings demonstrate the eliminated initial reveal delay; they are
+not production backend timings or statistically established percentage gains.
+
+The audit now saves long-task, network and main-thread diagnostics. The standard
+`npm run audit:performance` command takes three samples per screen and checks
+medians against project budgets: score >= 90, LCP <= 2,500 ms, TBT <= 200 ms and
+CLS <= 0.1. A failed budget or browser/fixture error exits nonzero. Each individual
+sample is retained, including outliers. Run it without simultaneous builds or
+test suites. These lab budgets do not establish field Core Web Vitals or INP.
+
+For a single diagnostic run from `frontend` after building:
+
+```powershell
+node scripts/audit-ui.mjs --performance --label=diagnostic --runs=1
+```
+
+Evidence: [new before profile](qa/performance-optimization-before.json),
+[first after profile](qa/performance-optimization-after.json), and
+[final repeated measurements](qa/performance-latest.json).
+
+Final build, three runs per screen (median of each metric):
+
+| Screen | Score | LCP | TBT | CLS | Budget |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Login | 100 | 1,363 ms | 0 ms | 0 | Pass |
+| Grocery list | 98 | 2,319 ms | 0 ms | 0.040 | Pass |
+| Order tracking | 98 | 2,312 ms | 0 ms | 0.024 | Pass |
+
+All nine individual final samples also satisfied these budgets; TBT ranged
+from 0 to 30 ms. This means no blocking time beyond Lighthouse's long-task
+threshold in the zero samples, not that JavaScript performed no work. The
+initial bundle is 269.54 KB (85.73 KB gzip), approximately 0.24 KB gzip more
+than the previous build. Only the selected page is loaded at startup.
 
 ## Accessibility
 
@@ -136,10 +187,11 @@ this automated run.
 
 ## Regression validation
 
-- Frontend: 81 tests across 8 files passed.
+- Frontend: 84 tests across 9 files passed, including initial route matching,
+  lazy loading, forwarding props and preserving form input after parent rerenders.
 - Production build and ESLint passed.
 - API smoke benchmark: all four endpoint budgets passed.
 
 Both requested audit activities have been executed and their findings recorded.
-Frontend performance follow-up and manual accessibility review remain as noted
-above. Audit completion does not imply that these follow-up findings are resolved.
+The frontend loading follow-up is recorded above. Manual accessibility review
+and production performance measurements remain separate from this lab audit.

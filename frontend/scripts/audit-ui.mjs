@@ -14,8 +14,11 @@ const root = fileURLToPath(new URL('../', import.meta.url));
 const require = createRequire(import.meta.url);
 const axeSource = readFileSync(createRequire(require.resolve('@axe-core/puppeteer')).resolve('axe-core'), 'utf8');
 const reportDir = resolve(root, '../docs/qa');
-const label = process.argv.includes('--baseline') ? 'baseline' : 'latest';
+const label = process.argv.find(arg => arg.startsWith('--label='))?.slice(8) || (process.argv.includes('--baseline') ? 'baseline' : 'latest');
+if (!/^[a-z0-9-]+$/.test(label)) throw new Error('Invalid report label.');
 const onlyPerformance = process.argv.includes('--performance');
+const runCount = Number(process.argv.find(arg => arg.startsWith('--runs='))?.slice(7) || 1);
+if (!Number.isInteger(runCount) || runCount < 1 || runCount > 5) throw new Error('--runs must be between 1 and 5.');
 const chrome = process.env.CHROME_PATH || [
   'C:/Program Files/Google/Chrome/Application/chrome.exe',
   'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
@@ -76,6 +79,7 @@ async function prepare(route, viewport) {
 try {
   if (onlyPerformance) {
     const { startFlow } = await import('lighthouse');
+    for (let run = 1; run <= runCount; run++) {
     for (const route of ['/', '/grocery-list', '/orders/42/tracking']) {
       const { page, failures } = await prepare(route, { width: 390, height: 844 });
       const flow = await startFlow(page, { name: `Performance ${route}`, config: { extends: 'lighthouse:default',
@@ -85,10 +89,28 @@ try {
       const lhr = steps[0].lhr;
       const metrics = Object.fromEntries(['first-contentful-paint', 'largest-contentful-paint', 'total-blocking-time', 'cumulative-layout-shift', 'speed-index', 'total-byte-weight']
         .map(id => [id, { value: lhr.audits[id].numericValue, unit: lhr.audits[id].numericUnit }]));
-      const entry = { route, score: Math.round(lhr.categories.performance.score * 100), metrics, failures,
-        warnings: lhr.runWarnings, environment: lhr.environment, throttling: lhr.configSettings.throttling };
-      report.results.push(entry); console.log(JSON.stringify(entry)); await page.close();
+      const entry = { route, run, score: Math.round(lhr.categories.performance.score * 100), metrics, failures,
+        warnings: lhr.runWarnings, environment: lhr.environment, throttling: lhr.configSettings.throttling,
+        diagnostics: Object.fromEntries(['mainthread-work-breakdown', 'bootup-time', 'long-tasks', 'network-requests', 'layout-shifts', 'unused-javascript']
+          .filter(id => lhr.audits[id]).map(id => [id, lhr.audits[id].details])) };
+      report.results.push(entry); console.log(JSON.stringify({ route, score: entry.score, metrics, failures })); await page.close();
     }
+    }
+    const median = values => {
+      const sorted = [...values].sort((a, b) => a - b);
+      const mid = Math.floor(sorted.length / 2);
+      return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    };
+    report.budgets = { score: 90, lcpMs: 2500, tbtMs: 200, cls: 0.1 };
+    report.summary = [...new Set(report.results.map(result => result.route))].map(route => {
+      const samples = report.results.filter(result => result.route === route);
+      const metric = id => median(samples.map(result => result.metrics[id].value));
+      const entry = { route, runs: samples.length, score: median(samples.map(result => result.score)),
+        lcpMs: metric('largest-contentful-paint'), tbtMs: metric('total-blocking-time'), cls: metric('cumulative-layout-shift') };
+      entry.passed = entry.score >= report.budgets.score && entry.lcpMs <= report.budgets.lcpMs &&
+        entry.tbtMs <= report.budgets.tbtMs && entry.cls <= report.budgets.cls;
+      return entry;
+    });
   } else {
     for (const [viewportName, viewport] of Object.entries({ desktop: { width: 1365, height: 900 }, mobile: { width: 390, height: 844 } })) {
       for (const route of routes) {
@@ -155,4 +177,5 @@ try {
   console.log(`Saved ${output}`);
   await browser.close(); await new Promise(resolve => server.close(resolve));
 }
-if (report.results.some(r => r.failures.length || r.violations?.length || r.horizontalOverflow)) process.exitCode = 1;
+if (report.results.some(r => r.failures.length || r.violations?.length || r.horizontalOverflow) ||
+  report.summary?.some(result => !result.passed)) process.exitCode = 1;

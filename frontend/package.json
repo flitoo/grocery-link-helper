@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest run",
     "audit:accessibility": "npm run build && node scripts/audit-ui.mjs",
-    "audit:performance": "npm run build && node scripts/audit-ui.mjs --performance",
+    "audit:performance": "npm run build && node scripts/audit-ui.mjs --performance --runs=3",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",

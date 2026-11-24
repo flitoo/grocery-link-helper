@@ -1,22 +1,23 @@
 {
-  "generatedAt": "2026-11-24T20:33:19.268Z",
+  "generatedAt": "2026-11-24T21:54:08.789Z",
   "browser": "Chrome/158.0.8127.37",
   "mode": "Production build; synthetic authenticated fixtures; local gzip static server",
   "results": [
     {
       "route": "/",
-      "score": 80,
+      "run": 1,
+      "score": 100,
       "metrics": {
         "first-contentful-paint": {
-          "value": 1502.9714,
+          "value": 1416.1688,
           "unit": "millisecond"
         },
         "largest-contentful-paint": {
-          "value": 1502.9714,
+          "value": 1416.1688,
           "unit": "millisecond"
         },
         "total-blocking-time": {
-          "value": 807.0143000000003,
+          "value": 30,
           "unit": "millisecond"
         },
         "cumulative-layout-shift": {
@@ -24,11 +25,11 @@
           "unit": "unitless"
         },
         "speed-index": {
-          "value": 1502.9714,
+          "value": 1416.1688,
           "unit": "millisecond"
         },
         "total-byte-weight": {
-          "value": 88599,
+          "value": 88836,
           "unit": "byte"
         }
       },
@@ -37,7 +38,7 @@
       "environment": {
         "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
         "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
-        "benchmarkIndex": 545,
+        "benchmarkIndex": 2889.5,
         "credits": {}
       },
       "throttling": {
@@ -47,22 +48,434 @@
         "downloadThroughputKbps": 1474.5600000000002,
         "uploadThroughputKbps": 675,
         "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 443.4040000000007
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 148.71200000000022
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 126.47999999999999
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 13.38
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 4.864000000000001
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 3.96
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 410.45200000000057,
+              "scripting": 7.4159999999999995,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/",
+              "total": 178.55999999999997,
+              "scripting": 11.451999999999998,
+              "scriptParseCompile": 0.72
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 138.46000000000018,
+              "scripting": 127.08400000000019,
+              "scriptParseCompile": 3.24
+            }
+          ],
+          "summary": {
+            "wastedMs": 149.91200000000018
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 155,
+              "startTime": 649.5844
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "duration": 103,
+              "startTime": 1467.1688
+            },
+            {
+              "url": "Unattributable",
+              "duration": 59,
+              "startTime": 804.5844
+            },
+            {
+              "url": "http://127.0.0.1:57185/",
+              "duration": 57,
+              "startTime": 864.5844
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable",
+              "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "http://127.0.0.1:57185/"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 649.6,
+                "duration": 155,
+                "other": 155
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 1467.2,
+                "duration": 103,
+                "other": 103
+              },
+              {
+                "urlIndex": 0,
+                "startTime": 804.6,
+                "duration": 59,
+                "other": 59,
+                "scriptEvaluation": 0
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 864.6,
+                "duration": 57,
+                "other": 57,
+                "styleLayout": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 9.827000001445413,
+              "networkEndTime": 20.54100000113249,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 91.30900000035763,
+              "networkRequestTime": 101.59100000094622,
+              "networkEndTime": 114.51699999999255,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 92.04500000085682,
+              "networkRequestTime": 101.88400000054389,
+              "networkEndTime": 104.69000000040978,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/favicon.svg",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 202.0540000004694,
+              "networkRequestTime": 204.0650000013411,
+              "networkEndTime": 206.8859999999404,
+              "finished": true,
+              "transferSize": 1711,
+              "resourceSize": 9522,
+              "statusCode": 200,
+              "mimeType": "image/svg+xml",
+              "resourceType": "Other",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7575668109.999999,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 8,
+                "columnNumber": 73
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": []
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 48154,
+              "wastedPercent": 56.74222749870149
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 48154,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
       }
     },
     {
       "route": "/grocery-list",
-      "score": 71,
+      "run": 1,
+      "score": 98,
       "metrics": {
         "first-contentful-paint": {
-          "value": 1475.4228,
+          "value": 1514.70975,
           "unit": "millisecond"
         },
         "largest-contentful-paint": {
-          "value": 2470.6342000000004,
+          "value": 2319.4516999999996,
           "unit": "millisecond"
         },
         "total-blocking-time": {
-          "value": 1410.7886,
+          "value": 21.258050000000026,
           "unit": "millisecond"
         },
         "cumulative-layout-shift": {
@@ -70,11 +483,11 @@
           "unit": "unitless"
         },
         "speed-index": {
-          "value": 1547.149636177639,
+          "value": 1514.70975,
           "unit": "millisecond"
         },
         "total-byte-weight": {
-          "value": 98622,
+          "value": 98852,
           "unit": "byte"
         }
       },
@@ -83,7 +496,7 @@
       "environment": {
         "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
         "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
-        "benchmarkIndex": 535.5,
+        "benchmarkIndex": 2900,
         "credits": {}
       },
       "throttling": {
@@ -93,22 +506,586 @@
         "downloadThroughputKbps": 1474.5600000000002,
         "uploadThroughputKbps": 675,
         "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 368.5520000000003
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 169.11599999999999
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 142.5080000000004
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 35.184
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 3.208
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 2.4000000000000004
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 323.4640000000004,
+              "scripting": 6.707999999999999,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "total": 266.636,
+              "scripting": 22.563999999999997,
+              "scriptParseCompile": 0.552
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 121.63600000000032,
+              "scripting": 110.91600000000032,
+              "scriptParseCompile": 1.552
+            }
+          ],
+          "summary": {
+            "wastedMs": 142.29200000000031
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 165,
+              "startTime": 644.4839
+            },
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "duration": 86,
+              "startTime": 810.4839
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "duration": 72,
+              "startTime": 1674.9678
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable",
+              "http://127.0.0.1:57185/grocery-list",
+              "http://127.0.0.1:57185/assets/index-CyaPxeha.js"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 644.5,
+                "duration": 165,
+                "other": 165
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 810.5,
+                "duration": 86,
+                "other": 86,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 1675,
+                "duration": 72,
+                "other": 72
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 4.352999999187887,
+              "networkEndTime": 6.550999999046326,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 68.25700000021607,
+              "networkRequestTime": 75.76199999917299,
+              "networkEndTime": 84.53799999970943,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 68.64099999982864,
+              "networkRequestTime": 76.15499999932945,
+              "networkEndTime": 85.26599999982864,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DS5V-wM8.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.78999999910593,
+              "networkRequestTime": 103.44699999969453,
+              "networkEndTime": 108.39399999938905,
+              "finished": true,
+              "transferSize": 5735,
+              "resourceSize": 17872,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.96399999875575,
+              "networkRequestTime": 104.40099999960512,
+              "networkEndTime": 109.19399999920279,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/groceryList-DeOC16lB.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 101.04299999959767,
+              "networkRequestTime": 104.55800000019372,
+              "networkEndTime": 110.41399999987334,
+              "finished": true,
+              "transferSize": 2254,
+              "resourceSize": 5388,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DE77mclM.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 101.14599999971688,
+              "networkRequestTime": 105.56300000008196,
+              "networkEndTime": 109.52099999971688,
+              "finished": true,
+              "transferSize": 2665,
+              "resourceSize": 11207,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 181.23399999924004,
+              "networkRequestTime": 181.51699999999255,
+              "networkEndTime": 184.65399999916553,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 179.60199999902397,
+              "networkRequestTime": 185.48299999907613,
+              "networkEndTime": 187.32899999897927,
+              "finished": true,
+              "transferSize": 146,
+              "resourceSize": 51,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 180.35599999967963,
+              "networkRequestTime": 185.9329999992624,
+              "networkEndTime": 187.71999999973923,
+              "finished": true,
+              "transferSize": 246,
+              "resourceSize": 150,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 182.4079999998212,
+              "networkRequestTime": 182.32799999974668,
+              "networkEndTime": 185.73599999956787,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7580967190,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items/filters"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,6,DIV",
+                "selector": "div#root > div.grocery-page > main#main-content > div.grocery-list",
+                "boundingRect": {
+                  "top": 958,
+                  "bottom": 1171,
+                  "left": 20,
+                  "right": 392,
+                  "width": 372,
+                  "height": 213
+                },
+                "snippet": "<div class=\"grocery-list\">",
+                "nodeLabel": "Milk\n\nAudit dairy\n\npcs\n\n$5.00 each\n\nAllow replacement if unavailable (ask me fi…"
+              },
+              "score": 0.03972567174085725
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 42368,
+              "wastedPercent": 49.92468650293092
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 42368,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
       }
     },
     {
       "route": "/orders/42/tracking",
-      "score": 73,
+      "run": 1,
+      "score": 98,
       "metrics": {
         "first-contentful-paint": {
-          "value": 1681.2623749999998,
+          "value": 1511.11175,
           "unit": "millisecond"
         },
         "largest-contentful-paint": {
-          "value": 2590.7148500000003,
+          "value": 2307.5341000000003,
           "unit": "millisecond"
         },
         "total-blocking-time": {
-          "value": 1157.6425750000003,
+          "value": 0,
           "unit": "millisecond"
         },
         "cumulative-layout-shift": {
@@ -116,11 +1093,11 @@
           "unit": "unitless"
         },
         "speed-index": {
-          "value": 1681.2623749999998,
+          "value": 1511.11175,
           "unit": "millisecond"
         },
         "total-byte-weight": {
-          "value": 92335,
+          "value": 92563,
           "unit": "byte"
         }
       },
@@ -129,7 +1106,7 @@
       "environment": {
         "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
         "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
-        "benchmarkIndex": 478.5,
+        "benchmarkIndex": 3003,
         "credits": {}
       },
       "throttling": {
@@ -139,7 +1116,3852 @@
         "downloadThroughputKbps": 1474.5600000000002,
         "uploadThroughputKbps": 675,
         "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 358.2680000000002
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 191.676
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 133.12399999999997
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 26.935999999999996
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 3.656
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 2.244
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 328.55199999999985,
+              "scripting": 5.819999999999999,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "total": 264.14,
+              "scripting": 20.227999999999987,
+              "scriptParseCompile": 0.716
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 108.84799999999998,
+              "scripting": 102.45599999999999,
+              "scriptParseCompile": 1.304
+            }
+          ],
+          "summary": {
+            "wastedMs": 130.52399999999997
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 175,
+              "startTime": 645.8447
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "duration": 66,
+              "startTime": 865.8447
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable",
+              "http://127.0.0.1:57185/orders/42/tracking"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 645.8,
+                "duration": 175,
+                "other": 175
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 865.8,
+                "duration": 66,
+                "other": 66,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 4.251000000163913,
+              "networkEndTime": 6.321000000461936,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 70.71100000012666,
+              "networkRequestTime": 75.62199999950826,
+              "networkEndTime": 84.76800000015646,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 71.04700000025332,
+              "networkRequestTime": 76.41600000020117,
+              "networkEndTime": 85.39699999988079,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderTracking-BFBmDPJC.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.12700000032783,
+              "networkRequestTime": 102.5320000005886,
+              "networkEndTime": 105.50100000016391,
+              "finished": true,
+              "transferSize": 1769,
+              "resourceSize": 4179,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.31099999975413,
+              "networkRequestTime": 102.86599999945611,
+              "networkEndTime": 106.11000000033528,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/orderStatus-BySEype3.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.39400000032037,
+              "networkRequestTime": 103.42700000014156,
+              "networkEndTime": 108.28500000014901,
+              "finished": true,
+              "transferSize": 432,
+              "resourceSize": 333,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-P-WLN5NP.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.49099999945611,
+              "networkRequestTime": 103.60099999979138,
+              "networkEndTime": 109.42399999964982,
+              "finished": true,
+              "transferSize": 666,
+              "resourceSize": 770,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-BDl_VtHv.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 100.6039999993518,
+              "networkRequestTime": 106.62199999950826,
+              "networkEndTime": 110.39399999938905,
+              "finished": true,
+              "transferSize": 1112,
+              "resourceSize": 2433,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 126.63200000021607,
+              "networkRequestTime": 126.77500000037253,
+              "networkEndTime": 128.1000000005588,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 126.8960000006482,
+              "networkRequestTime": 126.86600000038743,
+              "networkEndTime": 128.4890000000596,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 126.01399999950081,
+              "networkRequestTime": 128.83600000012666,
+              "networkEndTime": 130.33499999996275,
+              "finished": true,
+              "transferSize": 560,
+              "resourceSize": 464,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 126.32799999974668,
+              "networkRequestTime": 128.9769999999553,
+              "networkEndTime": 130.6580000007525,
+              "finished": true,
+              "transferSize": 218,
+              "resourceSize": 122,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7585934613,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/orders/42"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/substitution-requests/orders/42"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,4,DIV",
+                "selector": "div#root > div.order-experience > main#main-content > div.experience-actions",
+                "boundingRect": {
+                  "top": 1788,
+                  "bottom": 1809,
+                  "left": 16,
+                  "right": 396,
+                  "width": 380,
+                  "height": 21
+                },
+                "snippet": "<div class=\"experience-actions\">",
+                "nodeLabel": "Back to Orders\nOrder Details"
+              },
+              "score": 0.02353454682725997
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 43521,
+              "wastedPercent": 51.282555464866064
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 43521,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
       }
+    },
+    {
+      "route": "/",
+      "run": 2,
+      "score": 100,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1350.7041,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 1350.7041,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1350.7041,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 87125,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2953,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 120.24400000000011
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 70.21199999999993
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 66.9
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 11.768
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 2.528
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 1.772
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 106.06400000000008,
+              "scripting": 6.5760000000000005,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/",
+              "total": 98.552,
+              "scripting": 2.628,
+              "scriptParseCompile": 0.47200000000000003
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 63.70799999999992,
+              "scripting": 58.25999999999992,
+              "scriptParseCompile": 1.3
+            }
+          ],
+          "summary": {
+            "wastedMs": 69.23599999999992
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [],
+            "tasks": []
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 5.006000000052154,
+              "networkEndTime": 6.118999999016523,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 16.287000000476837,
+              "networkRequestTime": 23.44900000002235,
+              "networkEndTime": 33.24299999978393,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 16.61699999962002,
+              "networkRequestTime": 23.613999999128282,
+              "networkEndTime": 24.717000000178814,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7590832939,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 8,
+                "columnNumber": 73
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": []
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 48154,
+              "wastedPercent": 56.74222749870149
+            }
+          ],
+          "overallSavingsMs": 300,
+          "overallSavingsBytes": 48154,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 300
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/grocery-list",
+      "run": 2,
+      "score": 97,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1564.4355,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2369.9226000000003,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.03972567174085725,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1564.4355,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 98852,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2719,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 191.0799999999999
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 168.66
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 117.38800000000032
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 24.919999999999995
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 4.636
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 2.9600000000000004
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "total": 255.00799999999998,
+              "scripting": 19.56399999999999,
+              "scriptParseCompile": 0.624
+            },
+            {
+              "url": "Unattributable",
+              "total": 144.4920000000001,
+              "scripting": 5.412,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 98.272,
+              "scripting": 89.688,
+              "scriptParseCompile": 1.836
+            }
+          ],
+          "summary": {
+            "wastedMs": 117.124
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "duration": 74,
+              "startTime": 652.9742
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "duration": 50,
+              "startTime": 1720.9484000000002
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "http://127.0.0.1:57185/grocery-list",
+              "http://127.0.0.1:57185/assets/index-CyaPxeha.js"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 653,
+                "duration": 74,
+                "other": 74,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 1720.9,
+                "duration": 50,
+                "other": 50
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 6.5860000010579824,
+              "networkEndTime": 9.589000000618398,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 25.34900000039488,
+              "networkRequestTime": 35.72000000067055,
+              "networkEndTime": 47.255000000819564,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 25.83200000040233,
+              "networkRequestTime": 36.6800000006333,
+              "networkEndTime": 48.010000000707805,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DS5V-wM8.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 67.4400000013411,
+              "networkRequestTime": 69.25600000098348,
+              "networkEndTime": 71.94700000062585,
+              "finished": true,
+              "transferSize": 5735,
+              "resourceSize": 17872,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 67.61900000087917,
+              "networkRequestTime": 69.43400000035763,
+              "networkEndTime": 72.5760000012815,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/groceryList-DeOC16lB.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 67.76800000015646,
+              "networkRequestTime": 69.61600000131875,
+              "networkEndTime": 76.78800000064075,
+              "finished": true,
+              "transferSize": 2254,
+              "resourceSize": 5388,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DE77mclM.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 67.95600000023842,
+              "networkRequestTime": 69.93300000112504,
+              "networkEndTime": 76.41800000052899,
+              "finished": true,
+              "transferSize": 2665,
+              "resourceSize": 11207,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 133.62900000065565,
+              "networkRequestTime": 140.48000000044703,
+              "networkEndTime": 141.0900000007823,
+              "finished": true,
+              "transferSize": 146,
+              "resourceSize": 51,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 134.8870000001043,
+              "networkRequestTime": 140.67300000041723,
+              "networkEndTime": 141.68900000024587,
+              "finished": true,
+              "transferSize": 246,
+              "resourceSize": 150,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 136.7940000006929,
+              "networkRequestTime": 136.13100000098348,
+              "networkEndTime": 139.96300000045449,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 136.99400000087917,
+              "networkRequestTime": 136.91300000064075,
+              "networkEndTime": 140.19800000078976,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7595538620.999999,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items/filters"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,6,DIV",
+                "selector": "div#root > div.grocery-page > main#main-content > div.grocery-list",
+                "boundingRect": {
+                  "top": 958,
+                  "bottom": 1171,
+                  "left": 20,
+                  "right": 392,
+                  "width": 372,
+                  "height": 213
+                },
+                "snippet": "<div class=\"grocery-list\">",
+                "nodeLabel": "Milk\n\nAudit dairy\n\npcs\n\n$5.00 each\n\nAllow replacement if unavailable (ask me fi…"
+              },
+              "score": 0.03972567174085725
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 42368,
+              "wastedPercent": 49.92468650293092
+            }
+          ],
+          "overallSavingsMs": 300,
+          "overallSavingsBytes": 42368,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 300
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/orders/42/tracking",
+      "run": 2,
+      "score": 98,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1516.6770000000001,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2326.0123999999996,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 11.664599999999837,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.02353454682725997,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1516.6770000000001,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 92563,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2972,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 328.5599999999999
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 190.66000000000003
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 148.64400000000012
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 39.528000000000006
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 4.268
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 3.38
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 292.6080000000002,
+              "scripting": 6.084,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "total": 290.096,
+              "scripting": 32.24799999999999,
+              "scriptParseCompile": 0.556
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 118.25200000000049,
+              "scripting": 107.26000000000049,
+              "scriptParseCompile": 3.296
+            }
+          ],
+          "summary": {
+            "wastedMs": 149.44400000000047
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 136,
+              "startTime": 600.6708
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "duration": 65,
+              "startTime": 787.6708
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "duration": 62,
+              "startTime": 1681.3415999999997
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "duration": 50,
+              "startTime": 737.6708
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable",
+              "http://127.0.0.1:57185/orders/42/tracking",
+              "http://127.0.0.1:57185/assets/index-CyaPxeha.js"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 600.7,
+                "duration": 136,
+                "other": 136
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 787.7,
+                "duration": 65,
+                "other": 65,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 1681.3,
+                "duration": 62,
+                "other": 62
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 737.7,
+                "duration": 50,
+                "other": 50,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 4.823999999091029,
+              "networkEndTime": 6.609000000171363,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 60.01200000010431,
+              "networkRequestTime": 65.0699999993667,
+              "networkEndTime": 74.61799999978393,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 60.36599999945611,
+              "networkRequestTime": 65.29199999943376,
+              "networkEndTime": 75.30599999986589,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderTracking-BFBmDPJC.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 98.3309999993071,
+              "networkRequestTime": 101.91899999976158,
+              "networkEndTime": 105.37999999988824,
+              "finished": true,
+              "transferSize": 1769,
+              "resourceSize": 4179,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 98.93499999959022,
+              "networkRequestTime": 103.16599999926984,
+              "networkEndTime": 107.4679999994114,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/orderStatus-BySEype3.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 99.25499999988824,
+              "networkRequestTime": 103.3300000000745,
+              "networkEndTime": 107.80299999937415,
+              "finished": true,
+              "transferSize": 432,
+              "resourceSize": 333,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-P-WLN5NP.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 99.54399999976158,
+              "networkRequestTime": 103.47200000006706,
+              "networkEndTime": 108.70199999958277,
+              "finished": true,
+              "transferSize": 666,
+              "resourceSize": 770,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-BDl_VtHv.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 99.7859999993816,
+              "networkRequestTime": 105.78999999910593,
+              "networkEndTime": 110.73699999973178,
+              "finished": true,
+              "transferSize": 1112,
+              "resourceSize": 2433,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 158.27999999932945,
+              "networkRequestTime": 165.50399999972433,
+              "networkEndTime": 167.8759999992326,
+              "finished": true,
+              "transferSize": 560,
+              "resourceSize": 464,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 158.7719999998808,
+              "networkRequestTime": 166.10199999902397,
+              "networkEndTime": 168.82799999974668,
+              "finished": true,
+              "transferSize": 218,
+              "resourceSize": 122,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 161.62399999890476,
+              "networkRequestTime": 160.9439999992028,
+              "networkEndTime": 164.5460000000894,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 161.95999999903142,
+              "networkRequestTime": 161.76300000026822,
+              "networkEndTime": 164.9429999999702,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7600459469.000001,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/orders/42"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/substitution-requests/orders/42"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,4,DIV",
+                "selector": "div#root > div.order-experience > main#main-content > div.experience-actions",
+                "boundingRect": {
+                  "top": 1788,
+                  "bottom": 1809,
+                  "left": 16,
+                  "right": 396,
+                  "width": 380,
+                  "height": 21
+                },
+                "snippet": "<div class=\"experience-actions\">",
+                "nodeLabel": "Back to Orders\nOrder Details"
+              },
+              "score": 0.02353454682725997
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 43521,
+              "wastedPercent": 51.282555464866064
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 43521,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/",
+      "run": 3,
+      "score": 100,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1362.8322,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 1362.8322,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1362.8322,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 87125,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2986,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 279.03600000000006
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 74.68399999999994
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 69.092
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 7.76
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 3.008
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 1.952
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 261.772,
+              "scripting": 5.975999999999999,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/",
+              "total": 98.896,
+              "scripting": 2.5560000000000005,
+              "scriptParseCompile": 0.524
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 69.19999999999993,
+              "scripting": 63.41999999999993,
+              "scriptParseCompile": 1.428
+            }
+          ],
+          "summary": {
+            "wastedMs": 73.90399999999993
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 123,
+              "startTime": 609.4161
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 609.4,
+                "duration": 123,
+                "other": 123
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 5.862000000663102,
+              "networkEndTime": 7.343999999575317,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 56.347000000067055,
+              "networkRequestTime": 61.79800000041723,
+              "networkEndTime": 70.74700000043958,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 56.68999999947846,
+              "networkRequestTime": 62.649000000208616,
+              "networkEndTime": 71.6910000005737,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7605337448,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/",
+                "lineNumber": 8,
+                "columnNumber": 73
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": []
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 48154,
+              "wastedPercent": 56.74222749870149
+            }
+          ],
+          "overallSavingsMs": 300,
+          "overallSavingsBytes": 48154,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 300
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/grocery-list",
+      "run": 3,
+      "score": 98,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1511.3435,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2310.4121999999998,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.03972567174085725,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1511.3435,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 98852,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2979,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 276.1680000000001
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 124.4
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 113.9840000000004
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 23.416000000000004
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 3.26
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 2.736
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 242.53200000000018,
+              "scripting": 7.316000000000001,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "total": 197.09199999999998,
+              "scripting": 19.283999999999978,
+              "scriptParseCompile": 0.9400000000000001
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 92.86799999999995,
+              "scripting": 84.90399999999995,
+              "scriptParseCompile": 1.428
+            }
+          ],
+          "summary": {
+            "wastedMs": 113.87199999999993
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 97,
+              "startTime": 601.1374
+            },
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "duration": 60.999999999999886,
+              "startTime": 699.1374
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable",
+              "http://127.0.0.1:57185/grocery-list"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 601.1,
+                "duration": 97,
+                "other": 97
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 699.1,
+                "duration": 61,
+                "other": 61,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/grocery-list",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 3.4820000007748604,
+              "networkEndTime": 6.766999999992549,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 46.63800000026822,
+              "networkRequestTime": 49.963000000454485,
+              "networkEndTime": 59.125,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 47.07299999985844,
+              "networkRequestTime": 50.566000000573695,
+              "networkEndTime": 59.928000000305474,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DS5V-wM8.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 74.66000000014901,
+              "networkRequestTime": 76.68400000035763,
+              "networkEndTime": 79.17700000014156,
+              "finished": true,
+              "transferSize": 5735,
+              "resourceSize": 17872,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 74.85300000011921,
+              "networkRequestTime": 76.82500000018626,
+              "networkEndTime": 80.5449999999255,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/groceryList-DeOC16lB.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 74.95200000051409,
+              "networkRequestTime": 79.48300000093877,
+              "networkEndTime": 83.4660000000149,
+              "finished": true,
+              "transferSize": 2254,
+              "resourceSize": 5388,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/GroceryList-DE77mclM.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 75.05000000074506,
+              "networkRequestTime": 80.26900000032037,
+              "networkEndTime": 83.70900000073016,
+              "finished": true,
+              "transferSize": 2665,
+              "resourceSize": 11207,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 102.93900000024587,
+              "networkRequestTime": 103.20500000100583,
+              "networkEndTime": 104.93599999975413,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 103.53000000026077,
+              "networkRequestTime": 103.66100000031292,
+              "networkEndTime": 105.17300000041723,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 102.2960000000894,
+              "networkRequestTime": 105.42100000102073,
+              "networkEndTime": 106.64500000048429,
+              "finished": true,
+              "transferSize": 146,
+              "resourceSize": 51,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 102.8500000005588,
+              "networkRequestTime": 106.07799999974668,
+              "networkEndTime": 106.85699999984354,
+              "finished": true,
+              "transferSize": 246,
+              "resourceSize": 150,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7610168702,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/grocery-list",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items/filters"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,6,DIV",
+                "selector": "div#root > div.grocery-page > main#main-content > div.grocery-list",
+                "boundingRect": {
+                  "top": 958,
+                  "bottom": 1171,
+                  "left": 20,
+                  "right": 392,
+                  "width": 372,
+                  "height": 213
+                },
+                "snippet": "<div class=\"grocery-list\">",
+                "nodeLabel": "Milk\n\nAudit dairy\n\npcs\n\n$5.00 each\n\nAllow replacement if unavailable (ask me fi…"
+              },
+              "score": 0.03972567174085725
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 42368,
+              "wastedPercent": 49.92468650293092
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 42368,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/orders/42/tracking",
+      "run": 3,
+      "score": 98,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1511.36575,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2311.6389,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 0,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.02353454682725997,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1511.36575,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 92563,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 3058.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 269.6560000000003
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 122.94800000000059
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 120.06
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 20.972
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 2.528
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 2.428
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 245.5440000000002,
+              "scripting": 7.0360000000000005,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "total": 184.476,
+              "scripting": 22.92800000000001,
+              "scriptParseCompile": 0.652
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "total": 96.69200000000004,
+              "scripting": 89.90400000000004,
+              "scriptParseCompile": 1.544
+            }
+          ],
+          "summary": {
+            "wastedMs": 122.06400000000005
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "duration": 109,
+              "startTime": 602.5463
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "Unattributable"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 602.5,
+                "duration": 109,
+                "other": 109
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/orders/42/tracking",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 3.459999999962747,
+              "networkEndTime": 7.064000000245869,
+              "finished": true,
+              "transferSize": 526,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 49.53900000080466,
+              "networkRequestTime": 56.21100000012666,
+              "networkEndTime": 65.66199999954551,
+              "finished": true,
+              "transferSize": 85077,
+              "resourceSize": 269544,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 49.84800000023097,
+              "networkRequestTime": 56.40400000009686,
+              "networkEndTime": 58.088000000454485,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderTracking-BFBmDPJC.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 84.90299999993294,
+              "networkRequestTime": 87.44600000046194,
+              "networkEndTime": 90.97099999990314,
+              "finished": true,
+              "transferSize": 1769,
+              "resourceSize": 4179,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/AppHeader-FjhMTZS9.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 85.06100000068545,
+              "networkRequestTime": 87.92700000014156,
+              "networkEndTime": 91.56400000024587,
+              "finished": true,
+              "transferSize": 681,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/orderStatus-BySEype3.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 85.16000000014901,
+              "networkRequestTime": 88.97900000028312,
+              "networkEndTime": 92.44600000046194,
+              "finished": true,
+              "transferSize": 432,
+              "resourceSize": 333,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-P-WLN5NP.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 85.30000000074506,
+              "networkRequestTime": 89.52400000020862,
+              "networkEndTime": 93.08499999996275,
+              "finished": true,
+              "transferSize": 666,
+              "resourceSize": 770,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:57185/assets/OrderExperience-BDl_VtHv.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 85.43900000024587,
+              "networkRequestTime": 89.67599999997765,
+              "networkEndTime": 93.44099999964237,
+              "finished": true,
+              "transferSize": 1112,
+              "resourceSize": 2433,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 127.13900000043213,
+              "networkRequestTime": 131.67899999953806,
+              "networkEndTime": 132.61099999956787,
+              "finished": true,
+              "transferSize": 560,
+              "resourceSize": 464,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 127.60500000044703,
+              "networkRequestTime": 131.80900000035763,
+              "networkEndTime": 132.93900000024587,
+              "finished": true,
+              "transferSize": 218,
+              "resourceSize": 122,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 129.52900000009686,
+              "networkRequestTime": 129.05300000030547,
+              "networkEndTime": 131.00999999977648,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 129.77699999976903,
+              "networkRequestTime": 129.6019999999553,
+              "networkEndTime": 131.37199999950826,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7615050477,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:57185/orders/42/tracking",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/orders/42"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/substitution-requests/orders/42"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,4,DIV",
+                "selector": "div#root > div.order-experience > main#main-content > div.experience-actions",
+                "boundingRect": {
+                  "top": 1788,
+                  "bottom": 1809,
+                  "left": 16,
+                  "right": 396,
+                  "width": 380,
+                  "height": 21
+                },
+                "snippet": "<div class=\"experience-actions\">",
+                "nodeLabel": "Back to Orders\nOrder Details"
+              },
+              "score": 0.02353454682725997
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:57185/assets/index-CyaPxeha.js",
+              "totalBytes": 84865,
+              "wastedBytes": 43521,
+              "wastedPercent": 51.282555464866064
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 43521,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
+      }
+    }
+  ],
+  "budgets": {
+    "score": 90,
+    "lcpMs": 2500,
+    "tbtMs": 200,
+    "cls": 0.1
+  },
+  "summary": [
+    {
+      "route": "/",
+      "runs": 3,
+      "score": 100,
+      "lcpMs": 1362.8322,
+      "tbtMs": 0,
+      "cls": 0,
+      "passed": true
+    },
+    {
+      "route": "/grocery-list",
+      "runs": 3,
+      "score": 98,
+      "lcpMs": 2319.4516999999996,
+      "tbtMs": 0,
+      "cls": 0.03972567174085725,
+      "passed": true
+    },
+    {
+      "route": "/orders/42/tracking",
+      "runs": 3,
+      "score": 98,
+      "lcpMs": 2311.6389,
+      "tbtMs": 0,
+      "cls": 0.02353454682725997,
+      "passed": true
     }
   ]
 }

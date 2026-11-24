@@ -1,0 +1,1717 @@
+{
+  "generatedAt": "2026-11-24T21:50:46.166Z",
+  "browser": "Chrome/158.0.8127.37",
+  "mode": "Production build; synthetic authenticated fixtures; local gzip static server",
+  "results": [
+    {
+      "route": "/",
+      "score": 100,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1406.1465,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 1406.1465,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 47,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1406.1465,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 88823,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 3125,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 345.58400000000046
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 219.03200000000024
+            },
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 213.996
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 21.583999999999996
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 12.464
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 4.252
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "Unattributable",
+              "total": 320.54400000000044,
+              "scripting": 9.392000000000001,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:62493/",
+              "total": 265.924,
+              "scripting": 13.583999999999996,
+              "scriptParseCompile": 0.908
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "total": 214.63200000000018,
+              "scripting": 191.7240000000002,
+              "scriptParseCompile": 11.556
+            }
+          ],
+          "summary": {
+            "wastedMs": 227.1640000000002
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "duration": 127,
+              "startTime": 1551.1465
+            },
+            {
+              "url": "http://127.0.0.1:62493/",
+              "duration": 101,
+              "startTime": 730.57325
+            },
+            {
+              "url": "Unattributable",
+              "duration": 78,
+              "startTime": 604.57325
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "duration": 67,
+              "startTime": 1484.1465
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "http://127.0.0.1:62493/",
+              "Unattributable"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 1551.1,
+                "duration": 127,
+                "other": 127
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 730.6,
+                "duration": 101,
+                "other": 101,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 604.6,
+                "duration": 78,
+                "other": 78
+              },
+              {
+                "urlIndex": 0,
+                "startTime": 1484.1,
+                "duration": 67,
+                "other": 67,
+                "scriptEvaluation": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 7.907999999821186,
+              "networkEndTime": 17.68900000024587,
+              "finished": true,
+              "transferSize": 528,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 61.52600000053644,
+              "networkRequestTime": 80.82999999914318,
+              "networkEndTime": 126.27599999960512,
+              "finished": true,
+              "transferSize": 85062,
+              "resourceSize": 269515,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 62.06499999947846,
+              "networkRequestTime": 81.34800000023097,
+              "networkEndTime": 84.06599999964237,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/favicon.svg",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 255.55099999997765,
+              "networkRequestTime": 260.0219999998808,
+              "networkEndTime": 263.30399999953806,
+              "finished": true,
+              "transferSize": 1711,
+              "resourceSize": 9522,
+              "statusCode": 200,
+              "mimeType": "image/svg+xml",
+              "resourceType": "Other",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7372790671,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/",
+                "lineNumber": 8,
+                "columnNumber": 73
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": []
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "totalBytes": 84850,
+              "wastedBytes": 48142,
+              "wastedPercent": 56.73757286344527
+            }
+          ],
+          "overallSavingsMs": 150,
+          "overallSavingsBytes": 48142,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 150
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/grocery-list",
+      "score": 97,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1563.0437499999998,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2375.4525000000003,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 31.091250000000173,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.03972567174085725,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1563.0437499999998,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 98844,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2363.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 281.332
+            },
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 206.7800000000001
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 173.2480000000001
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 59.072
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 4.5120000000000005
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 3.4320000000000004
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/grocery-list",
+              "total": 415.168,
+              "scripting": 29.252,
+              "scriptParseCompile": 1.008
+            },
+            {
+              "url": "Unattributable",
+              "total": 161.34800000000007,
+              "scripting": 10.783999999999999,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "total": 140.25600000000023,
+              "scripting": 130.27600000000024,
+              "scriptParseCompile": 2.116
+            }
+          ],
+          "summary": {
+            "wastedMs": 173.43600000000026
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/grocery-list",
+              "duration": 148,
+              "startTime": 649.8175
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "duration": 82,
+              "startTime": 1723.6350000000002
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "http://127.0.0.1:62493/grocery-list",
+              "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 649.8,
+                "duration": 148,
+                "other": 148,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 1723.6,
+                "duration": 82,
+                "other": 82
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/grocery-list",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 9.712000000290573,
+              "networkEndTime": 12.915000000037253,
+              "finished": true,
+              "transferSize": 528,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 27.029000000096858,
+              "networkRequestTime": 35.73300000000745,
+              "networkEndTime": 48.407000000588596,
+              "finished": true,
+              "transferSize": 85062,
+              "resourceSize": 269515,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 27.55099999997765,
+              "networkRequestTime": 36.67200000025332,
+              "networkEndTime": 49.69700000062585,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/GroceryList-GabN2QSe.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 72.89000000059605,
+              "networkRequestTime": 76.41200000047684,
+              "networkEndTime": 81.27400000020862,
+              "finished": true,
+              "transferSize": 5736,
+              "resourceSize": 17872,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/AppHeader-Daz1hMGi.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 73.17000000085682,
+              "networkRequestTime": 76.85800000000745,
+              "networkEndTime": 82.04000000003725,
+              "finished": true,
+              "transferSize": 685,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/groceryList-DeOC16lB.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 73.3640000000596,
+              "networkRequestTime": 77.28699999954551,
+              "networkEndTime": 83.4890000000596,
+              "finished": true,
+              "transferSize": 2254,
+              "resourceSize": 5388,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/GroceryList-DE77mclM.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 73.5910000000149,
+              "networkRequestTime": 77.4870000006631,
+              "networkEndTime": 82.65600000042468,
+              "finished": true,
+              "transferSize": 2665,
+              "resourceSize": 11207,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 189.79200000036508,
+              "networkRequestTime": 190.09499999973923,
+              "networkEndTime": 195.171999999322,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items/filters",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 187.40200000070035,
+              "networkRequestTime": 195.8289999999106,
+              "networkEndTime": 200.08899999968708,
+              "finished": true,
+              "transferSize": 146,
+              "resourceSize": 51,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 189.06400000024587,
+              "networkRequestTime": 197.82500000018626,
+              "networkEndTime": 200.85600000061095,
+              "finished": true,
+              "transferSize": 246,
+              "resourceSize": 150,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 193.45899999979883,
+              "networkRequestTime": 191.08700000029057,
+              "networkEndTime": 197.2719999998808,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7379073176,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/grocery-list",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/grocery-list",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items/filters"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/items?store_id=1&limit=20&offset=0"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,6,DIV",
+                "selector": "div#root > div.grocery-page > main#main-content > div.grocery-list",
+                "boundingRect": {
+                  "top": 958,
+                  "bottom": 1171,
+                  "left": 20,
+                  "right": 392,
+                  "width": 372,
+                  "height": 213
+                },
+                "snippet": "<div class=\"grocery-list\">",
+                "nodeLabel": "Milk\n\nAudit dairy\n\npcs\n\n$5.00 each\n\nAllow replacement if unavailable (ask me fi…"
+              },
+              "score": 0.03972567174085725
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "totalBytes": 84850,
+              "wastedBytes": 42366,
+              "wastedPercent": 49.930058513381645
+            }
+          ],
+          "overallSavingsMs": 300,
+          "overallSavingsBytes": 42366,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 300
+            }
+          }
+        }
+      }
+    },
+    {
+      "route": "/orders/42/tracking",
+      "score": 98,
+      "metrics": {
+        "first-contentful-paint": {
+          "value": 1559.2055,
+          "unit": "millisecond"
+        },
+        "largest-contentful-paint": {
+          "value": 2370.8466000000003,
+          "unit": "millisecond"
+        },
+        "total-blocking-time": {
+          "value": 40,
+          "unit": "millisecond"
+        },
+        "cumulative-layout-shift": {
+          "value": 0.02353454682725997,
+          "unit": "unitless"
+        },
+        "speed-index": {
+          "value": 1559.2055,
+          "unit": "millisecond"
+        },
+        "total-byte-weight": {
+          "value": 92559,
+          "unit": "byte"
+        }
+      },
+      "failures": [],
+      "warnings": [],
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/158.0.0.0 Safari/537.36",
+        "benchmarkIndex": 1803.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "diagnostics": {
+        "mainthread-work-breakdown": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "groupLabel",
+              "valueType": "text",
+              "label": "Category"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Time Spent"
+            }
+          ],
+          "items": [
+            {
+              "group": "styleLayout",
+              "groupLabel": "Style & Layout",
+              "duration": 294.72
+            },
+            {
+              "group": "other",
+              "groupLabel": "Other",
+              "duration": 284.97600000000034
+            },
+            {
+              "group": "scriptEvaluation",
+              "groupLabel": "Script Evaluation",
+              "duration": 209.25600000000034
+            },
+            {
+              "group": "paintCompositeRender",
+              "groupLabel": "Rendering",
+              "duration": 69.01200000000001
+            },
+            {
+              "group": "scriptParseCompile",
+              "groupLabel": "Script Parsing & Compilation",
+              "duration": 4.255999999999999
+            },
+            {
+              "group": "parseHTML",
+              "groupLabel": "Parse HTML & CSS",
+              "duration": 4.048
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ]
+        },
+        "bootup-time": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "total",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Total CPU Time"
+            },
+            {
+              "key": "scripting",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Evaluation"
+            },
+            {
+              "key": "scriptParseCompile",
+              "granularity": 1,
+              "valueType": "ms",
+              "label": "Script Parse"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/orders/42/tracking",
+              "total": 418.312,
+              "scripting": 26.680000000000007,
+              "scriptParseCompile": 1.084
+            },
+            {
+              "url": "Unattributable",
+              "total": 255.13200000000037,
+              "scripting": 9.468,
+              "scriptParseCompile": 0
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "total": 178.7480000000003,
+              "scripting": 169.9800000000003,
+              "scriptParseCompile": 2.912
+            }
+          ],
+          "summary": {
+            "wastedMs": 210.1240000000003
+          },
+          "sortedBy": [
+            "total"
+          ]
+        },
+        "long-tasks": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "startTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Start Time"
+            },
+            {
+              "key": "duration",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Duration"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/orders/42/tracking",
+              "duration": 119,
+              "startTime": 800.2822
+            },
+            {
+              "url": "Unattributable",
+              "duration": 89,
+              "startTime": 604.2822
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "duration": 71,
+              "startTime": 1808.5644000000002
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "duration": 69,
+              "startTime": 1879.5644000000002
+            },
+            {
+              "url": "http://127.0.0.1:62493/orders/42/tracking",
+              "duration": 64,
+              "startTime": 736.2822
+            }
+          ],
+          "sortedBy": [
+            "duration"
+          ],
+          "skipSumming": [
+            "startTime"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "urls": [
+              "http://127.0.0.1:62493/orders/42/tracking",
+              "Unattributable",
+              "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js"
+            ],
+            "tasks": [
+              {
+                "urlIndex": 0,
+                "startTime": 800.3,
+                "duration": 119,
+                "other": 119,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              },
+              {
+                "urlIndex": 1,
+                "startTime": 604.3,
+                "duration": 89,
+                "other": 89
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 1808.6,
+                "duration": 71,
+                "other": 71
+              },
+              {
+                "urlIndex": 2,
+                "startTime": 1879.6,
+                "duration": 69,
+                "other": 69
+              },
+              {
+                "urlIndex": 0,
+                "startTime": 736.3,
+                "duration": 64,
+                "other": 64,
+                "paintCompositeRender": 0,
+                "styleLayout": 0
+              }
+            ]
+          }
+        },
+        "network-requests": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "label": "URL"
+            },
+            {
+              "key": "protocol",
+              "valueType": "text",
+              "label": "Protocol"
+            },
+            {
+              "key": "networkRequestTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network Request Time"
+            },
+            {
+              "key": "networkEndTime",
+              "valueType": "ms",
+              "granularity": 1,
+              "label": "Network End Time"
+            },
+            {
+              "key": "transferSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Transfer Size"
+            },
+            {
+              "key": "resourceSize",
+              "valueType": "bytes",
+              "displayUnit": "kb",
+              "granularity": 1,
+              "label": "Resource Size"
+            },
+            {
+              "key": "statusCode",
+              "valueType": "text",
+              "label": "Status Code"
+            },
+            {
+              "key": "mimeType",
+              "valueType": "text",
+              "label": "MIME Type"
+            },
+            {
+              "key": "resourceType",
+              "valueType": "text",
+              "label": "Resource Type"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/orders/42/tracking",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 0,
+              "networkRequestTime": 3.487999999895692,
+              "networkEndTime": 6.081000000238419,
+              "finished": true,
+              "transferSize": 528,
+              "resourceSize": 482,
+              "statusCode": 200,
+              "mimeType": "text/html",
+              "resourceType": "Document",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 47.17799999937415,
+              "networkRequestTime": 53.96699999924749,
+              "networkEndTime": 63.725999999791384,
+              "finished": true,
+              "transferSize": 85062,
+              "resourceSize": 269515,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/index-BawpXCLj.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 47.67799999937415,
+              "networkRequestTime": 54.28099999949336,
+              "networkEndTime": 64.4410000005737,
+              "finished": true,
+              "transferSize": 1522,
+              "resourceSize": 3422,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/OrderTracking-VctoQzSj.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 86.61099999956787,
+              "networkRequestTime": 88.8199999993667,
+              "networkEndTime": 91.47300000023097,
+              "finished": true,
+              "transferSize": 1770,
+              "resourceSize": 4179,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/AppHeader-Daz1hMGi.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 86.80699999909848,
+              "networkRequestTime": 89.21900000050664,
+              "networkEndTime": 94.39199999999255,
+              "finished": true,
+              "transferSize": 685,
+              "resourceSize": 956,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/orderStatus-BySEype3.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 87.00300000049174,
+              "networkRequestTime": 89.6149999992922,
+              "networkEndTime": 95.90899999905378,
+              "finished": true,
+              "transferSize": 432,
+              "resourceSize": 333,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/OrderExperience-DIWe6LdB.js",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 87.22399999946356,
+              "networkRequestTime": 89.75999999977648,
+              "networkEndTime": 96.01300000026822,
+              "finished": true,
+              "transferSize": 670,
+              "resourceSize": 770,
+              "statusCode": 200,
+              "mimeType": "text/javascript",
+              "resourceType": "Script",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://127.0.0.1:62493/assets/OrderExperience-BDl_VtHv.css",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 87.41100000031292,
+              "networkRequestTime": 89.94099999964237,
+              "networkEndTime": 95.29900000058115,
+              "finished": true,
+              "transferSize": 1112,
+              "resourceSize": 2433,
+              "statusCode": 200,
+              "mimeType": "text/css",
+              "resourceType": "Stylesheet",
+              "priority": "VeryHigh",
+              "experimentalFromMainFrame": true,
+              "entity": "127.0.0.1"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 155.3059999998659,
+              "networkRequestTime": 155.6259999992326,
+              "networkEndTime": 158.4320000000298,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 156.41299999970943,
+              "networkRequestTime": 156.5449999999255,
+              "networkEndTime": 161.1019999999553,
+              "finished": true,
+              "transferSize": 0,
+              "resourceSize": 0,
+              "statusCode": 204,
+              "mimeType": "",
+              "resourceType": "Preflight",
+              "priority": "High",
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 153.94900000002235,
+              "networkRequestTime": 161.36999999918044,
+              "networkEndTime": 162.15699999965727,
+              "finished": true,
+              "transferSize": 560,
+              "resourceSize": 464,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            },
+            {
+              "url": "http://localhost:8080/api/substitution-requests/orders/42",
+              "sessionTargetType": "page",
+              "protocol": "http/1.1",
+              "rendererStartTime": 155.08800000045449,
+              "networkRequestTime": 161.52799999993294,
+              "networkEndTime": 162.6389999995008,
+              "finished": true,
+              "transferSize": 218,
+              "resourceSize": 122,
+              "statusCode": 200,
+              "mimeType": "application/json",
+              "resourceType": "Fetch",
+              "priority": "High",
+              "experimentalFromMainFrame": true,
+              "entity": "localhost"
+            }
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "networkStartTimeTs": 7384924126,
+            "initiators": [
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/orders/42/tracking",
+                "lineNumber": 7,
+                "columnNumber": 70
+              },
+              {
+                "type": "parser",
+                "url": "http://127.0.0.1:62493/orders/42/tracking",
+                "lineNumber": 8,
+                "columnNumber": 73
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "script",
+                "url": "about:client",
+                "lineNumber": 0,
+                "columnNumber": 0
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/orders/42"
+              },
+              {
+                "type": "preflight",
+                "url": "http://localhost:8080/api/substitution-requests/orders/42"
+              }
+            ]
+          }
+        },
+        "layout-shifts": {
+          "type": "table",
+          "headings": [
+            {
+              "key": "node",
+              "valueType": "node",
+              "subItemsHeading": {
+                "key": "extra"
+              },
+              "label": "Element"
+            },
+            {
+              "key": "score",
+              "valueType": "numeric",
+              "subItemsHeading": {
+                "key": "cause",
+                "valueType": "text"
+              },
+              "granularity": 0.001,
+              "label": "Layout shift score"
+            }
+          ],
+          "items": [
+            {
+              "node": {
+                "type": "node",
+                "lhId": "page-1-DIV",
+                "path": "1,HTML,1,BODY,0,DIV,1,DIV,1,MAIN,4,DIV",
+                "selector": "div#root > div.order-experience > main#main-content > div.experience-actions",
+                "boundingRect": {
+                  "top": 1788,
+                  "bottom": 1809,
+                  "left": 16,
+                  "right": 396,
+                  "width": 380,
+                  "height": 21
+                },
+                "snippet": "<div class=\"experience-actions\">",
+                "nodeLabel": "Back to Orders\nOrder Details"
+              },
+              "score": 0.02353454682725997
+            }
+          ]
+        },
+        "unused-javascript": {
+          "type": "opportunity",
+          "headings": [
+            {
+              "key": "url",
+              "valueType": "url",
+              "subItemsHeading": {
+                "key": "source",
+                "valueType": "code"
+              },
+              "label": "URL"
+            },
+            {
+              "key": "totalBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceBytes"
+              },
+              "label": "Transfer Size"
+            },
+            {
+              "key": "wastedBytes",
+              "valueType": "bytes",
+              "subItemsHeading": {
+                "key": "sourceWastedBytes"
+              },
+              "label": "Est Savings"
+            }
+          ],
+          "items": [
+            {
+              "url": "http://127.0.0.1:62493/assets/index-Lv2VgRIV.js",
+              "totalBytes": 84850,
+              "wastedBytes": 43518,
+              "wastedPercent": 51.28807358512268
+            }
+          ],
+          "overallSavingsMs": 300,
+          "overallSavingsBytes": 43518,
+          "sortedBy": [
+            "wastedBytes"
+          ],
+          "debugData": {
+            "type": "debugdata",
+            "metricSavings": {
+              "FCP": 300,
+              "LCP": 300
+            }
+          }
+        }
+      }
+    }
+  ]
+}
