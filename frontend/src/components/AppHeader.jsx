@@ -1,12 +1,10 @@
 import { NavLink, useNavigate } from 'react-router-dom';
+import { clearSession } from '../lib/api';
 
 export default function AppHeader({ helper = false, children }) {
   const navigate = useNavigate();
   function logout() {
-    // Drafts and cached orders belong to the current account.
-    for (const key of ['token', 'user', 'orders', 'groceryItems', 'selectedStore', 'deliverySlot', 'deliveryAddress', 'currentOrder']) {
-      localStorage.removeItem(key);
-    }
+    clearSession(); // drafts and cached orders belong to the current account
     navigate('/');
   }
   return <header className="app-header">
