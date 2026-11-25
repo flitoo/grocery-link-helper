@@ -82,8 +82,15 @@ function DeliveryNotifications() {
         // Load existing notifications
         const existing = readJSON(storageKey, []);
 
+        // Drop cached entries for orders the server no longer has (for
+        // example after the database was cleaned), so they don't linger.
+        const serverOrderIds = new Set(
+          ordersData.orders.map(order => String(order.order_id))
+        );
+
         const updated = Array.isArray(existing)
-          ? existing.filter(item => !item.notificationId)
+          ? existing.filter(item =>
+              !item.notificationId && serverOrderIds.has(String(item.orderId)))
           : [];
 
         // Create notifications for current statuses
