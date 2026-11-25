@@ -7,10 +7,18 @@ const SESSION_KEYS = [
   'selectedStore', 'deliverySlot', 'deliveryAddress', 'currentOrder',
 ];
 
+// Notification caches are saved per account as `deliveryNotifications:<id>`.
+const NOTIFICATION_CACHE_PREFIX = 'deliveryNotifications:';
+
 export function clearSession() {
-  for (const key of SESSION_KEYS) {
-    try { localStorage.removeItem(key); } catch { /* storage unavailable */ }
-  }
+  try {
+    const cached = [];
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const key = localStorage.key(i);
+      if (key?.startsWith(NOTIFICATION_CACHE_PREFIX)) cached.push(key);
+    }
+    for (const key of [...SESSION_KEYS, ...cached]) localStorage.removeItem(key);
+  } catch { /* storage unavailable */ }
 }
 
 export async function api(path, { body, headers, ...options } = {}) {

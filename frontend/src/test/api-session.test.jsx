@@ -23,6 +23,19 @@ describe('session handling', () => {
     expect(localStorage.length).toBe(0);
   });
 
+  it('clearSession also removes cached notifications for every account', () => {
+    seedSession();
+    localStorage.setItem('deliveryNotifications:1', '[]');
+    localStorage.setItem('deliveryNotifications:9', '[]');
+    localStorage.setItem('unrelated', 'keep');
+
+    clearSession();
+
+    expect(localStorage.getItem('deliveryNotifications:1')).toBeNull();
+    expect(localStorage.getItem('deliveryNotifications:9')).toBeNull();
+    expect(localStorage.getItem('unrelated')).toBe('keep');
+  });
+
   it('logout clears the previous account, including the saved order id', async () => {
     seedSession();
     render(<MemoryRouter><AppHeader /></MemoryRouter>);
