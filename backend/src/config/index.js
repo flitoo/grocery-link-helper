@@ -9,6 +9,11 @@ module.exports = {
   port: process.env.PORT || 8080,
   databaseUrl: process.env.DATABASE_URL,
   jwtSecret: process.env.JWT_SECRET,
+  orders: {
+    // Pending (unpaid) orders older than this are cancelled automatically so
+    // abandoned checkouts stop holding delivery slots.
+    paymentTimeoutMinutes: optionalPositiveInt(process.env.ORDER_PAYMENT_TIMEOUT_MINUTES) ?? 30,
+  },
   slots: {
     // BR-07: active orders per slot are capped by available helpers. Set
     // SLOT_CAPACITY to override the helper count (e.g. for demos).

@@ -92,6 +92,7 @@ tokens get `401`.
 | --- | --- |
 | `POST /api/orders` | Customers only (`403` for helpers). The customer is the logged-in user; a `customer_id` in the body is optional and must match, otherwise `403`. |
 | `GET /api/orders/{id}` | The order's customer, its assigned helper, or any helper while the order is Paid and unclaimed. Anyone else gets `404`. |
+| `POST /api/orders/{id}/cancel` | Only the customer who placed the order, and only while it is unpaid (`Pending`). Anyone else gets `404`; a paid or later order gets `409`. Cancelling frees its delivery slot. |
 | `POST /api/payments`, `POST /api/payments/{orderId}/confirm-demo` | Only the customer who placed the order (`403` otherwise). |
 | `GET /api/payments/{orderId}` | The order's customer or assigned helper; anyone else gets `404`. |
 
@@ -109,6 +110,10 @@ Delivery slots hold as many orders as there are helper accounts (BR-07), so a
 database with no helpers shows every slot as full and customers cannot place
 orders. Register a helper, or set `SLOT_CAPACITY` (a positive whole number) in
 `backend/.env` to override the helper count.
+
+Orders left unpaid are cancelled automatically after 30 minutes, so abandoned
+checkouts stop holding delivery slots. Set `ORDER_PAYMENT_TIMEOUT_MINUTES` in
+`backend/.env` to change that.
 
 The login and register endpoints are rate limited per server process (10 login
 attempts per account and address every 15 minutes, 20 registrations per address

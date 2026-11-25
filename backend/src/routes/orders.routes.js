@@ -4,6 +4,7 @@ const {
   createOrder,
   getOrder,
   updateDeliveryStatus,
+  cancelOrder,
   getAssignedTasks,
   getAvailableOrders,
   getCustomerOrders,
@@ -48,6 +49,9 @@ router.post('/:orderId/messages', createOrderMessage);
 // Repeat a previous order (US-06): check the slot, then place it
 router.get('/:id/repeat/availability', getRepeatAvailability);
 router.post('/:id/repeat', createRepeatOrder);
+
+// Cancel an unpaid order (customer only)
+router.post('/:id/cancel', cancelOrder);
 
 // Update delivery status
 router.patch('/:id/status', updateDeliveryStatus);

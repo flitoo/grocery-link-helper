@@ -78,6 +78,28 @@ async function getOrder(req, res) {
   }
 }
 
+async function cancelOrder(req, res) {
+  const orderId = parseId(req.params.id);
+  if (!orderId) {
+    return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
+  }
+
+  try {
+    // Someone else's order looks the same as a missing one (404).
+    const order = await ordersModel.cancelOrder({ orderId, customerId: req.user.userId });
+    if (!order) {
+      return res.status(404).json({ errors: ['Order not found.'] });
+    }
+    return res.status(200).json(order);
+  } catch (err) {
+    if (err.code === 'ORDER_NOT_CANCELLABLE') {
+      return res.status(409).json({ errors: [err.message] });
+    }
+    console.error('Failed to cancel order:', err);
+    return res.status(500).json({ errors: ['Unexpected error cancelling the order.'] });
+  }
+}
+
 async function updateDeliveryStatus(req, res) {
   const orderId = parseId(req.params.id);
   const helperId = Number(req.user?.userId);
@@ -157,6 +179,7 @@ module.exports = {
   getCustomerOrders,
   createOrder,
   getOrder,
+  cancelOrder,
   updateDeliveryStatus,
   getAssignedTasks,
   getAvailableOrders,
