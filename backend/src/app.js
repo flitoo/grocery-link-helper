@@ -12,6 +12,7 @@ const slotsRoutes = require("./routes/slots.routes");
 const deliveriesRoutes = require("./routes/deliveries.routes");
 const ratingsRoutes = require("./routes/ratings.routes");
 const substitutionRequestsRoutes = require("./routes/substitution-requests.routes");
+const { errorHandler } = require("./middleware/error.middleware");
 
 // Template routes
 const templatesRoutes = require("./routes/templates.routes");
@@ -62,5 +63,8 @@ app.use("/api/templates", templatesRoutes);
 app.use("/api/collections", collectionsRoutes);
 app.use("/api/helpers", require("./routes/helpers.routes"));
 app.use("/api/notifications", require("./routes/notifications.routes"));
+
+// Must come after every route so it catches their errors.
+app.use(errorHandler);
 
 module.exports = app;

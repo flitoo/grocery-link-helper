@@ -92,3 +92,66 @@ describe('POST /api/auth/login', () => {
     expect(res.statusCode).toBe(400);
   });
 });
+
+describe('auth input handling', () => {
+  it('rejects a login with no request body instead of crashing', async () => {
+    const res = await request(app).post('/api/auth/login');
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body.error).toBeDefined();
+  });
+
+  it('rejects a register with no request body instead of crashing', async () => {
+    const res = await request(app).post('/api/auth/register');
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('rejects an email sent as an array', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Array Email', email: ['array@example.com'], password: 'password123' });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('rejects a password that is not a string', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Number Pass', email: 'numpass@example.com', password: 12345678 });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('rejects a name longer than the database column', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'x'.repeat(101), email: 'longname@example.com', password: 'password123' });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('rejects a password bcrypt would silently truncate', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ name: 'Long Pass', email: 'longpass@example.com', password: 'p'.repeat(73) });
+
+    expect(res.statusCode).toBe(400);
+  });
+
+  it('treats emails case-insensitively when registering', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ ...testUser, email: '  TestUser@Example.COM ' });
+
+    expect(res.statusCode).toBe(409);
+  });
+
+  it('treats emails case-insensitively when logging in', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({ email: 'TESTUSER@example.com', password: testUser.password });
+
+    expect(res.statusCode).toBe(200);
+  });
+});

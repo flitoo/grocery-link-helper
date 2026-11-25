@@ -2,6 +2,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { findUserByEmail, createUser } = require('../models/user.model');
+const { normalizeEmail } = require('../validators/auth.validator');
 
 const JWT_SECRET = process.env.JWT_SECRET;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1d';
@@ -9,7 +10,8 @@ const SALT_ROUNDS = 10;
 
 async function register(req, res) {
   try {
-    const { name, email, password, role = 'Customer' } = req.body;
+    const { name, password, role = 'Customer' } = req.body;
+    const email = normalizeEmail(req.body.email);
     // Never accept privileged roles from public registration.
     if (role === 'Helper' && (
       process.env.NODE_ENV === 'production' ||
@@ -24,7 +26,7 @@ async function register(req, res) {
     }
 
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
-    const newUser = await createUser({ name, email, passwordHash, role });
+    const newUser = await createUser({ name: name.trim(), email, passwordHash, role });
 
     const token = jwt.sign({ userId: newUser.id }, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
 
@@ -34,6 +36,10 @@ async function register(req, res) {
       user: newUser,
     });
   } catch (err) {
+    // Two simultaneous sign-ups can both pass the lookup above.
+    if (err.code === '23505') {
+      return res.status(409).json({ error: 'An account with this email already exists.' });
+    }
     console.error('Register error:', err);
     return res.status(500).json({ error: 'Something went wrong during registration.' });
   }
@@ -41,7 +47,8 @@ async function register(req, res) {
 
 async function login(req, res) {
   try {
-    const { email, password } = req.body;
+    const { password } = req.body;
+    const email = normalizeEmail(req.body.email);
 
     const user = await findUserByEmail(email);
     if (!user) {

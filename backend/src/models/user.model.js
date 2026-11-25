@@ -1,9 +1,11 @@
 const { pool } = require('../config/db');
 
+// `email` must already be normalized (trimmed, lower case). Matching on
+// lower(email) keeps accounts created before normalization reachable.
 async function findUserByEmail(email) {
   const { rows } = await pool.query(
     `SELECT user_id AS id, full_name AS name, email, password_hash, role
-     FROM users WHERE email = $1`,
+     FROM users WHERE lower(email) = $1`,
     [email]
   );
   return rows[0] || null;
