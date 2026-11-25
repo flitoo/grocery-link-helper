@@ -7,13 +7,14 @@ const config = require('./index');
 const PG_TIMESTAMP_OID = 1114;
 types.setTypeParser(PG_TIMESTAMP_OID, (value) => new Date(`${value.replace(' ', 'T')}Z`));
 
-// Neon (and most managed Postgres hosts) require TLS. The connection string
-// already carries `sslmode=require`, but `pg` needs an explicit ssl option
-// to skip validating Neon's intermediate CA chain from Node.
+// Neon (and most managed Postgres hosts) require TLS. Always verify the
+// server's certificate: skipping it would let anyone between this server and
+// the database read or alter traffic. Neon's certificate chain validates fine
+// from Node (checked against the production host).
 const pool = new Pool({
   connectionString: config.databaseUrl,
   ssl: config.databaseUrl && config.databaseUrl.includes('sslmode=require')
-    ? { rejectUnauthorized: false }
+    ? { rejectUnauthorized: true }
     : false,
 });
 
