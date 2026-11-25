@@ -317,3 +317,45 @@
     box-sizing: border-box;
   }
 }
+
+/* =========================
+   Cancel Order
+========================= */
+
+.order-details-page button.order-dashboard-button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.order-details-page button.order-dashboard-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.order-details-page .order-cancel-button {
+  border-color: #b91c1c;
+  color: #b91c1c;
+}
+
+.order-details-page .order-cancel-button:hover {
+  background: #fef2f2;
+  color: #b91c1c;
+}
+
+.order-details-page .order-cancel-confirm {
+  margin-top: 24px;
+  padding: 16px 20px;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  background: #fff7f7;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.order-details-page .order-cancel-confirm p {
+  flex: 1 1 100%;
+  margin: 0;
+  color: #7f1d1d;
+}

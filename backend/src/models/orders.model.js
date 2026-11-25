@@ -243,6 +243,70 @@ async function updateDeliveryStatus({ orderId, helperId, nextStatus }) {
     return updated.rows[0];
   });
 }
+/**
+ * Cancels an order its customer has not paid for yet. Only Pending orders can
+ * be cancelled: there is no refund path, so a paid order must go through
+ * support. Cancelling frees the order's delivery slot and rejects any payment
+ * that was started but never confirmed.
+ *
+ * Returns the cancelled order, or undefined when it doesn't exist or belongs to
+ * someone else (the same answer, so ids can't be probed). Throws
+ * ORDER_NOT_CANCELLABLE if the order is no longer Pending.
+ */
+async function cancelOrder({ orderId, customerId }) {
+  return withTransaction(async (client) => {
+    const result = await client.query(
+      `SELECT order_id, customer_id, status FROM orders WHERE order_id = $1 FOR UPDATE`,
+      [orderId]
+    );
+    const order = result.rows[0];
+    if (!order || Number(order.customer_id) !== Number(customerId)) return undefined;
+    if (order.status !== 'Pending') {
+      const error = new Error(`Only unpaid orders can be cancelled. This order is ${order.status}.`);
+      error.code = 'ORDER_NOT_CANCELLABLE';
+      throw error;
+    }
+    return markCancelled(client, [orderId]).then((rows) => rows[0]);
+  });
+}
+
+// Sets orders to Cancelled and rejects their unconfirmed payments.
+async function markCancelled(client, orderIds) {
+  const updated = await client.query(
+    `UPDATE orders SET status = 'Cancelled'
+     WHERE order_id = ANY($1::int[]) AND status = 'Pending'
+     RETURNING order_id, customer_id, status`,
+    [orderIds]
+  );
+  await client.query(
+    `UPDATE payments SET payment_status = 'Rejected'
+     WHERE order_id = ANY($1::int[]) AND payment_status = 'Pending'`,
+    [orderIds]
+  );
+  return updated.rows;
+}
+
+/**
+ * Cancels Pending orders created more than `timeoutMinutes` before `at`, so
+ * abandoned checkouts stop holding delivery slots. Orders locked by a payment
+ * in progress are skipped and picked up on a later pass. Returns the count.
+ */
+async function expireUnpaidOrders({ timeoutMinutes, at = new Date() }) {
+  return withTransaction(async (client) => {
+    const stale = await client.query(
+      `SELECT order_id FROM orders
+       WHERE status = 'Pending'
+         AND created_at <= ($1::timestamptz AT TIME ZONE 'UTC') - $2::integer * INTERVAL '1 minute'
+       ORDER BY order_id
+       LIMIT 200 FOR UPDATE SKIP LOCKED`,
+      [at, timeoutMinutes]
+    );
+    if (stale.rows.length === 0) return 0;
+    const cancelled = await markCancelled(client, stale.rows.map((row) => row.order_id));
+    return cancelled.length;
+  });
+}
+
 const HELPER_ORDER_COLUMNS = `
   o.order_id, o.customer_id, o.helper_id, o.store_id, s.store_name,
   o.status, o.delivery_slot, o.delivery_address, o.total_amount, o.created_at`;
@@ -296,6 +360,8 @@ module.exports = {
   getOrderForViewer,
   getRepeatSource,
   updateDeliveryStatus,
+  cancelOrder,
+  expireUnpaidOrders,
   getAssignedTasks,
   getAvailableOrders,
 };

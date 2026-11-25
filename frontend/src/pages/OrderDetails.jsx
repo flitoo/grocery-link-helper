@@ -1,5 +1,5 @@
 import AppHeader from '../components/AppHeader';
-import { API_BASE } from '../lib/api';
+import { API_BASE, api } from '../lib/api';
 
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -69,6 +69,9 @@ function OrderDetails() {
   const [payment, setPayment] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [confirmingCancel, setConfirmingCancel] = useState(false);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState("");
 
   // Load order details from backend
   useEffect(() => {
@@ -172,6 +175,34 @@ function OrderDetails() {
       active = false;
     };
   }, [orderId]);
+
+  // Cancel an unpaid order. The server only allows this while it is Pending.
+  async function cancelOrder() {
+    setCancelling(true);
+    setCancelError("");
+
+    try {
+      await api(`/orders/${encodeURIComponent(orderId)}/cancel`, { method: "POST" });
+
+      setOrder((previous) => ({ ...previous, status: "Cancelled" }));
+      setPayment((previous) =>
+        previous?.payment_status === "Pending"
+          ? { ...previous, payment_status: "Rejected" }
+          : previous
+      );
+      setConfirmingCancel(false);
+
+      // Don't let the payment screen keep trying to pay this order.
+      if (String(localStorage.getItem("orderId")) === String(orderId)) {
+        localStorage.removeItem("orderId");
+        localStorage.removeItem("currentOrder");
+      }
+    } catch (err) {
+      setCancelError(err.message || "Could not cancel the order.");
+    } finally {
+      setCancelling(false);
+    }
+  }
 
   // Order information
   const local = getLocalOrder(orderId);
@@ -414,7 +445,40 @@ function OrderDetails() {
             </section>
 
             {/* Action Buttons */}
+            {cancelError ? <p role="alert">{cancelError}</p> : null}
+
+            {confirmingCancel ? (
+              <div className="order-cancel-confirm" role="group" aria-label="Confirm cancellation">
+                <p>Cancel this order? It hasn&apos;t been paid, and you won&apos;t be charged. This can&apos;t be undone.</p>
+                <button
+                  type="button"
+                  className="order-dashboard-button order-cancel-button"
+                  onClick={cancelOrder}
+                  disabled={cancelling}
+                >
+                  {cancelling ? "Cancelling..." : "Yes, cancel order"}
+                </button>
+                <button
+                  type="button"
+                  className="order-dashboard-button"
+                  onClick={() => setConfirmingCancel(false)}
+                  disabled={cancelling}
+                >
+                  Keep order
+                </button>
+              </div>
+            ) : null}
+
             <div className="order-details-actions">
+              {status === "Pending" && !confirmingCancel ? (
+                <button
+                  type="button"
+                  className="order-dashboard-button order-cancel-button"
+                  onClick={() => setConfirmingCancel(true)}
+                >
+                  Cancel Order
+                </button>
+              ) : null}
               <Link to={`/orders/${orderId}/tracking`} className="order-dashboard-button">Track Order</Link>
               <Link to={`/orders/${orderId}/substitutions`} className="order-dashboard-button">Substitution Requests</Link>
               <Link
