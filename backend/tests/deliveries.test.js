@@ -52,6 +52,18 @@ describe('POST /api/deliveries/:orderId/claim', () => {
     expect(deliveriesModel.claimDelivery).not.toHaveBeenCalled();
   });
 
+  it.each(['2147483648', '99999999999', '1e3', '0x10', '1.5'])(
+    'rejects order id %s that is not a valid int4',
+    async (id) => {
+      const res = await request(app)
+        .post(`/api/deliveries/${id}/claim`)
+        .set('Authorization', `Bearer ${helperToken()}`);
+
+      expect(res.status).toBe(400);
+      expect(deliveriesModel.claimDelivery).not.toHaveBeenCalled();
+    }
+  );
+
   it('returns 404 when the order does not exist', async () => {
     deliveriesModel.claimDelivery.mockResolvedValue(undefined);
 

@@ -9,6 +9,9 @@ const { UNITS, UNBRANDED } = require('../constants/catalog');
 //   custom:  { item_name, quantity, estimated_price, unit?, allow_substitution? }
 //     estimated_price is the price of ONE unit; unit defaults to 'each'.
 
+// orders.total_amount is NUMERIC(10, 2), so it tops out at 99,999,999.99.
+const MAX_TOTAL_CENTS = 9999999999;
+
 function codedError(code, message) {
   const err = new Error(message);
   err.code = code;
@@ -94,7 +97,7 @@ function resolveLine(line, byId) {
  * Returns { lines, totalCents }; each line is ready to insert:
  *   { catalogItemId, itemName, quantity, unit, unitPrice, allowSubstitution }
  * with `quantity` and `unitPrice` as fixed-decimal strings.
- * Throws ITEM_NOT_IN_STORE or INVALID_QUANTITY (both client errors).
+ * Throws ITEM_NOT_IN_STORE, INVALID_QUANTITY or ORDER_TOO_LARGE (all client errors).
  */
 function priceOrderLines(lines, catalogRows) {
   const byId = indexCatalog(lines, catalogRows);
@@ -116,6 +119,10 @@ function priceOrderLines(lines, catalogRows) {
     };
   });
 
+  if (totalCents > MAX_TOTAL_CENTS) {
+    throw codedError('ORDER_TOO_LARGE', 'The order total is too large. Remove some items or lower the quantities.');
+  }
+
   return { lines: priced, totalCents };
 }
 
@@ -127,6 +134,7 @@ function catalogIdsOf(lines) {
 }
 
 module.exports = {
+  MAX_TOTAL_CENTS,
   priceOrderLines,
   catalogIdsOf,
   displayName,

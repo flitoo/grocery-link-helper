@@ -70,7 +70,7 @@ async function insertOrderItem(client, orderId, line) {
  *
  * Returns the created order row with its items attached, or throws for the
  * caller to translate into an HTTP response: ITEM_NOT_IN_STORE or
- * INVALID_QUANTITY for bad lines, SLOT_FULL when the delivery slot has no
+ * INVALID_QUANTITY or ORDER_TOO_LARGE for bad lines, SLOT_FULL when the delivery slot has no
  * capacity left (BR-07), or a Postgres error (e.g. FK violation).
  */
 async function createOrder({ customerId, storeId, deliverySlot, deliveryAddress, items }) {

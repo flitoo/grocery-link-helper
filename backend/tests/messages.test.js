@@ -95,3 +95,23 @@ describe('POST /api/orders/:orderId/messages', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('order id validation', () => {
+  it.each(['2147483648', '99999999999', '1e3', '0x10'])(
+    'rejects order id %s on both message routes',
+    async (id) => {
+      const list = await request(app)
+        .get(`/api/orders/${id}/messages`)
+        .set('Authorization', `Bearer ${userToken()}`);
+      const create = await request(app)
+        .post(`/api/orders/${id}/messages`)
+        .set('Authorization', `Bearer ${userToken()}`)
+        .send({ message_text: 'hi' });
+
+      expect(list.status).toBe(400);
+      expect(create.status).toBe(400);
+      expect(messagesModel.listOrderMessages).not.toHaveBeenCalled();
+      expect(messagesModel.createOrderMessage).not.toHaveBeenCalled();
+    }
+  );
+});
