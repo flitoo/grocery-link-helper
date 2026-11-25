@@ -1,8 +1,9 @@
 const deliveriesModel = require('../models/deliveries.model');
+const { parseId } = require('../validators/ids.validator');
 
 async function claimDelivery(req, res) {
-  const orderId = Number(req.params.orderId);
-  if (!Number.isInteger(orderId) || orderId <= 0) {
+  const orderId = parseId(req.params.orderId);
+  if (!orderId) {
     return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
 

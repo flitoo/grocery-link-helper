@@ -1,12 +1,8 @@
 const messagesModel = require('../models/messages.model');
-
-function parseOrderId(value) {
-  const orderId = Number(value);
-  return Number.isInteger(orderId) && orderId > 0 ? orderId : undefined;
-}
+const { parseId } = require('../validators/ids.validator');
 
 async function getOrderMessages(req, res) {
-  const orderId = parseOrderId(req.params.orderId);
+  const orderId = parseId(req.params.orderId);
   if (!orderId) {
     return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
@@ -27,7 +23,7 @@ async function getOrderMessages(req, res) {
 }
 
 async function createOrderMessage(req, res) {
-  const orderId = parseOrderId(req.params.orderId);
+  const orderId = parseId(req.params.orderId);
   if (!orderId) {
     return res.status(400).json({ errors: ['Order id must be a positive integer.'] });
   }
