@@ -105,6 +105,17 @@ ENABLE_DEMO_PAYMENTS=true
 ENABLE_DEMO_HELPER_REGISTRATION=true
 ```
 
+Delivery slots hold as many orders as there are helper accounts (BR-07), so a
+database with no helpers shows every slot as full and customers cannot place
+orders. Register a helper, or set `SLOT_CAPACITY` (a positive whole number) in
+`backend/.env` to override the helper count.
+
+The login and register endpoints are rate limited per server process (10 login
+attempts per account and address every 15 minutes, 20 registrations per address
+per hour). Behind a reverse proxy every user shares the proxy's address unless
+Express's `trust proxy` setting is configured, so set it before relying on the
+per-address limits in a deployment.
+
 ### Delivery assignment and order messaging
 Helpers see their work on the helper dashboard, which loads two lists with the
 helper's token (both return `{ orders: [...] }`, `401` without a token, `403`
