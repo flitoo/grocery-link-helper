@@ -202,6 +202,9 @@ async function createRepeatOrder(req, res) {
     if (err.code === PG_CHECK_VIOLATION) {
       return res.status(400).json({ errors: ['Order total must be greater than 0.'] });
     }
+    if (err.code === 'ORDER_TOO_LARGE') {
+      return res.status(400).json({ errors: [err.message] });
+    }
     return sendError(res, err, 'repeat the order');
   }
 }

@@ -159,7 +159,7 @@ describe('POST /api/orders: line list', () => {
 });
 
 describe('POST /api/orders: pricing errors from the model', () => {
-  it.each(['ITEM_NOT_IN_STORE', 'INVALID_QUANTITY'])('maps %s to 400 with its message', async (code) => {
+  it.each(['ITEM_NOT_IN_STORE', 'INVALID_QUANTITY', 'ORDER_TOO_LARGE'])('maps %s to 400 with its message', async (code) => {
     const err = new Error('That line cannot be ordered.');
     err.code = code;
     ordersModel.createOrder.mockRejectedValue(err);

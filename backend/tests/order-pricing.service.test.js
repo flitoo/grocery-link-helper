@@ -193,6 +193,22 @@ describe('priceOrderLines: custom lines', () => {
     ).toThrow(expect.objectContaining({ code: 'INVALID_QUANTITY' }));
   });
 
+  it('rejects a total that would overflow orders.total_amount', () => {
+    const lines = Array.from({ length: 12 }, (_, i) => ({
+      item_name: `Gold ${i}`, quantity: 100, unit: 'kg', estimated_price: 100000,
+    }));
+
+    expect(() => priceOrderLines(lines, [])).toThrow(expect.objectContaining({ code: 'ORDER_TOO_LARGE' }));
+  });
+
+  it('accepts a total exactly at the column limit', () => {
+    const { totalCents } = priceOrderLines(
+      [{ item_name: 'Max', quantity: 1, unit: 'kg', estimated_price: 99999999.99 }], []
+    );
+
+    expect(totalCents).toBe(9999999999);
+  });
+
   it('rejects an unknown unit', () => {
     expect(() =>
       priceOrderLines([{ item_name: 'Cake', quantity: 1, unit: 'oz', estimated_price: 5 }], [])
